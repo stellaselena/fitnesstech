@@ -32,10 +32,12 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>                  
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Members <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Community <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a asp-area="" asp-controller="Customers" asp-action="Index">Fitness enthusiasts</a></li>
-                            <li><a asp-area="" asp-controller="Employees" asp-action="Index">Fitness Instructors</a></li>                       
+                            <li><a asp-area="" asp-controller="Customers" asp-action="Index">Members</a></li>
+                            <li><a asp-area="" asp-controller="Employees" asp-action="Index">Fitness Instructors</a></li> 
+                            <li><a asp-area="" asp-controller="Gyms" asp-action="Index">Gyms</a></li>
+
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -43,11 +45,9 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a asp-area="" asp-controller="BMRCalculator" asp-action="Index">BMR Calculator</a></li>
                             <li><a asp-area="" asp-controller="TDEECalculator" asp-action="Index">TDEE Calculator</a></li>                       
+                            <li><a asp-area="" asp-controller="MacroCalculator" asp-action="Index">Macro Calculator</a></li>                       
                         </ul>
                     </li>
-                    <li><a asp-area="" asp-controller="Gyms" asp-action="Index">Gyms</a></li>
-                    <li><a asp-area="" asp-controller="TDEECalculator" asp-action="Index">TDEE</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
             </div>

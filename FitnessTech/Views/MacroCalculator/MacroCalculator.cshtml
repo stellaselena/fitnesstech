@@ -1,10 +1,10 @@
-﻿@model FitnessTech.Models.BMI
+﻿@model FitnessTech.Models.Macro
 
 @{
-    ViewData["Title"] = "BMRCalculator";
+    ViewData["Title"] = "MacroCalculator";
 }
 
-<h2>BMR Calculator</h2>
+<h2>Macro Calculator</h2>
 <hr />
 
 <div class="container-fluid">
@@ -37,6 +37,31 @@
                         <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="ActivityLevel" class="control-label"></label>
+                        <select asp-for="ActivityLevel" class="form-control"
+                                asp-items="Html.GetEnumSelectList<ActivityLevel>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="ActivityLevel" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Goal" class="control-label"></label>
+                        <select asp-for="Goal" class="form-control"
+                                asp-items="Html.GetEnumSelectList<Goal>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="Goal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Percentage" class="control-label"></label>
+                        <select asp-for="Percentage" class="form-control"
+                                asp-items="Html.GetEnumSelectList<Percentage>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="Percentage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-default" />
                     </div>
                 </form>
@@ -45,18 +70,14 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <p class="well">
-            <b>What is BMR?</b>
+            <b>What are macros? </b>
             <br />
-            This minimum number of calories to live is called the basal metabolic rate (BMR).
-            Your BMR is the number of calories your organs need to function while you perform no activity whatsoever.
-            You can think of it as the amount of energy you'd burn if you stayed in bed all day.
+            Macronutrients, or macros, are the building blocks that make up all the food we eat: carbohydrates, fats, and proteins.
+            Each has distinct roles in the body. To stay healthy and crush your body-composition goals, you need to eat the right amount of each macro.
             <br />
             <br />
-            BMR is based largely on involuntary functions like breathing and pumping blood,
-            changes in your day-to-day activity don't do much to raise or lower this number. However, increasing muscle
-            mass does increase BMR, because it takes more energy to maintain more muscle.
+            "Flexible dieting" and "If It Fits Your Macros," or IIFYM, are two terms that both refer to basing your food intake on macronutrient targets.
         </p>
-           
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         @if (ViewBag.Result > 0)
@@ -64,7 +85,7 @@
             <div class=" well container-fluid">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <h4>
-                        Your estimated BMR is: @ViewBag.Result
+                        Your estimated TDEE is: @ViewBag.Result
                     </h4>
                 </div>
             </div>
