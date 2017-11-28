@@ -9,7 +9,15 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find fitness enthusiasts : @Html.TextBox("SearchString")  
+        <input class="btn btn-primary btn-sm" type="submit" value="Search" /></p>
+}
+
+<table class="table table-striped table-hover">
     <thead>
     <tr>
         <th>

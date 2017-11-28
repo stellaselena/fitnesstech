@@ -1,0 +1,91 @@
+﻿@model FitnessTech.Models.TDEE
+
+@{
+    ViewData["Title"] = "TDEECalculator";
+}
+
+<h2>TDEE Calculator</h2>
+<hr />
+
+<div class="container-fluid">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="row well">
+            <div class="col-md-12">
+                <form asp-action="Index">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Age" class="control-label"></label>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Height" class="control-label"></label>
+                        <input asp-for="Height" class="form-control" placeholder="cm"/>
+                        <span asp-validation-for="Height" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Weight" class="control-label"></label>
+                        <input asp-for="Weight" class="form-control" placeholder="kg" />
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" class="form-control"
+                                asp-items="Html.GetEnumSelectList<Gender>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ActivityLevel" class="control-label"></label>
+                        <select asp-for="ActivityLevel" class="form-control"
+                                asp-items="Html.GetEnumSelectList<ActivityLevel>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="ActivityLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <p class="well">
+            <b>How TDEE Is Calculated </b>
+            <br/>
+            Your Total Daily Energy Expenditure (TDEE) is an estimation
+            of how many calories you burn per day when exercise is taken into account.
+            It is calculated by first figuring out your Basal Metabolic Rate,
+            then multiplying that value by an activity multiplier.
+            <br/>
+            <br/>
+            Since your BMR represents how many calories your body burns when at rest,
+            it is necessary to adjust the numbers upwards to account for the calories you
+            burn during the day. This is true even for those with a sedentary lifestyle.
+            Our TDEE calculator uses the best formulas and displays your score in a way that's
+            easy to read and meaningful.
+        </p>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        @if (ViewBag.Result > 0){
+            <div class=" well container-fluid">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h4>
+                        Your estimated TDEE is: @ViewBag.Result
+                    </h4>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+

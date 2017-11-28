@@ -20,13 +20,22 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Gyms
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Gyms.ToListAsync());
+
+            var gyms = from g in _context.Gyms
+                select g;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                gyms = gyms.Where(g => g.GymName.Contains(searchString));
+
+            }
+            return View(await gyms.ToListAsync());
+
         }
 
         // GET: Gyms/Details/5
-        public async Task<IActionResult> Details(int? id)
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

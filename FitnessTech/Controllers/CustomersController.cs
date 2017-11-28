@@ -21,9 +21,16 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Customers.ToListAsync());
+            var customers = from c in _context.Customers select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.FirstName.Contains(searchString)
+                            || c.LastName.Contains(searchString));
+            }
+            return View(await customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
