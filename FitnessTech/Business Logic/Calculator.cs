@@ -1,4 +1,5 @@
-﻿using FitnessTech.Models;
+﻿using System.Collections.Generic;
+using FitnessTech.Models;
 
 namespace FitnessTech.Business_Logic
 {
@@ -125,10 +126,40 @@ namespace FitnessTech.Business_Logic
         }
 
         public static double CalculatePercentage(double value, double percent)
-        {   
-            var percentDivision = value % 100;
-            var result = percentDivision * percent;
+        {
+            //Converting percent to decimal:
+            var decimalValue = percent / 100;
+            //Equation: Y = P % *X
+            var result = decimalValue * value;
+           
             return result;
+        }
+
+        public static Dictionary<string, double> CalculateMacronutrients(Macro macro, int carbPercent, int proteinPercent, int fatPercent)
+        {
+            var sumPercent = carbPercent + proteinPercent + fatPercent;
+            if (sumPercent != 100)
+            {
+                return null;
+            }
+            var totalCalories = MacroCalculator(macro);
+            var carbsCalories = CalculatePercentage(totalCalories, carbPercent);
+            var proteinCalories = CalculatePercentage(totalCalories, proteinPercent);
+            var fatCalories = CalculatePercentage(totalCalories, fatPercent);
+
+            var carbsInGrams = carbsCalories / 4;
+            var proteinsInGrams = proteinCalories / 4;
+            var fatsInGrams = fatCalories / 9;
+
+            var macronutrients = new Dictionary<string, double>
+            {
+                {"carbs", carbsInGrams},
+                {"proteins", proteinsInGrams},
+                {"fats", fatsInGrams}
+            };
+
+            return macronutrients;
+
         }
     }
 }

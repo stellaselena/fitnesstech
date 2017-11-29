@@ -15,17 +15,17 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Age" class="control-label"></label>
-                        <input asp-for="Age" class="form-control" />
+                        <input asp-for="Age" class="form-control"/>
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Height" class="control-label"></label>
-                        <input asp-for="Height" class="form-control" placeholder="cm" />
+                        <input asp-for="Height" class="form-control" placeholder="cm"/>
                         <span asp-validation-for="Height" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Weight" class="control-label"></label>
-                        <input asp-for="Weight" class="form-control" placeholder="kg" />
+                        <input asp-for="Weight" class="form-control" placeholder="kg"/>
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -60,9 +60,24 @@
                         </select>
                         <span asp-validation-for="Percentage" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <label asp-for="Carb" class="control-label"></label>
+                        <input asp-for="Carb" class="form-control" placeholder="%"/>
+                        <span asp-validation-for="Carb" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Protein" class="control-label"></label>
+                        <input asp-for="Protein" class="form-control" placeholder="%"/>
+                        <span asp-validation-for="Protein" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Fat" class="control-label"></label>
+                        <input asp-for="Fat" class="form-control" placeholder="%"/>
+                        <span asp-validation-for="Fat" class="text-danger"></span>
+                    </div>
+                    <p style="color: red">@ViewBag.ErrorMessage</p>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary"/>
                     </div>
                 </form>
             </div>
@@ -71,11 +86,11 @@
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <p class="well">
             <b>What are macros? </b>
-            <br />
+            <br/>
             Macronutrients, or macros, are the building blocks that make up all the food we eat: carbohydrates, fats, and proteins.
             Each has distinct roles in the body. To stay healthy and crush your body-composition goals, you need to eat the right amount of each macro.
-            <br />
-            <br />
+            <br/>
+            <br/>
             "Flexible dieting" and "If It Fits Your Macros," or IIFYM, are two terms that both refer to basing your food intake on macronutrient targets.
         </p>
     </div>
@@ -84,9 +99,15 @@
         {
             <div class=" well container-fluid">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h4>
-                        Your estimated TDEE is: @ViewBag.Result
-                    </h4>
+                    <h5>
+                        Your estimated TDEE is: <b>@ViewBag.Result</b>
+                        <br/>
+                        Carbs: <b>@ViewBag.Carbs</b>
+                        <br/>
+                        Proteins: <b>@ViewBag.Proteins</b>
+                        <br/>
+                        Fats: <b>@ViewBag.Fats</b>
+                    </h5>
                 </div>
             </div>
         }
