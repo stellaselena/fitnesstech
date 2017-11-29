@@ -121,6 +121,7 @@ namespace FitnessTech.Business_Logic
             }
 
             return macroResult;
+
         }
 
         public static double CalculatePercentage(double value, double percent)
