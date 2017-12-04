@@ -23,5 +23,6 @@ namespace FitnessTech.Models
         public ICollection<ExerciseAssigment> ExerciseAssigments { get; set; }
 
 
+
     }
 }

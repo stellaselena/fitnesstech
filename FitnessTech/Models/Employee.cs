@@ -36,5 +36,7 @@ namespace FitnessTech.Models
         public Specialization Specialization { get; set; }
 
         public virtual Gym Gym { get; set; }
+
+
     }
 }

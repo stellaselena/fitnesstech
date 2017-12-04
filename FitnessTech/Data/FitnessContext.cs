@@ -24,6 +24,8 @@ namespace FitnessTech.Data
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
         public DbSet<WorkoutType> WorkoutTypes { get; set; }
+        public DbSet<ExerciseAssigment> ExerciseAssigments { get; set; }
+        public DbSet<WorkoutAssigment> WorkoutAssigments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +42,8 @@ namespace FitnessTech.Data
             modelBuilder.Entity<ExerciseAssigment>().ToTable("ExerciseAssigment");
             modelBuilder.Entity<ExerciseAssigment>()
                 .HasKey(e => new { e.ExerciseId, e.WorkoutId });
+            modelBuilder.Entity<WorkoutAssigment>()
+                .HasKey(w => new {w.WorkoutId, w.WorkoutProgramId});
         }
     }
 }

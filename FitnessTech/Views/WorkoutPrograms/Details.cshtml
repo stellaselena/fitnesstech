@@ -6,9 +6,8 @@
 
 <h2>Details</h2>
 
-<div>
-    <h4>WorkoutProgram</h4>
-    <hr />
+<div class="well">
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.WorkoutProgramName)
@@ -22,6 +21,19 @@
         <dd>
             @Html.DisplayFor(model => model.WorkoutProgramDescription)
         </dd>
+        @{
+            foreach (var workout in Model.WorkoutAssigments)
+            {
+                <dt>Body part</dt>
+                <dd>@workout.Workout.WorkoutName </dd>
+                <dt>Exercises</dt>
+                foreach (var exercise in workout.Workout.ExerciseAssigments)
+                {
+                    <dd> @exercise.Exercise.ExerciseName </dd>
+                }
+                <br />
+            }
+        }
     </dl>
 </div>
 <div>

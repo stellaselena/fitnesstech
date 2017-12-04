@@ -26,7 +26,7 @@ namespace FitnessTech.Controllers
             viewModel.Workouts = await _context.Workouts
                 .Include(w => w.WorkoutType)
                 .Include(w => w.ExerciseAssigments)
-                .ThenInclude(w => w.Exercise)
+                    .ThenInclude(w => w.Exercise)
                 .OrderBy(w => w.WorkoutName)
                 .ToListAsync();
 
@@ -128,8 +128,8 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
             PopulateAssignedExerciseData(workout);
-            ViewData["WorkoutTypeId"] =
-                new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName");
+            ViewData["WorkoutTypeId"] = new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName");
+
             return View(workout);
         }
 
@@ -154,7 +154,7 @@ namespace FitnessTech.Controllers
             if (await TryUpdateModelAsync<Workout>(
                 workout,
                 "",
-                i => i.WorkoutName, i => i.WorkoutType))
+                i => i.WorkoutName, i => i.WorkoutTypeId))
             {
                 UpdateWorkoutExercises(selectedExercises, workout);
                 try
@@ -255,9 +255,9 @@ namespace FitnessTech.Controllers
                 {
                     if (workoutExercises.Contains(exercise.ExerciseId))
                     {
-                        ExerciseAssigment courseToRemove =
+                        ExerciseAssigment exerciseToRemove =
                             workout.ExerciseAssigments.SingleOrDefault(i => i.ExerciseId == exercise.ExerciseId);
-                        _context.Remove(courseToRemove);
+                        _context.Remove(exerciseToRemove);
                     }
                 }
             }

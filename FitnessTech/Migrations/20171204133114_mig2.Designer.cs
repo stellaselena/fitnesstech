@@ -12,9 +12,10 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20171204133114_mig2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,7 +235,7 @@ namespace FitnessTech.Migrations
 
                     b.HasIndex("WorkoutProgramId");
 
-                    b.ToTable("WorkoutAssigments");
+                    b.ToTable("WorkoutAssigment");
                 });
 
             modelBuilder.Entity("FitnessTech.Models.WorkoutProgram", b =>

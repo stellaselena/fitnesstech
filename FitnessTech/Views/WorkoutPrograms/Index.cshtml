@@ -1,5 +1,5 @@
-﻿@model IEnumerable<FitnessTech.Models.WorkoutProgram>
-
+﻿@using FitnessTech.Models
+@model FitnessTech.Models.WorkoutProgramIndexData
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,33 +9,66 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+@using (Html.BeginForm())
+{
+
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Search</button>
+        </span>
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+    </div>
+}
+<hr />
+<table class="table table-striped table-hover">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.WorkoutProgramName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WorkoutProgramDescription)
-                </th>
+            <th>
+                Workout Program Name
+            </th>
+            <th>
+                Workout Program Description
+            </th>
+            <th>
+                Workouts
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkoutProgramName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkoutProgramDescription)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.WorkoutProgramId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.WorkoutProgramId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.WorkoutProgramId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.WorkoutPrograms)
+        {
+            //string selectedRow = "";
+            //if (item.WorkoutId == (int?)ViewData["WorkoutId"])
+            //{
+            //    selectedRow = "success";
+            //}
+            <tr @*class="@selectedRow" *@>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkoutProgramName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkoutProgramDescription)
+                </td>
+
+                <td>
+                    @{
+                        foreach (var workout in item.WorkoutAssigments)
+                        {
+                            @: @workout.Workout.WorkoutName <br/>
+                        }
+                    }
+                </td>
+                <td>
+                    @*<a asp-action="Index" asp-route-id="@item.WorkoutId">Select</a> |*@
+                    <a asp-action="Edit" asp-route-id="@item.WorkoutProgramId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.WorkoutProgramId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.WorkoutProgramId">Delete</a>
+                </td>
+
+            </tr>
+                        }
+
     </tbody>
 </table>

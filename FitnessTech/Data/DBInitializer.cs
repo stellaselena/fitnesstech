@@ -13,7 +13,8 @@ namespace FitnessTech.Data
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any() && context.Workouts.Any())
+            if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any() && context.Workouts.Any() && context.WorkoutPrograms.Any()
+               /* && context.ExerciseAssigments.Any() && context.WorkoutAssigments.Any()*/)
             {
                 return;   // DB has been seeded
             }
@@ -90,20 +91,56 @@ namespace FitnessTech.Data
 
             context.SaveChanges();
 
-            var Workouts = new Workout[]
+            var workouts = new Workout[]
             {
-                new Workout{WorkoutName = "PHAT", WorkoutType = workoutTypes.SingleOrDefault(w => w.WorkoutTypeId == 1)
-                },
-                new Workout{WorkoutName = "Starting Strength", WorkoutType = workoutTypes.SingleOrDefault(w => w.WorkoutTypeId == 2)
-                }
+                new Workout{WorkoutName = "Legs"},
+                new Workout{WorkoutName = "Chest and Shoulders"}
 
             };
-            foreach (Workout workout in Workouts)
+            foreach (Workout workout in workouts)
             {
                 context.Workouts.Add(workout);
             }
 
             context.SaveChanges();
+
+            //var exerciseAssigments = new ExerciseAssigment[]
+            //{
+            //    new ExerciseAssigment{WorkoutId = 1, ExerciseId = 1},
+            //    new ExerciseAssigment{WorkoutId = 2, ExerciseId = 2}
+            //};
+
+            //foreach (ExerciseAssigment exerciseAssigment in exerciseAssigments)
+            //{
+            //    context.ExerciseAssigments.Add(exerciseAssigment);
+            //}
+
+            //context.SaveChanges();
+
+            var workoutPrograms = new WorkoutProgram[]
+            {
+                new WorkoutProgram{WorkoutProgramName = "PHAT", WorkoutProgramDescription = "Layne Norton's Program"},
+                new WorkoutProgram{WorkoutProgramName = "Starting Strength", WorkoutProgramDescription = "Mark Rippetoe's Program"}
+            };
+
+            foreach (WorkoutProgram workoutProgram in workoutPrograms)
+            {
+                context.WorkoutPrograms.Add(workoutProgram);
+            }
+
+            context.SaveChanges();
+
+            //var workoutAssigments = new WorkoutAssigment[]
+            //{
+            //    new WorkoutAssigment{WorkoutId = 1, WorkoutProgramId = 1},
+            //    new WorkoutAssigment{WorkoutId = 2, WorkoutProgramId = 2}
+            //};
+
+            //foreach (WorkoutAssigment workoutAssigment in workoutAssigments)
+            //{
+            //    context.WorkoutAssigments.Add(workoutAssigment);
+            //}
+            //context.SaveChanges();
 
 
         }
