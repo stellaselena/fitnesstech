@@ -13,7 +13,7 @@ namespace FitnessTech.Data
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any())
+            if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any() && context.Workouts.Any())
             {
                 return;   // DB has been seeded
             }

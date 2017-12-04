@@ -20,7 +20,7 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Workouts
-        public async Task<IActionResult> Index(int? id, int? exerciseId)
+        public async Task<IActionResult> Index(int? id, int? exerciseId, string searchString)
         {
             var viewModel = new WorkoutIndexData();
             viewModel.Workouts = await _context.Workouts
@@ -30,12 +30,17 @@ namespace FitnessTech.Controllers
                 .OrderBy(w => w.WorkoutName)
                 .ToListAsync();
 
-            if (id != null)
+            //if (id != null)
+            //{
+            //    ViewData["WorkoutId"] = id.Value;
+            //    Workout workout = viewModel.Workouts.Where(
+            //        i => i.WorkoutId == id.Value).Single();
+            //    viewModel.Exercises = workout.ExerciseAssigments.Select(s => s.Exercise);
+            //}
+
+            if (!String.IsNullOrEmpty(searchString))
             {
-                ViewData["WorkoutId"] = id.Value;
-                Workout workout = viewModel.Workouts.Where(
-                    i => i.WorkoutId == id.Value).Single();
-                viewModel.Exercises = workout.ExerciseAssigments.Select(s => s.Exercise);
+                viewModel.Workouts = await _context.Workouts.Where(w => w.WorkoutName.Contains(searchString)).ToListAsync();
             }
             if (exerciseId != null)
             {
