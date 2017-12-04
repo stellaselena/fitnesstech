@@ -1,0 +1,58 @@
+﻿@model IEnumerable<FitnessTech.Models.Exercise>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@using (Html.BeginForm())
+{
+
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Search</button>
+        </span>
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+    </div>
+}
+<hr />
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExerciseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExerciseDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MuscleGroup)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExerciseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExerciseDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MuscleGroup)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ExerciseId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ExerciseId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ExerciseId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

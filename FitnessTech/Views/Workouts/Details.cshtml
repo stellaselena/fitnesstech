@@ -1,0 +1,42 @@
+﻿@model FitnessTech.Models.Workout
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="well">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkoutName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkoutName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkoutType.WorkoutTypeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkoutType.WorkoutTypeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExerciseAssigments)
+        </dt>
+        
+        <dd>
+            @{
+                foreach (var exercise in Model.ExerciseAssigments)
+                {
+                    @exercise.Exercise.ExerciseName
+                    <br />
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.WorkoutId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,29 @@
+﻿@model FitnessTech.Models.WorkoutType
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="well">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkoutTypeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkoutTypeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkoutTypeDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkoutTypeDescription)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.WorkoutTypeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

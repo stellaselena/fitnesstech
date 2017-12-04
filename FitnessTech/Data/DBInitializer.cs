@@ -13,7 +13,7 @@ namespace FitnessTech.Data
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (context.Customers.Any())
+            if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any())
             {
                 return;   // DB has been seeded
             }
@@ -46,7 +46,66 @@ namespace FitnessTech.Data
             }
             context.SaveChanges();
 
-           
+            var exercises = new Exercise[]
+            {
+                new Exercise
+                {
+                    ExerciseName = "Squat",
+                    ExerciseDescription = "squat down",
+                    MuscleGroup = MuscleGroup.Legs
+                },
+                new Exercise
+                {
+                    ExerciseName = "Rows",
+                    ExerciseDescription = "barbell/ dumbbell",
+                    MuscleGroup = MuscleGroup.Back
+                },
+                new Exercise
+                {
+                    ExerciseName = "Shoulder press",
+                    ExerciseDescription = "alternative to barbell press",
+                    MuscleGroup = MuscleGroup.Shoulders
+                }
+            };
+
+            foreach (Exercise e in exercises)
+            {
+                context.Exercises.Add(e);
+            }
+            context.SaveChanges();
+
+
+
+            var workoutTypes = new WorkoutType[]
+            {
+                new WorkoutType{WorkoutTypeName = "Strength", WorkoutTypeDescription = "Strength training"},
+                new WorkoutType{WorkoutTypeName = "Cardio", WorkoutTypeDescription = "Cardio training"},
+                new WorkoutType{WorkoutTypeName = "HIIT", WorkoutTypeDescription = "High intensity intervals training"}
+               
+            };
+            foreach (WorkoutType w in workoutTypes)
+            {
+                context.WorkoutTypes.Add(w);
+            }
+
+            context.SaveChanges();
+
+            var Workouts = new Workout[]
+            {
+                new Workout{WorkoutName = "PHAT", WorkoutType = workoutTypes.SingleOrDefault(w => w.WorkoutTypeId == 1)
+                },
+                new Workout{WorkoutName = "Starting Strength", WorkoutType = workoutTypes.SingleOrDefault(w => w.WorkoutTypeId == 2)
+                }
+
+            };
+            foreach (Workout workout in Workouts)
+            {
+                context.Workouts.Add(workout);
+            }
+
+            context.SaveChanges();
+
+
         }
     }
 }

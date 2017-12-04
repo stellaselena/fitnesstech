@@ -37,6 +37,9 @@ namespace FitnessTech.Data
             modelBuilder.Entity<Workout>().ToTable("Workout");
             modelBuilder.Entity<WorkoutProgram>().ToTable("WorkoutProgram");
             modelBuilder.Entity<WorkoutType>().ToTable("WorkoutType");
+            modelBuilder.Entity<ExerciseAssigment>().ToTable("ExerciseAssigment");
+            modelBuilder.Entity<ExerciseAssigment>()
+                .HasKey(e => new { e.ExerciseId, e.WorkoutId });
         }
     }
 }

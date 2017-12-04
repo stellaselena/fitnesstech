@@ -12,10 +12,15 @@
 
 @using (Html.BeginForm())
 {
-    <p>
-        Find fitness enthusiasts : @Html.TextBox("SearchString")  
-        <input class="btn btn-primary btn-sm" type="submit" value="Search" /></p>
+
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Search</button>
+        </span>
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+    </div>
 }
+<hr />
 
 <table class="table table-striped table-hover">
     <thead>

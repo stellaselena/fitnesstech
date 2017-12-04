@@ -29,5 +29,6 @@ namespace FitnessTech.Models
         [Display(Name = "Muscle group")]
         public MuscleGroup MuscleGroup { get; set; }
 
+
     }
 }
