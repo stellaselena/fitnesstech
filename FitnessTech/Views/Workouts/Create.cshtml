@@ -6,14 +6,14 @@
 }
 
 <h2>Create</h2>
-<hr/>
+<hr />
 <div class="row well">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="WorkoutName" class="control-label"></label>
-                <input asp-for="WorkoutName" class="form-control"/>
+                <input asp-for="WorkoutName" class="form-control" />
                 <span asp-validation-for="WorkoutName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -23,44 +23,42 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="ExerciseAssigments" class="control-label"></label>
-                <div class="col-md-10">
                     <table>
-
                         <tr>
-                        @{
-                            int cnt = 0;
-                            List<AssignedExerciseData> exercises = ViewBag.Exercises;
+                            <th>Exercises</th>
+                        </tr>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<AssignedExerciseData> exercises = ViewBag.Exercises;
 
-                            foreach (var exercise in exercises)
-                            {
-                                if (cnt++ % 3 == 0)
+                                foreach (var exercise in exercises)
                                 {
-                                    @:</tr><tr>
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @: </tr><tr>
                                 }
-                                @:<td>
-                                <input type="checkbox"
-                                       name="selectedExercises"
-                                       value="@exercise.ExerciseId"
-                                       @(Html.Raw(exercise.Assigned ? "checked=\"checked\"" : ""))/>
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedExercises"
+                                               value="@exercise.ExerciseId"
+                                               @(Html.Raw(exercise.Assigned ? "checked=\"checked\"" : "")) />
 
-                                @: @exercise.ExerciseName
-                                @:</td>
+                                        @:@exercise.ExerciseName
+                                        @:</td>
                             }
-                            @:</tr>
-                        }
-                    </table>
+                                @:</tr>
+                            }
+                        </table>
                 </div>
-            </div>
-            <br/><br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
-            </div>
-        </form>
+                <br /><br />
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>

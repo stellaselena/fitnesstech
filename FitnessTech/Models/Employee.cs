@@ -29,13 +29,13 @@ namespace FitnessTech.Models
     }
     public class Employee : Person
     {
-        [Required]
+        [Required(ErrorMessage = "Certification is required")]
         public Certification Certification { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Specialization is required")]
         public Specialization Specialization { get; set; }
-
         public virtual Gym Gym { get; set; }
+        public int? GymId { get; set; }
 
 
     }

@@ -12,9 +12,8 @@ namespace FitnessTech.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
             if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any() && context.Workouts.Any() && context.WorkoutPrograms.Any()
-               /* && context.ExerciseAssigments.Any() && context.WorkoutAssigments.Any()*/)
+                && context.ExerciseAssigments.Any() && context.WorkoutAssigments.Any())
             {
                 return;   // DB has been seeded
             }
@@ -33,11 +32,24 @@ namespace FitnessTech.Data
 
             context.SaveChanges();
 
+            var gyms = new Gym[]
+            {
+                new Gym {GymName = "Myrens"},
+                new Gym {GymName = "Sats"},
+                new Gym {GymName = "Elixia"}
+            };
+            foreach (Gym g in gyms)
+            {
+                context.Gyms.Add(g);
+            }
+
+            context.SaveChanges();
+
             var employees = new Employee[]
             {
-                new Employee{FirstName = "Layne", LastName = "Norton", Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, Gym = new Gym{GymName = "Myrens", Email = "myrens@live.no"}},
-                new Employee{FirstName = "Mark", LastName = "Bell",  Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, Gym = new Gym{GymName = "Myrens", Email = "myrens@live.no"}},
-                new Employee{FirstName = "Omar", LastName = "Isuf", Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, Gym = new Gym{GymName = "Myrens", Email = "myrens@live.no"}}
+                new Employee{FirstName = "Layne", LastName = "Norton", Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, GymId = 1},
+                new Employee{FirstName = "Mark", LastName = "Bell",  Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, GymId = 2},
+                new Employee{FirstName = "Omar", LastName = "Isuf", Birthday = DateTime.Parse("1991-10-28"), Gender = Gender.Female, Country = "Norway", City = "Oslo", Email = "sathie@live.com", Certification = Certification.PersonalTrainer, Specialization = Specialization.SportsConditioning, GymId = 3}
 
 
             };
@@ -93,8 +105,8 @@ namespace FitnessTech.Data
 
             var workouts = new Workout[]
             {
-                new Workout{WorkoutName = "Legs"},
-                new Workout{WorkoutName = "Chest and Shoulders"}
+                new Workout{WorkoutName = "Legs", WorkoutTypeId = 1},
+                new Workout{WorkoutName = "Chest and Shoulders", WorkoutTypeId = 2}
 
             };
             foreach (Workout workout in workouts)

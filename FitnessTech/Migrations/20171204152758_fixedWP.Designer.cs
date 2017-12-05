@@ -12,8 +12,8 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    [Migration("20171204133114_mig2")]
-    partial class mig2
+    [Migration("20171204152758_fixedWP")]
+    partial class fixedWP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,7 +235,7 @@ namespace FitnessTech.Migrations
 
                     b.HasIndex("WorkoutProgramId");
 
-                    b.ToTable("WorkoutAssigment");
+                    b.ToTable("WorkoutAssigments");
                 });
 
             modelBuilder.Entity("FitnessTech.Models.WorkoutProgram", b =>

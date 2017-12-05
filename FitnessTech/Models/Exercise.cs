@@ -27,6 +27,8 @@ namespace FitnessTech.Models
         public string ExerciseDescription { get; set; }
 
         [Display(Name = "Muscle group")]
+        [Required(ErrorMessage = "Muscle Group is required")]
+
         public MuscleGroup MuscleGroup { get; set; }
 
 

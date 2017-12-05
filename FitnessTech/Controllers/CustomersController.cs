@@ -123,6 +123,7 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", customer.Country);
             return View(customer);
         }
 

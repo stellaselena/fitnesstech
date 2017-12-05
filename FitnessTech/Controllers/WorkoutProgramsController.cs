@@ -50,7 +50,8 @@ namespace FitnessTech.Controllers
             }
 
             var workoutProgram = await _context.WorkoutPrograms.Include(w => w.WorkoutAssigments)
-                .ThenInclude(w => w.Workout)
+                .ThenInclude(w => w.Workout).ThenInclude(w => w.WorkoutType)
+                .Include(w => w.WorkoutAssigments).ThenInclude(w => w.Workout)
                 .ThenInclude(w => w.ExerciseAssigments)
                 .ThenInclude(w => w.Exercise)
                 .SingleOrDefaultAsync(m => m.WorkoutProgramId == id);

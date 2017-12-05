@@ -12,8 +12,8 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    [Migration("20171204130332_mig1")]
-    partial class mig1
+    [Migration("20171205125826_employeegym")]
+    partial class employeegym
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,7 +104,7 @@ namespace FitnessTech.Migrations
 
                     b.Property<int>("Gender");
 
-                    b.Property<int?>("GymId");
+                    b.Property<int>("GymId");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(50);
@@ -216,7 +216,8 @@ namespace FitnessTech.Migrations
                     b.Property<string>("WorkoutName")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("WorkoutTypeId");
+                    b.Property<int?>("WorkoutTypeId")
+                        .IsRequired();
 
                     b.HasKey("WorkoutId");
 
@@ -231,13 +232,11 @@ namespace FitnessTech.Migrations
 
                     b.Property<int>("WorkoutProgramId");
 
-                    b.Property<int>("DayOfWeek");
-
                     b.HasKey("WorkoutId", "WorkoutProgramId");
 
                     b.HasIndex("WorkoutProgramId");
 
-                    b.ToTable("WorkoutAssigment");
+                    b.ToTable("WorkoutAssigments");
                 });
 
             modelBuilder.Entity("FitnessTech.Models.WorkoutProgram", b =>
@@ -297,7 +296,8 @@ namespace FitnessTech.Migrations
                 {
                     b.HasOne("FitnessTech.Models.Gym", "Gym")
                         .WithMany("Employees")
-                        .HasForeignKey("GymId");
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("FitnessTech.Models.ExerciseAssigment", b =>
@@ -317,7 +317,8 @@ namespace FitnessTech.Migrations
                 {
                     b.HasOne("FitnessTech.Models.WorkoutType", "WorkoutType")
                         .WithMany()
-                        .HasForeignKey("WorkoutTypeId");
+                        .HasForeignKey("WorkoutTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("FitnessTech.Models.WorkoutAssigment", b =>

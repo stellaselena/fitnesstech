@@ -41,7 +41,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
+            var employee = await _context.Employees.Include(e => e.Gym)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
@@ -54,7 +54,8 @@ namespace FitnessTech.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewBag.Countries = ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
+            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
 
             return View();
         }
@@ -64,7 +65,7 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,8 @@ namespace FitnessTech.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
+            
             return View(employee);
         }
 
@@ -89,7 +92,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-
+            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
             return View(employee);
         }
 
@@ -98,7 +101,7 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Employee employee)
         {
             if (id != employee.Id)
             {
@@ -125,6 +128,10 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["GymId"] =
+                new SelectList(_context.WorkoutTypes, "GymId", "GymName", employee.GymId);
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", employee.Country);
+
             return View(employee);
         }
 

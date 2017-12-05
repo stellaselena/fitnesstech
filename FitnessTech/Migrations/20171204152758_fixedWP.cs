@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FitnessTech.Migrations
 {
-    public partial class mig1 : Migration
+    public partial class fixedWP : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -239,24 +239,23 @@ namespace FitnessTech.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkoutAssigment",
+                name: "WorkoutAssigments",
                 columns: table => new
                 {
                     WorkoutId = table.Column<int>(nullable: false),
-                    WorkoutProgramId = table.Column<int>(nullable: false),
-                    DayOfWeek = table.Column<int>(nullable: false)
+                    WorkoutProgramId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkoutAssigment", x => new { x.WorkoutId, x.WorkoutProgramId });
+                    table.PrimaryKey("PK_WorkoutAssigments", x => new { x.WorkoutId, x.WorkoutProgramId });
                     table.ForeignKey(
-                        name: "FK_WorkoutAssigment_Workout_WorkoutId",
+                        name: "FK_WorkoutAssigments_Workout_WorkoutId",
                         column: x => x.WorkoutId,
                         principalTable: "Workout",
                         principalColumn: "WorkoutId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WorkoutAssigment_WorkoutProgram_WorkoutProgramId",
+                        name: "FK_WorkoutAssigments_WorkoutProgram_WorkoutProgramId",
                         column: x => x.WorkoutProgramId,
                         principalTable: "WorkoutProgram",
                         principalColumn: "WorkoutProgramId",
@@ -299,8 +298,8 @@ namespace FitnessTech.Migrations
                 column: "WorkoutTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkoutAssigment_WorkoutProgramId",
-                table: "WorkoutAssigment",
+                name: "IX_WorkoutAssigments_WorkoutProgramId",
+                table: "WorkoutAssigments",
                 column: "WorkoutProgramId");
         }
 
@@ -319,7 +318,7 @@ namespace FitnessTech.Migrations
                 name: "Supplement");
 
             migrationBuilder.DropTable(
-                name: "WorkoutAssigment");
+                name: "WorkoutAssigments");
 
             migrationBuilder.DropTable(
                 name: "Customer");

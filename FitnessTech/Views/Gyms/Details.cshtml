@@ -6,10 +6,10 @@
 
 <h2>Details</h2>
 
-<div class=" well">
+<div class=" ">
     <hr />
 
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.GymName)
         </dt>
@@ -25,7 +25,7 @@
       
     </dl>
     <h4>Contact Information</h4>
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.Website)
         </dt>
@@ -40,7 +40,7 @@
         </dd>  
     </dl>
     <h4>Location</h4>
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.Country)
         </dt>
@@ -70,6 +70,25 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>       
+    </dl>
+    <h4>Instructors</h4>
+    <dl class="dl-horizontal well">       
+        <dt>
+            Instructor Count
+        </dt>
+        <dt>
+            Instructors
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employees.Count)
+        </dd>
+        <dd>
+            
+            @foreach (var employee in Model.Employees)
+            {
+                @Html.DisplayFor(model => employee.FullName)
+            }
         </dd>
     </dl>
 

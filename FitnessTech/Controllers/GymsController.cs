@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FitnessTech.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _context.Gyms
+            var gym = await _context.Gyms.Include(g => g.Employees)
                 .SingleOrDefaultAsync(m => m.GymId == id);
             if (gym == null)
             {
@@ -55,6 +56,8 @@ namespace FitnessTech.Controllers
         // GET: Gyms/Create
         public IActionResult Create()
         {
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
+
             return View();
         }
 
@@ -87,6 +90,7 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
             return View(gym);
         }
 
@@ -122,6 +126,7 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", gym.Country);
             return View(gym);
         }
 

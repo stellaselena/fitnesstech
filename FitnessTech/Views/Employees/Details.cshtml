@@ -6,10 +6,10 @@
 
 <h2>Details</h2>
 
-<div class="well">
+<div class="">
     <hr/>
     <h4>Basic Information</h4>
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.FullName)
         </dt>
@@ -18,7 +18,7 @@
         </dd>
     </dl>
     <h4>Contact Information</h4>
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
 
         <dt>
             @Html.DisplayNameFor(model => model.Email)
@@ -41,7 +41,7 @@
     </dl>
 
     <h4>Education</h4>
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.Certification)
         </dt>
@@ -53,6 +53,33 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Specialization)
+        </dd>
+    </dl>
+    <h4>Work Location</h4>
+    <dl class="dl-horizontal well">
+        <dt>
+            @Html.DisplayNameFor(model => model.Gym.GymName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gym.GymName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gym.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gym.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gym.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gym.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gym.Street)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gym.Street)
         </dd>
     </dl>
 </div>
