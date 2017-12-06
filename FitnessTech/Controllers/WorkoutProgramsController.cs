@@ -104,7 +104,6 @@ namespace FitnessTech.Controllers
             PopulateAssignedWorkoutData(workoutProgram);
 
             return View(workoutProgram);
-
         }
 
         // GET: WorkoutPrograms/Edit/5
@@ -137,7 +136,6 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
             var workoutProgram = await _context.WorkoutPrograms
                 .Include(i => i.WorkoutAssigments)
                 .ThenInclude(i => i.Workout)
@@ -162,6 +160,8 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+
             UpdateWorkoutProgramWorkouts(selectedWorkouts, workoutProgram);
             PopulateAssignedWorkoutData(workoutProgram);
 
@@ -253,8 +253,6 @@ namespace FitnessTech.Controllers
                     }
                 }
             }
-
-
         }
     }
 }

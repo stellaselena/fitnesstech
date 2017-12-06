@@ -75,20 +75,49 @@
     <h4>Instructors</h4>
     <dl class="dl-horizontal well">       
         <dt>
-            Instructor Count
-        </dt>
-        <dt>
             Instructors
-        </dt>
+        </dt>       
         <dd>
-            @Html.DisplayFor(model => model.Employees.Count)
-        </dd>
+            @Html.DisplayFor(model => model.Employees.Count) instructors are working in @Model.GymName
+        </dd>      
         <dd>
-            
-            @foreach (var employee in Model.Employees)
-            {
-                @Html.DisplayFor(model => employee.FullName)
-            }
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr> 
+                        <th>
+                            Instructor name
+                        </th>
+                        <th>
+                            Certification
+                        </th>
+                        <th>
+                            Specialization
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+
+                    @foreach (var item in Model.Employees)
+                    {
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Certification)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization)
+                        </td>
+
+                    }
+                </tr>
+
+                </tbody>
+            </table>
+
         </dd>
     </dl>
 

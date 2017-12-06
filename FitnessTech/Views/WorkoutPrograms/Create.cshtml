@@ -22,32 +22,32 @@
                 <span asp-validation-for="WorkoutProgramDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <table>
-                        <tr>
-                            @{
-                                int cnt = 0;
-                                List<AssignedWorkoutData> workouts = ViewBag.Workouts;
+                <label asp-for="WorkoutAssigments" class="control-label"></label>
+                <table>              
+                    <tr>
+                    @{
+                        int cnt = 0;
+                        List<AssignedWorkoutData> workouts = ViewBag.Workouts;
 
-                                foreach (var workout in workouts)
-                                {
-                                    if (cnt++ % 3 == 0)
-                                    {
-                                        @: </tr> <tr>
-                                }
-                                    @: <td>
-                                        <input type="checkbox"
-                                               name="selectedWorkouts"
-                                               value="@workout.WorkoutId"
-                                               @(Html.Raw(workout.Assigned ? "checked=\"checked\"" : "")) />
-                                        @workout.WorkoutId @:  @workout.WorkoutName
-                                        @:</td>
-                                }
-                                @: </tr>
+                        foreach (var workout in workouts)
+                        {
+                            if (cnt++ % 3 == 0)
+                            {
+                                @: </tr> <tr>
                             }
-                        </table>
-                    </div>
-                </div>
+                            @: <td>
+                            <input type="checkbox"
+                                   name="selectedWorkouts"
+                                   value="@workout.WorkoutId"
+                                   @(Html.Raw(workout.Assigned ? "checked=\"checked\"" : ""))/>
+                            
+                            @: @workout.WorkoutName
+                            @:</td>
+                        }
+                        @: </tr>
+                    }
+                </table>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

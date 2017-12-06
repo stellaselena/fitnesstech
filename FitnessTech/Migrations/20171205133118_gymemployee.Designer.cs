@@ -12,9 +12,10 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20171205133118_gymemployee")]
+    partial class gymemployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,7 +216,8 @@ namespace FitnessTech.Migrations
                     b.Property<string>("WorkoutName")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("WorkoutTypeId");
+                    b.Property<int?>("WorkoutTypeId")
+                        .IsRequired();
 
                     b.HasKey("WorkoutId");
 
@@ -314,7 +316,8 @@ namespace FitnessTech.Migrations
                 {
                     b.HasOne("FitnessTech.Models.WorkoutType", "WorkoutType")
                         .WithMany()
-                        .HasForeignKey("WorkoutTypeId");
+                        .HasForeignKey("WorkoutTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("FitnessTech.Models.WorkoutAssigment", b =>

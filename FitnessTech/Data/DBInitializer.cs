@@ -13,7 +13,7 @@ namespace FitnessTech.Data
             context.Database.EnsureCreated();
 
             if (context.Customers.Any() && context.Employees.Any() && context.Exercises.Any() && context.WorkoutTypes.Any() && context.Workouts.Any() && context.WorkoutPrograms.Any()
-                && context.ExerciseAssigments.Any() && context.WorkoutAssigments.Any())
+               /* && context.ExerciseAssigments.Any() && context.WorkoutAssigments.Any()*/)
             {
                 return;   // DB has been seeded
             }
