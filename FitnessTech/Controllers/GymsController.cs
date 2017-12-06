@@ -43,7 +43,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _context.Gyms.Include(g => g.Employees)
+            var gym = await _context.Gyms.Include(g => g.Employees).Include(g => g.Customers)
                 .SingleOrDefaultAsync(m => m.GymId == id);
             if (gym == null)
             {

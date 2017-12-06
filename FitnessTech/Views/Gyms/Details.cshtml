@@ -83,18 +83,18 @@
         <dd>
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr> 
-                        <th>
-                            Instructor name
-                        </th>
-                        <th>
-                            Certification
-                        </th>
-                        <th>
-                            Specialization
-                        </th>
-                        <th></th>
-                    </tr>
+                <tr> 
+                    <th>
+                        Instructor name
+                    </th>
+                    <th>
+                        Certification
+                    </th>
+                    <th>
+                        Specialization
+                    </th>
+                    <th></th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -112,6 +112,41 @@
                             @Html.DisplayFor(modelItem => item.Specialization)
                         </td>
 
+                    }
+                </tr>
+
+                </tbody>
+            </table>
+
+        </dd>
+    </dl>
+    <h4>Members</h4>
+    <dl class="dl-horizontal well">       
+        <dt>
+            Members
+        </dt>       
+        <dd>
+            @Html.DisplayFor(model => model.Customers.Count) members are training at @Model.GymName
+        </dd>      
+        <dd>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr> 
+                    <th>
+                        Member Name
+                    </th>                  
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+
+                    @foreach (var item in Model.Customers)
+                    {
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
                     }
                 </tr>
 

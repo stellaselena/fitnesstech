@@ -40,5 +40,7 @@ namespace FitnessTech.Models
         [Display(Name = "Body fat percentage")]
         [Range(0, 50)]
         public int BodyFat { get; set; }
+        public virtual Gym Gym { get; set; }
+        public int? GymId { get; set; }
     }
 }

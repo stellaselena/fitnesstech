@@ -82,8 +82,17 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.BodyFat)
+        </dd>  
+    </dl>
+
+    <h4>Trains at</h4>
+    <dl class="dl-horizontal well">
+        <dt>
+            @Html.DisplayNameFor(model => model.Gym.GymName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gym.GymName)
         </dd>
-  
     </dl>
 </div>
 <div>
