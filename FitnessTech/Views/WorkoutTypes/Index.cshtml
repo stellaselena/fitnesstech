@@ -24,7 +24,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.WorkoutTypeName)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model.WorkoutTypeName)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.WorkoutTypeDescription)

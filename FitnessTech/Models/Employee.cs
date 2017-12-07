@@ -36,6 +36,8 @@ namespace FitnessTech.Models
         public Specialization Specialization { get; set; }
         public virtual Gym Gym { get; set; }
         public int? GymId { get; set; }
+        public virtual ICollection<Employee> Customers { get; set; }
+
 
 
     }

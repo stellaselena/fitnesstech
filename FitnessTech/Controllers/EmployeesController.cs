@@ -21,10 +21,28 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var employees = from s in _context.Employees
                 select s;
+            ViewData["FirstNameSort"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
+            ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    employees = employees.OrderByDescending(c => c.FirstName);
+                    break;
+                case "lastname_desc":
+                    employees = employees.OrderByDescending(c => c.LastName);
+                    break;
+                case "lastname":
+                    employees = employees.OrderBy(c => c.LastName);
+                    break;
+                default:
+                    employees = employees.OrderBy(c => c.FirstName);
+                    break;
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 employees = employees.Where(s => s.LastName.Contains(searchString)

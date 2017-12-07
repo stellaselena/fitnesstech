@@ -20,7 +20,7 @@ namespace FitnessTech.Controllers
         }
 
         // GET: WorkoutPrograms
-        public async Task<IActionResult> Index(int? workoutId, string searchString)
+        public async Task<IActionResult> Index(int? workoutId, string searchString, string sortOrder)
         {
             var viewModel = new WorkoutProgramIndexData();
             viewModel.WorkoutPrograms = await _context.WorkoutPrograms
@@ -28,6 +28,18 @@ namespace FitnessTech.Controllers
                 .ThenInclude(wp => wp.Workout)
                 .OrderBy(w => w.WorkoutProgramName)
                 .ToListAsync();
+
+            ViewData["WPNameSort"] = String.IsNullOrEmpty(sortOrder) ? "wpname_desc" : "";
+
+            switch (sortOrder)
+            {
+                case "wpname_desc":
+                    viewModel.WorkoutPrograms = viewModel.WorkoutPrograms.OrderByDescending(c => c.WorkoutProgramName);
+                    break;
+                default:
+                    viewModel.WorkoutPrograms = viewModel.WorkoutPrograms.OrderBy(c => c.WorkoutProgramName);
+                    break;
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {

@@ -21,11 +21,29 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Gyms
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
 
             var gyms = from g in _context.Gyms
                 select g;
+            ViewData["GymNameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CountrySort"] = String.IsNullOrEmpty(sortOrder) ? "country_desc" : "country";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    gyms = gyms.OrderByDescending(c => c.GymName);
+                    break;
+                case "country_desc":
+                    gyms = gyms.OrderByDescending(c => c.Country);
+                    break;
+                case "country":
+                    gyms = gyms.OrderBy(c => c.Country);
+                    break;
+                default:
+                    gyms = gyms.OrderBy(c => c.GymName);
+                    break;
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 gyms = gyms.Where(g => g.GymName.Contains(searchString));

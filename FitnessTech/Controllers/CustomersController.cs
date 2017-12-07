@@ -21,17 +21,34 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var customers = from c in _context.Customers select c;
+            ViewData["FirstNameSort"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
+            ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(c => c.FirstName);
+                    break;
+                case "lastname_desc":
+                    customers = customers.OrderByDescending(c => c.LastName);
+                    break;
+                case "lastname":
+                    customers = customers.OrderBy(c => c.LastName);
+                    break;
+                default:
+                    customers = customers.OrderBy(c => c.FirstName);
+                    break;
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 customers = customers.Where(c => c.FirstName.Contains(searchString)
                             || c.LastName.Contains(searchString));
             }
-            customers.Include(c => c.Gym);
-            return View(await customers.ToListAsync());
+            return View(await customers.AsNoTracking().ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -42,7 +59,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.Include(c => c.Gym)
+            var customer = await _context.Customers.Include(c => c.Gym).Include(c => c.Employee)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -57,6 +74,7 @@ namespace FitnessTech.Controllers
         {
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
             ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
 
             return View();
         }
@@ -66,7 +84,7 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Goal,Weight,Height,ActivityLevel,BodyFat,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Goal,Weight,Height,ActivityLevel,BodyFat,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId,EmployeeId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -76,6 +94,7 @@ namespace FitnessTech.Controllers
             }
             ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
 
             return View(customer);
         }
@@ -95,6 +114,7 @@ namespace FitnessTech.Controllers
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
             ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
 
             return View(customer);
         }
@@ -104,7 +124,7 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Goal,Weight,Height,ActivityLevel,BodyFat,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Goal,Weight,Height,ActivityLevel,BodyFat,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId,EmployeeId")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -132,7 +152,8 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", customer.Country);
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName", customer.Gym);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName", customer.Employee);
 
             return View(customer);
         }

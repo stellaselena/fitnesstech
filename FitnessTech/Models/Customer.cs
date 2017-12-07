@@ -42,5 +42,7 @@ namespace FitnessTech.Models
         public int BodyFat { get; set; }
         public virtual Gym Gym { get; set; }
         public int? GymId { get; set; }
+        public virtual Employee Employee { get; set; }
+        public int? EmployeeId { get; set; }
     }
 }

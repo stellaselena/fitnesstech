@@ -12,9 +12,10 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20171206100322_customeremployeerelationship")]
+    partial class customeremployeerelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,7 +306,7 @@ namespace FitnessTech.Migrations
             modelBuilder.Entity("FitnessTech.Models.Employee", b =>
                 {
                     b.HasOne("FitnessTech.Models.Employee")
-                        .WithMany("Customers")
+                        .WithMany("Employees")
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("FitnessTech.Models.Gym", "Gym")

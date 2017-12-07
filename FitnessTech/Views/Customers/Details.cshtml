@@ -85,13 +85,23 @@
         </dd>  
     </dl>
 
-    <h4>Trains at</h4>
+    <h4>Gym</h4>
     <dl class="dl-horizontal well">
         <dt>
             @Html.DisplayNameFor(model => model.Gym.GymName)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Gym.GymName)
+        </dd>
+    </dl>
+    
+    <h4>Instructor</h4>
+    <dl class="dl-horizontal well">
+        <dt>
+            Instructor
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
     </dl>
 </div>

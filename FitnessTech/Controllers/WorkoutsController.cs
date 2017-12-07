@@ -20,7 +20,7 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Workouts
-        public async Task<IActionResult> Index(int? id, int? exerciseId, string searchString)
+        public async Task<IActionResult> Index(int? id, int? exerciseId, string searchString, string sortOrder)
         {
             var viewModel = new WorkoutIndexData();
             viewModel.Workouts = await _context.Workouts
@@ -29,6 +29,17 @@ namespace FitnessTech.Controllers
                     .ThenInclude(w => w.Exercise)
                 .OrderBy(w => w.WorkoutName)
                 .ToListAsync();
+            ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+     
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    viewModel.Workouts = viewModel.Workouts.OrderByDescending(c => c.WorkoutName);
+                    break;
+                default:
+                    viewModel.Workouts = viewModel.Workouts.OrderBy(c => c.WorkoutName);
+                    break;
+            }
 
             //if (id != null)
             //{

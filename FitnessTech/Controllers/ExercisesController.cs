@@ -20,9 +20,27 @@ namespace FitnessTech.Controllers
         }
 
         // GET: Exercises
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var exercises = from e in _context.Exercises select e;
+            ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["MuscleSort"] = String.IsNullOrEmpty(sortOrder) ? "muscle_desc" : "muscle";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    exercises = exercises.OrderByDescending(c => c.ExerciseName);
+                    break;
+                case "muscle_desc":
+                    exercises = exercises.OrderByDescending(c => c.MuscleGroup);
+                    break;
+                case "muscle":
+                    exercises = exercises.OrderBy(c => c.MuscleGroup);
+                    break;
+                default:
+                    exercises = exercises.OrderBy(c => c.ExerciseName);
+                    break;
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 exercises = exercises.Where(c => c.ExerciseName.Contains(searchString));
