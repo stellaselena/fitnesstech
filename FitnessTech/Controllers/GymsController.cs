@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FitnessTech.Data;
 using FitnessTech.Models;
+using Newtonsoft.Json;
 
 namespace FitnessTech.Controllers
 {
@@ -23,7 +24,6 @@ namespace FitnessTech.Controllers
         // GET: Gyms
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-
             var gyms = from g in _context.Gyms
                 select g;
             ViewData["GymNameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -181,5 +181,7 @@ namespace FitnessTech.Controllers
         {
             return _context.Gyms.Any(e => e.GymId == id);
         }
+
     }
 }
+

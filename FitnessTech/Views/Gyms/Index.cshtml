@@ -12,85 +12,88 @@
 
 @using (Html.BeginForm())
 {
- 
+
     <div class="input-group">
         <span class="input-group-btn">
             <button class="btn btn-default" type="submit">Search</button>
         </span>
-        @Html.TextBox("SearchString", null, new {@class="form-control"})
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
     </div>
 }
-<hr/>
+<hr />
 
 <table class="table table-striped table-hover">
     <thead>
-    <tr>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewData["GymNameSort"]">@Html.DisplayNameFor(model => model.GymName)</a>
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Website)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewData["CountrySort"]">@Html.DisplayNameFor(model => model.Country)</a>
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.City)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Street)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["GymNameSort"]">@Html.DisplayNameFor(model => model.GymName)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Website)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CountrySort"]">@Html.DisplayNameFor(model => model.Country)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GymName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Website)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GymId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GymId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GymId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.GymId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.GymId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.GymId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+

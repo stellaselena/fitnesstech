@@ -46,5 +46,7 @@ namespace FitnessTech.Data
             modelBuilder.Entity<WorkoutAssigment>()/*.ToTable("WorkoutAssigment")*/
                 .HasKey(w => new {w.WorkoutId, w.WorkoutProgramId});
         }
+
+        public DbSet<FitnessTech.Models.NutritionixItem> NutritionixItem { get; set; }
     }
 }
