@@ -1,0 +1,64 @@
+[
+  {
+    "Id": 0,
+    "Category": "Protein",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  },
+  {
+    "Id": 0,
+    "Category": "Protein",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition 2",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  },
+  {
+    "Id": 0,
+    "Category": "Protein",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition 3",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  },
+  {
+    "Id": 0,
+    "Category": "Protein",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition 4",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  },
+  {
+    "Id": 0,
+    "Category": "Creatine",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition 1",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  },
+  {
+    "Id": 0,
+    "Category": "Creatine",
+    "Size": "300gr",
+    "Price": 89.99,
+    "Title": "Optimum nutrition 2",
+    "SupplementDescription": "100% protein isolate of highest quaility",
+    "SupplementId": "SK-A-3262",
+    "Producer": "Gymgrossisten"
+  }
+
+]
+ 

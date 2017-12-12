@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FitnessTech.Data.Entities;
 using FitnessTech.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ namespace FitnessTech.Data
         public DbSet<WorkoutType> WorkoutTypes { get; set; }
         public DbSet<ExerciseAssigment> ExerciseAssigments { get; set; }
         public DbSet<WorkoutAssigment> WorkoutAssigments { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

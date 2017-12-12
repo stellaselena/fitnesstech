@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Nutritionix;
 using System;
 
 namespace FitnessTech.Migrations
@@ -20,6 +21,66 @@ namespace FitnessTech.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("OrderDate");
+
+                    b.Property<string>("OrderNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("OrderId");
+
+                    b.Property<int?>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Category");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("Producer");
+
+                    b.Property<string>("Size");
+
+                    b.Property<string>("SupplementDescription");
+
+                    b.Property<string>("SupplementId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
 
             modelBuilder.Entity("FitnessTech.Models.Customer", b =>
                 {
@@ -183,6 +244,38 @@ namespace FitnessTech.Migrations
                     b.ToTable("Gym");
                 });
 
+            modelBuilder.Entity("FitnessTech.Models.NutritionixItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BrandName");
+
+                    b.Property<int>("ItemType");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal?>("NutritionFact_Calories");
+
+                    b.Property<decimal?>("NutritionFact_CaloriesFromFat");
+
+                    b.Property<decimal?>("NutritionFact_DietaryFiber");
+
+                    b.Property<decimal?>("NutritionFact_Protein");
+
+                    b.Property<decimal?>("NutritionFact_ServingGramWeight");
+
+                    b.Property<decimal?>("NutritionFact_Sugar");
+
+                    b.Property<decimal?>("NutritionFact_TotalCarbohydrate");
+
+                    b.Property<decimal?>("NutritionFact_TotalFat");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NutritionixItem");
+                });
+
             modelBuilder.Entity("FitnessTech.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
@@ -273,6 +366,17 @@ namespace FitnessTech.Migrations
                     b.HasKey("WorkoutTypeId");
 
                     b.ToTable("WorkoutType");
+                });
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.OrderItem", b =>
+                {
+                    b.HasOne("DutchTreat.Data.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("DutchTreat.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("FitnessTech.Models.Customer", b =>

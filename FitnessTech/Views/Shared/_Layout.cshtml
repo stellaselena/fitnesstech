@@ -11,7 +11,8 @@
     <title>@ViewData["Title"] - FitnessTech</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrapyeti.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrapyeti.css" />
+        <link href="~/lib/bootstrap/dist/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css"/>
     </environment>
     <environment exclude="Development">
@@ -31,7 +32,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">FitnessTech</a>
+            <div class="navbar-brand"><i class="fa fa-cogs fa-spin"></i>@*<a asp-area="" asp-controller="Home" asp-action="Index">FitnessTech</a>*@FitnessTech</div>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data;
+using FitnessTech.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,10 @@ namespace FitnessTech
         {
             services.AddDbContext<FitnessContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //transient don't have any data on them, ie just methods that "do things"
+            //scoped, singleton, transient
+            services.AddTransient<IMailService, NullMailService>();
+            services.AddTransient<FitnessSeeder>();
             services.AddMvc();
         }
 
@@ -49,6 +54,15 @@ namespace FitnessTech
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (env.IsDevelopment())
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var seeder = scope.ServiceProvider.GetService<FitnessSeeder>();
+                    seeder.Seed();
+                }
+            }
         }
     }
 }
