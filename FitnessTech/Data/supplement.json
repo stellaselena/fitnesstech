@@ -6,7 +6,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-1",
     "Producer": "Gymgrossisten"
   },
   {
@@ -16,7 +16,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition 2",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-2",
     "Producer": "Gymgrossisten"
   },
   {
@@ -26,7 +26,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition 3",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-3",
     "Producer": "Gymgrossisten"
   },
   {
@@ -36,7 +36,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition 4",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-4",
     "Producer": "Gymgrossisten"
   },
   {
@@ -46,7 +46,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition 1",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-5",
     "Producer": "Gymgrossisten"
   },
   {
@@ -56,7 +56,7 @@
     "Price": 89.99,
     "Title": "Optimum nutrition 2",
     "SupplementDescription": "100% protein isolate of highest quaility",
-    "SupplementId": "SK-A-3262",
+    "SupplementId": "SK-A-6",
     "Producer": "Gymgrossisten"
   }
 

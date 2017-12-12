@@ -14,12 +14,12 @@ namespace FitnessTech.Controllers
     public class HomeController : Controller
     {
         private readonly IMailService _mailService;
-        private readonly FitnessContext _context;
+        private readonly IFitnessRepository _repository;
         //injecting services
-        public HomeController(IMailService mailService, FitnessContext context)
+        public HomeController(IMailService mailService, IFitnessRepository repository)
         {
             _mailService = mailService;
-            _context = context;
+            _repository = repository;
         }
 
         public IActionResult Index()
@@ -52,7 +52,7 @@ namespace FitnessTech.Controllers
 
         public IActionResult Shop()
         {
-            var results = _context.Products.OrderBy(p => p.Category).ToList();
+            var results = _repository.GetAll();
             return View(results);
         }
 

@@ -1,8 +1,6 @@
 ﻿<!DOCTYPE html>
 <style>
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
+    .dropdown:hover .dropdown-menu { display: block; }
 </style>
 <html>
 <head>
@@ -11,8 +9,8 @@
     <title>@ViewData["Title"] - FitnessTech</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrapyeti.css" />
-        <link href="~/lib/bootstrap/dist/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrapyeti.css"/>
+        <link href="~/lib/bootstrap/dist/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="~/css/site.css"/>
     </environment>
     <environment exclude="Development">
@@ -32,41 +30,71 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <div class="navbar-brand"><i class="fa fa-cogs fa-spin"></i>@*<a asp-area="" asp-controller="Home" asp-action="Index">FitnessTech</a>*@FitnessTech</div>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logoNew.png" alt="Fitness Tech">
+            </a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li>
+                    @*<a asp-area="" asp-controller="Home" asp-action="Index">HOME</a>*@
+                </li>
                 <li class="dropdown">
-                    <a href="~/Training" class="dropdown-toggle" role="button" aria-expanded="false">Training <span class="caret"></span></a>
+                    <a href="~/Training" class="dropdown-toggle" role="button" aria-expanded="false">TRAINING <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a asp-area="" asp-controller="Exercises" asp-action="Index">Exercises</a></li>
-                        <li><a asp-area="" asp-controller="Workouts" asp-action="Index">Workouts</a></li>
-                        <li><a asp-area="" asp-controller="WorkoutPrograms" asp-action="Index">Workout Programs</a></li>
-                        <li><a asp-area="" asp-controller="WorkoutTypes" asp-action="Index">Workout Types</a></li>
+                        <li>
+                            <a asp-area="" asp-controller="Exercises" asp-action="Index">EXERCISES</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Workouts" asp-action="Index">WORKOUTS</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="WorkoutPrograms" asp-action="Index">WORKOUT PROGRAMS</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="WorkoutTypes" asp-action="Index">WORKOUT TYPES</a>
+                        </li>
 
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="~/Nutrition" class="dropdown-toggle" role="button" aria-expanded="false">Nutrition <span class="caret"></span></a>
+                    <a href="~/Nutrition" class="dropdown-toggle" role="button" aria-expanded="false">NUTRITION <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a asp-area="" asp-controller="BMRCalculator" asp-action="Index">BMR Calculator</a></li>
-                        <li><a asp-area="" asp-controller="TDEECalculator" asp-action="Index">TDEE Calculator</a></li>
-                        <li><a asp-area="" asp-controller="MacroCalculator" asp-action="Index">Macro Calculator</a></li>
-                        <li><a asp-area="" asp-controller="Nutrition" asp-action="SearchFood">Food Database</a></li>
+                        <li>
+                            <a asp-area="" asp-controller="BMRCalculator" asp-action="Index">BMR CALCULATOR</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="TDEECalculator" asp-action="Index">TDEE CALCULATOR</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="MacroCalculator" asp-action="Index">MACRO CALCULATOR</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Nutrition" asp-action="SearchFood">FOOD DATABASE</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="~/Community" class="dropdown-toggle" role="button" aria-expanded="false">Community <span class="caret"></span></a>
+                    <a href="~/Community" class="dropdown-toggle" role="button" aria-expanded="false">COMMUNITY <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a asp-area="" asp-controller="Customers" asp-action="Index">Members</a></li>
-                        <li><a asp-area="" asp-controller="Employees" asp-action="Index">Fitness Instructors</a></li>
-                        <li><a asp-area="" asp-controller="Gyms" asp-action="Index">Gyms</a></li>
+                        <li>
+                            <a asp-area="" asp-controller="Customers" asp-action="Index">MEMBERS</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Employees" asp-action="Index">INSTRUCTORS</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Gyms" asp-action="Index">GYMS</a>
+                        </li>
 
                     </ul>
                 </li>
-
-                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Shop">STORE</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">CONTACT</a>
+                </li>
             </ul>
         </div>
     </div>
