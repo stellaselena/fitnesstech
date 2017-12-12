@@ -45,7 +45,7 @@ namespace FitnessTech.Data
             modelBuilder.Entity<ExerciseAssigment>().ToTable("ExerciseAssigment");
             modelBuilder.Entity<ExerciseAssigment>()
                 .HasKey(e => new { e.ExerciseId, e.WorkoutId });
-            //todo change to singular table name
+            //TODO: change to singular table name
             modelBuilder.Entity<WorkoutAssigment>()/*.ToTable("WorkoutAssigment")*/
                 .HasKey(w => new {w.WorkoutId, w.WorkoutProgramId});
         }

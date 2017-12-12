@@ -30,6 +30,7 @@ namespace FitnessTech
             //scoped, singleton, transient
             services.AddTransient<IMailService, NullMailService>();
             services.AddTransient<FitnessSeeder>();
+            services.AddScoped<IFitnessRepository, FitnessRepository>();
             services.AddMvc();
         }
 
