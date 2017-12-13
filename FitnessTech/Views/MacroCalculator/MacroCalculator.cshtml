@@ -4,11 +4,12 @@
     ViewData["Title"] = "MacroCalculator";
 }
 
-<h2>Macro Calculator</h2>
-<hr />
 
-<div class="container-fluid">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="container">
+    <h2>Macro Calculator</h2>
+    <hr />
+
+    <div class="col-md-6">
         <div class="row well">
             <div class="col-md-12">
                 <form asp-action="Index">
@@ -83,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-md-6">
         <p class="well">
             <b>What are macros? </b>
             <br/>
@@ -94,7 +95,7 @@
             "Flexible dieting" and "If It Fits Your Macros," or IIFYM, are two terms that both refer to basing your food intake on macronutrient targets.
         </p>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-md-6">
         @if (ViewBag.Result > 0)
         {
             <div class=" well container-fluid">

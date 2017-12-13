@@ -4,72 +4,74 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="container">
 
-<h2>Index</h2>
+    <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@using (Html.BeginForm())
-{
-
-    <div class="input-group">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Search</button>
-        </span>
-        @Html.TextBox("SearchString", null, new { @class = "form-control" })
-    </div>
-}
-<hr />
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model.Workouts)</a>
-            </th>
-            <th>
-                Workout Type
-            </th>
-            <th>
-                Exercises
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model.Workouts)
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    @using (Html.BeginForm())
     {
-        //string selectedRow = "";
-        //if (item.WorkoutId == (int?)ViewData["WorkoutId"])
-        //{
-        //    selectedRow = "success";
-        //}
-        <tr @*class="@selectedRow"*@>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkoutName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkoutType.WorkoutTypeName)
-            </td>
 
-            <td>
-                @{
-                    foreach (var exercise in item.ExerciseAssigments)
-                    {
-                        @exercise.Exercise.ExerciseName
-                        <br/>
-                    }
-                }
-            </td>
-            <td>
-                @*<a asp-action="Index" asp-route-id="@item.WorkoutId">Select</a> |*@
-                <a asp-action="Edit" asp-route-id="@item.WorkoutId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.WorkoutId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.WorkoutId">Delete</a>
-            </td>
-
-        </tr>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Search</button>
+            </span>
+            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+        </div>
     }
-   
-    </tbody>
-</table>
+    <hr />
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model.Workouts)</a>
+                </th>
+                <th>
+                    Workout Type
+                </th>
+                <th>
+                    Exercises
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Workouts)
+            {
+                //string selectedRow = "";
+                //if (item.WorkoutId == (int?)ViewData["WorkoutId"])
+                //{
+                //    selectedRow = "success";
+                //}
+                <tr @*class="@selectedRow" *@>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkoutName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkoutType.WorkoutTypeName)
+                    </td>
+
+                    <td>
+                        @{
+                            foreach (var exercise in item.ExerciseAssigments)
+                            {
+                                @exercise.Exercise.ExerciseName
+                                <br />
+                            }
+                        }
+                    </td>
+                    <td>
+                        @*<a asp-action="Index" asp-route-id="@item.WorkoutId">Select</a> |*@
+                        <a asp-action="Edit" asp-route-id="@item.WorkoutId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.WorkoutId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.WorkoutId">Delete</a>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

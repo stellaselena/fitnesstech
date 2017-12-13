@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<div class="container">
 <h2>Details</h2>
 
 <div class=" ">
@@ -128,7 +128,7 @@
             Members
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Employees.Count) persons are members of @Model.GymName
+            @Html.DisplayFor(model => model.Customers.Count) members in @Model.GymName
         </dd>
     
         <dt>
@@ -171,4 +171,5 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.GymId">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
 </div>

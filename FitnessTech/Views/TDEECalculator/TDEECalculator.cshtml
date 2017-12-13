@@ -4,18 +4,19 @@
     ViewData["Title"] = "TDEECalculator";
 }
 
-<h2>TDEE Calculator</h2>
-<hr />
 
-<div class="container-fluid">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="container">
+    <h2>TDEE Calculator</h2>
+    <hr />
+
+    <div class="col-md-6">
         <div class="row well">
             <div class="col-md-12">
                 <form asp-action="Index">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Age" class="control-label"></label>
-                        <input asp-for="Age" class="form-control" />
+                        <input asp-for="Age" class="form-control"/>
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -25,7 +26,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Weight" class="control-label"></label>
-                        <input asp-for="Weight" class="form-control" placeholder="kg" />
+                        <input asp-for="Weight" class="form-control" placeholder="kg"/>
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -45,13 +46,13 @@
                         <span asp-validation-for="ActivityLevel" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="Save" class="btn btn-primary"/>
                     </div>
                 </form>
             </div>
         </div>
-    </div> 
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    </div>
+    <div class="col-md-6">
         <p class="well">
             <b>How TDEE Is Calculated </b>
             <br/>
@@ -68,8 +69,9 @@
             easy to read and meaningful.
         </p>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        @if (ViewBag.Result > 0){
+    <div class="col-md-6">
+        @if (ViewBag.Result > 0)
+        {
             <div class=" well container-fluid">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <h4>
