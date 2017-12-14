@@ -5,8 +5,16 @@ namespace FitnessTech.Data
 {
     public interface IFitnessRepository
     {
-        IEnumerable<Product> GetAll();
-        IEnumerable<Product> GetByCategory(string category);
+        IEnumerable<Product> GetAllProducts();
+        IEnumerable<Product> GetProductsByCategory(string category);
+   
+
+        IEnumerable<Order> GetAllOrders(bool includeItems);
+        Order GetOrderById(int id);
+
+
         bool SaveAll();
+
+        void AddEntity(object model);
     }
 }

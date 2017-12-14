@@ -52,7 +52,7 @@ namespace FitnessTech.Controllers
 
         public IActionResult Shop()
         {
-            var results = _repository.GetAll();
+            var results = _repository.GetAllProducts();
             return View(results);
         }
 
