@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FitnessTech.Data.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using FitnessTech.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FitnessTech.Data
 {
@@ -31,7 +29,7 @@ namespace FitnessTech.Data
             {
                 _logger.LogError($"Failed to get all: {e}");
                 return null;
-            }            
+            }
         }
 
         public IEnumerable<Product> GetProductsByCategory(string category)
@@ -56,12 +54,34 @@ namespace FitnessTech.Data
                 return _context.Orders
                     .OrderBy(p => p.OrderDate).ToList();
             }
-           
+
 
         }
-        public Order GetOrderById(int id)
+
+        public IEnumerable<Order> GetAllOrdersByUser(string username, bool includeItems)
+        {
+            if (includeItems)
+            {
+                _logger.LogInformation("GetAllProducts was called");
+                return _context.Orders
+                    .Where(o => o.User.UserName == username)
+                    .Include(p => p.Items)
+                    .ThenInclude(p => p.Product)
+                    .OrderBy(p => p.OrderDate).ToList();
+            }
+            else
+            {
+                _logger.LogInformation("GetAllProducts was called");
+                return _context.Orders
+                    .Where(o => o.User.UserName == username)
+                    .OrderBy(p => p.OrderDate).ToList();
+            }
+        }
+
+        public Order GetOrderById(string username, int id)
         {
             return _context.Orders
+                .Where(o => o.User.UserName == username)
                 .Include(p => p.Items)
                 .ThenInclude(p => p.Product)
                 .Where(o => o.Id == id)

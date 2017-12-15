@@ -24,7 +24,6 @@ namespace FitnessTech
                 try
                 {
                     var context = services.GetRequiredService<FitnessContext>();
-                    DBInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

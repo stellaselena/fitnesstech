@@ -1,29 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FitnessTech.Data;
 using FitnessTech.Data.Entities;
 using FitnessTech.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FitnessTech.Controllers
 {
     [Route("api/[Controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrdersController : Controller
     {
         private readonly IFitnessRepository _repository;
         private readonly ILogger<OrdersController> _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public OrdersController(IFitnessRepository repository, ILogger<OrdersController> logger, IMapper mapper)
+        public OrdersController(IFitnessRepository repository, ILogger<OrdersController> logger, IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -31,7 +35,8 @@ namespace FitnessTech.Controllers
         {
             try
             {
-                var results = _repository.GetAllOrders(includeItems);
+                var username = User.Identity.Name;
+                var results = _repository.GetAllOrdersByUser(username, includeItems);
                 _logger.LogInformation("Get order was called");
                 return Ok(_mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
 
@@ -50,7 +55,7 @@ namespace FitnessTech.Controllers
             try
             {
                 _logger.LogInformation("Get order id was called");
-                var order = _repository.GetOrderById(id);
+                var order = _repository.GetOrderById(User.Identity.Name, id);
                 if (order != null)
                 {
                     //automapping order to viewmodel
@@ -69,7 +74,7 @@ namespace FitnessTech.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]OrderViewModel model)
+        public async Task<IActionResult> Post([FromBody]OrderViewModel model)
         {
             try
             {
@@ -81,6 +86,8 @@ namespace FitnessTech.Controllers
                     {
                         newOrder.OrderDate = DateTime.Now;
                     }
+                    var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                    newOrder.User = currentUser;
                     _repository.AddEntity(newOrder);
                     if (_repository.SaveAll())
                     {
@@ -92,8 +99,8 @@ namespace FitnessTech.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-               
-               
+
+
             }
             catch (Exception e)
             {

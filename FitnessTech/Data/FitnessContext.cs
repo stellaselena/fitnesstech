@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data.Entities;
 using FitnessTech.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTech.Data
 {
-    public class FitnessContext : DbContext
+    public class FitnessContext : IdentityDbContext<User>
     {
 
         public FitnessContext(DbContextOptions<FitnessContext> options) : base(options)
@@ -29,9 +30,12 @@ namespace FitnessTech.Data
         public DbSet<WorkoutAssigment> WorkoutAssigments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<FitnessTech.Models.NutritionixItem> NutritionixItem { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Customer>().ToTable("Customer");
             modelBuilder.Entity<CustomerStatistic>().ToTable("CustomerStatistic");
             modelBuilder.Entity<Employee>().ToTable("Employee");
@@ -50,6 +54,5 @@ namespace FitnessTech.Data
                 .HasKey(w => new {w.WorkoutId, w.WorkoutProgramId});
         }
 
-        public DbSet<FitnessTech.Models.NutritionixItem> NutritionixItem { get; set; }
     }
 }
