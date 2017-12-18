@@ -1,0 +1,35 @@
+﻿<div class="row">
+    <div class="col-md-4 product-info" *ngFor="let p of products">
+        <div class="well well-sm">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="/images/{{p.supplementId}}.png" class="img-responsive" alt="{{p.title}}" />
+                </div>
+                <div class="col-md-6">
+                    <h4>{{p.title}}</h4>
+                    <h5>{{p.category}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="details">Description:</div> {{p.supplementDescription}}
+                </div>
+                <div class="col-md-12">
+                    <div class="details"> Manufacturer:</div>{{p.producer}}
+                </div>
+                <div class="col-md-12">
+                    <div class="details"> Weight:</div>{{p.size}}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-6">
+                    <button id="buyButton" class="btn btn-info btn-sm" (click)="addProduct(p)">Buy</button>
+                </div>
+                <div class="col-xs-6">
+                    <p style="color: #33B1EF" class="bottom-align-text">Price: {{p.price | currency:"NOK":"code"}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,36 +1,12 @@
 ﻿@model IEnumerable<FitnessTech.Data.Entities.Product>
 @section Scripts{
-    <script src="~/ts/customer.js"></script>
-    <script src="~/ts/main.js"></script>
+    <script src="~/clientapp/dist/inline.bundle.js"></script>
+    <script src="~/clientapp/dist/polyfills.bundle.js"></script>
+    <script src="~/clientapp/dist/styles.bundle.js"></script>
+    <script src="~/clientapp/dist/vendor.bundle.js"></script>
+    <script src="~/clientapp/dist/main.bundle.js"></script>
 }
 @{
     ViewData["Title"] = "Shop";
 }
-<div class="container">
-    <h2>Shop</h2>
-    <p>We have @Model.Count() products in stock</p>
-    <hr />
-    @foreach (var m in Model)
-    {
-        <div class="col-md-3">
-            <div class="well well-sm">
-                <img src="~/images/@(m.SupplementId).png" class="img-responsive" alt="@m.Title" />
-                <h4 style="color: #33B1EF">@m.Title - @m.Category</h4>
-                <ul class="custom-bullet">
-                    <li>@m.SupplementDescription</li>
-                    <li>By: @m.Producer</li>
-                    <li>Net wt: @m.Size</li>
-                </ul>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <button id="buyButton" class="btn btn-info">Buy</button>
-                    </div>
-                    <div class="col-xs-6">
-                        <p style="color: #33B1EF" class="bottom-align-text">Price: @m.Price</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    }
-</div>
+<the-shop></the-shop>

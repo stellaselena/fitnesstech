@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using FitnessTech.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using FitnessTech.Data;
 using FitnessTech.Models;
 using FitnessTech.Services;
 using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace FitnessTech.Controllers
 {
@@ -46,7 +42,7 @@ namespace FitnessTech.Controllers
             }
             else
             {
-                
+
             }
             return View();
         }
@@ -54,8 +50,8 @@ namespace FitnessTech.Controllers
         [Authorize]
         public IActionResult Shop()
         {
-            var results = _repository.GetAllProducts();
-            return View(results);
+            //var results = _repository.GetAllProducts();
+            return View(/*results*/);
         }
 
         public IActionResult Error()

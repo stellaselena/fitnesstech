@@ -1,0 +1,9 @@
+﻿.product-info img {
+    max-width: 100px;
+    float: left;
+    margin-bottom: 2px;
+}
+
+.details {
+    color: #33b1f0;
+}
