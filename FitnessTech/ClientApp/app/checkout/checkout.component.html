@@ -1,0 +1,49 @@
+﻿<div class="bodywrapper">
+    <div class="row">
+        <div class="orderStatus">
+            <div *ngIf="errorMessage" class="alert alert-warning col-md-10 col-md-offset-1">{{ errorMessage }}</div>
+            <div *ngIf="successMessage">
+                <div class="col-md-12 successIcon">
+                    <i class="fa fa-check-circle fa-5x" aria-hidden="true"></i>
+                </div>
+                <div class="alert alert-success col-md-10 col-md-offset-1">
+                    <h4 class="alert-heading">{{ successMessage }}</h4>
+                    <hr />
+                    <p>You will shortly receive a confirmation email when your order has been placed successfully. </p>
+                    <p>If you don’t receive a confirmation email, please feel free to contact our Customer Support Team. </p>
+                </div>
+                <a routerLink="/" class="btn btn-info">Return To Shop</a>
+            </div>
+        </div>
+        <div [hidden]="successMessage">
+            <h3>Confirm Order</h3>
+            <table class="table table-bordered table-hover">
+                <tr *ngFor="let o of data.order.items">
+                    <td> <img src="/images/{{ o.productSupplementId }}.png" alt="{{ o.productTitle }}" class="img-thumbnail checkout-thumb" /></td>
+                    <td>{{ o.productCategory }}({{ o.productSize }}) - {{ o.productProducer }}: {{ o.productTitle }}</td>
+                    <td>{{ o.quantity }}</td>
+                    <td>{{ o.unitPrice|currency:'NOK':"code" }}</td>
+                    <td>{{ (o.unitPrice * o.quantity)|currency:'NOK':"code" }}</td>
+                </tr>
+            </table>
+            <div class="col-md-4 col-md-offset-8 text-right">
+                <table class="table table-condensed">
+                    <tr>
+                        <td class="text-right">Subtotal</td>
+                        <td class="text-right">{{ data.order.subtotal|currency:'NOK':"code" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Shipping</td>
+                        <td class="text-right">NOK 0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Total:</td>
+                        <td class="text-right">{{ data.order.subtotal|currency:'NOK':"code" }}</td>
+                    </tr>
+                </table>
+                <button class="btn btn-success" (click)="onCheckout()">Complete Purchase</button>
+                <a routerLink="/" class="btn btn-info">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

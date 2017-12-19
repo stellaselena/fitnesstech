@@ -11,6 +11,9 @@ export class DataService {
     constructor(private http: Http) {
 
     }
+
+    private token: string = "";
+    private tokenExpiration: Date;
     public order: Order = new Order();
     public products: Product[] = [];
 
@@ -18,6 +21,21 @@ export class DataService {
         return this.http.get("/api/products")
             .map((result: Response) => this.products = result.json());
     }
+
+    public get loginRequired(): boolean {
+        return this.token.length == 0 || this.tokenExpiration > new Date();
+    }
+
+    public login(creds) {
+        return this.http.post("/account/createtoken", creds)
+            .map(response => {
+                let tokenInfo = response.json();
+                this.token = tokenInfo.token;
+                this.tokenExpiration = tokenInfo.expiration;
+                return true;
+            });
+    }
+
 
     public AddToOrder(product: Product) {
 
@@ -31,11 +49,27 @@ export class DataService {
             item.productCategory = product.category;
             item.productSize = product.size;
             item.unitPrice = product.price;
+            item.unitPrice = Math.round(product.price);
             item.productTitle = product.title;
             item.productSupplementId = product.supplementId;
             item.quantity = 1;
             this.order.items.push(item);
         }
 
+    }
+
+    public checkout() {
+        if (!this.order.orderNumber) {
+            this.order.orderNumber = this.order.orderDate.getFullYear().toString() + this.order.orderDate.getTime().toString();
+        }
+        return this.http.post("/api/orders",
+            this.order,
+            {
+                headers: new Headers({ "Authorization": "Bearer " + this.token })
+            })
+            .map(rwesponse => {
+                this.order = new Order();
+                return true;
+            });
     }
 }

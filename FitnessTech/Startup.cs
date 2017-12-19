@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.Text;
 
 namespace FitnessTech
@@ -60,7 +61,8 @@ namespace FitnessTech
                         opt.Filters.Add(new RequireHttpsAttribute());
                     }
                 })
-                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .AddJsonOptions(opt => opt.SerializerSettings.Culture = CultureInfo.InvariantCulture);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

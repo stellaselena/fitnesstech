@@ -2,7 +2,6 @@
 using FitnessTech.Models;
 using FitnessTech.Services;
 using FitnessTech.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -47,7 +46,6 @@ namespace FitnessTech.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult Shop()
         {
             //var results = _repository.GetAllProducts();

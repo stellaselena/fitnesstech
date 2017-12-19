@@ -88,6 +88,16 @@ namespace FitnessTech.Data
                 .OrderBy(p => p.OrderDate).FirstOrDefault();
         }
 
+        public void AddOrder(Order newOrder)
+        {
+            //convert new products to lookup of product
+            foreach (var item in newOrder.Items)
+            {
+                item.Product = _context.Products.Find(item.Product.Id);
+            }
+            AddEntity(newOrder);
+        }
+
         public bool SaveAll()
         {
             return _context.SaveChanges() > 0;
