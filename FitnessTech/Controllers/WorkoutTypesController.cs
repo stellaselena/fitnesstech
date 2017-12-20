@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FitnessTech.Data;
+using FitnessTech.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FitnessTech.Data;
-using FitnessTech.Models;
+using AutoMapper;
+using FitnessTech.ViewModels;
 
 namespace FitnessTech.Controllers
 {
@@ -14,33 +14,37 @@ namespace FitnessTech.Controllers
     {
         private readonly FitnessContext _context;
 
-        public WorkoutTypesController(FitnessContext context)
+        public IMapper _mapper { get; }
+
+        public WorkoutTypesController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: WorkoutTypes
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-            var workoutTypes = from wt in _context.WorkoutTypes
-                select wt;
+            var viewModel = new WorkoutTypeIndexData();
+
+            viewModel.WorkoutTypes = await _context.WorkoutTypes.AsNoTracking().ToListAsync();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    workoutTypes = workoutTypes.OrderByDescending(c => c.WorkoutTypeName);
-                    break;          
+                    viewModel.WorkoutTypes = viewModel.WorkoutTypes.OrderByDescending(c => c.WorkoutTypeName);
+                    break;
                 default:
-                    workoutTypes = workoutTypes.OrderBy(c => c.WorkoutTypeName);
+                    viewModel.WorkoutTypes = viewModel.WorkoutTypes.OrderBy(c => c.WorkoutTypeName);
                     break;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                workoutTypes = workoutTypes.Where(s => s.WorkoutTypeName.Contains(searchString));
+                viewModel.WorkoutTypes = viewModel.WorkoutTypes.Where(s => s.WorkoutTypeName.Contains(searchString));
 
             }
-            return View(await workoutTypes.ToListAsync());
+            return View(viewModel);
         }
 
 
@@ -58,8 +62,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
-            return View(workoutType);
+            var model = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
+            return View(model);
         }
 
         // GET: WorkoutTypes/Create
@@ -73,15 +77,19 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WorkoutTypeId,WorkoutTypeName,WorkoutTypeDescription")] WorkoutType workoutType)
+        public async Task<IActionResult> Create([Bind("WorkoutTypeId,WorkoutTypeName,WorkoutTypeDescription")] WorkoutTypeViewModel model)
         {
+            var workoutType = _mapper.Map<WorkoutTypeViewModel, WorkoutType>(model);
+
             if (ModelState.IsValid)
             {
                 _context.Add(workoutType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(workoutType);
+            var workoutTypeVm = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
+
+            return View(workoutTypeVm);
         }
 
         // GET: WorkoutTypes/Edit/5
@@ -97,7 +105,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-            return View(workoutType);
+            var workoutTypeVm = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
+
+            return View(workoutTypeVm);
         }
 
         // POST: WorkoutTypes/Edit/5
@@ -105,8 +115,11 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("WorkoutTypeId,WorkoutTypeName,WorkoutTypeDescription")] WorkoutType workoutType)
+        public async Task<IActionResult> Edit(int id, [Bind("WorkoutTypeId,WorkoutTypeName,WorkoutTypeDescription")] WorkoutTypeViewModel model)
         {
+            var workoutType = _mapper.Map<WorkoutTypeViewModel, WorkoutType>(model);
+
+
             if (id != workoutType.WorkoutTypeId)
             {
                 return NotFound();
@@ -132,7 +145,9 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(workoutType);
+            var workoutTypeVm = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
+
+            return View(workoutTypeVm);
         }
 
         // GET: WorkoutTypes/Delete/5
@@ -149,8 +164,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var workoutTypeVm = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
 
-            return View(workoutType);
+            return View(workoutTypeVm);
         }
 
         // POST: WorkoutTypes/Delete/5

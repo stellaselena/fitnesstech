@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FitnessTech.Data;
-using FitnessTech.Models;
+using FitnessTech.Data.Entities;
+using FitnessTech.ViewModels;
 
 namespace FitnessTech.Controllers
 {
@@ -14,9 +16,12 @@ namespace FitnessTech.Controllers
     {
         private readonly FitnessContext _context;
 
-        public WorkoutProgramsController(FitnessContext context)
+        private readonly IMapper _mapper;
+
+        public WorkoutProgramsController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: WorkoutPrograms
@@ -71,8 +76,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
-            return View(workoutProgram);
+            var model = _mapper.Map<WorkoutProgram, WorkoutProgramViewModel>(workoutProgram);
+            return View(model);
         }
 
         // GET: WorkoutPrograms/Create
@@ -90,9 +95,11 @@ namespace FitnessTech.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("WorkoutProgramId,WorkoutProgramName,WorkoutProgramDescription")] WorkoutProgram workoutProgram,
+            [Bind("WorkoutProgramId,WorkoutProgramName,WorkoutProgramDescription")] WorkoutProgramViewModel model,
             string[] selectedWorkouts)
         {
+            var workoutProgram = _mapper.Map<WorkoutProgramViewModel, WorkoutProgram>(model);
+
             if (selectedWorkouts != null)
             {
                 workoutProgram.WorkoutAssigments = new List<WorkoutAssigment>();
@@ -114,8 +121,9 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             PopulateAssignedWorkoutData(workoutProgram);
+            var workoutProgramViewModel = _mapper.Map<WorkoutProgram, WorkoutProgramViewModel>(workoutProgram);
 
-            return View(workoutProgram);
+            return View(workoutProgramViewModel);
         }
 
         // GET: WorkoutPrograms/Edit/5
@@ -134,7 +142,9 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
             PopulateAssignedWorkoutData(workoutProgram);
-            return View(workoutProgram);
+            var workoutProgramViewModel = _mapper.Map<WorkoutProgram, WorkoutProgramViewModel>(workoutProgram);
+
+            return View(workoutProgramViewModel);
         }
 
         // POST: WorkoutPrograms/Edit/5
@@ -176,8 +186,9 @@ namespace FitnessTech.Controllers
 
             UpdateWorkoutProgramWorkouts(selectedWorkouts, workoutProgram);
             PopulateAssignedWorkoutData(workoutProgram);
+            var workoutProgramViewModel = _mapper.Map<WorkoutProgram, WorkoutProgramViewModel>(workoutProgram);
 
-            return View(workoutProgram);
+            return View(workoutProgramViewModel);
         }
 
         // GET: WorkoutPrograms/Delete/5
@@ -194,8 +205,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var workoutProgramViewModel = _mapper.Map<WorkoutProgram, WorkoutProgramViewModel>(workoutProgram);
 
-            return View(workoutProgram);
+            return View(workoutProgramViewModel);
         }
 
         // POST: WorkoutPrograms/Delete/5
@@ -259,9 +271,9 @@ namespace FitnessTech.Controllers
                 {
                     if (workoutExercises.Contains(workout.WorkoutId))
                     {
-                        WorkoutAssigment courseToRemove =
+                        WorkoutAssigment workoutToRemove =
                             workoutProgram.WorkoutAssigments.SingleOrDefault(i => i.WorkoutId == workout.WorkoutId);
-                        _context.Remove(courseToRemove);
+                        _context.Remove(workoutToRemove);
                     }
                 }
             }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FitnessTech.Models
+namespace FitnessTech.ViewModels
 {
     public class AssignedExerciseData
     {
@@ -14,4 +10,3 @@ namespace FitnessTech.Models
         public bool Assigned { get; set; }
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using FitnessTech.Data.Entities;
 
-namespace FitnessTech.Models
+namespace FitnessTech.ViewModels
 {
     public class WorkoutIndexData
     {

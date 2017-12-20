@@ -1,5 +1,4 @@
 ﻿using FitnessTech.Data;
-using FitnessTech.Models;
 using FitnessTech.Services;
 using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;

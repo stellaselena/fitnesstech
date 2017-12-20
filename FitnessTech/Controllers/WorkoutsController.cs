@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using FitnessTech.Data;
+using FitnessTech.Data.Entities;
+using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FitnessTech.Data;
-using FitnessTech.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitnessTech.Controllers
 {
@@ -14,9 +16,12 @@ namespace FitnessTech.Controllers
     {
         private readonly FitnessContext _context;
 
-        public WorkoutsController(FitnessContext context)
+        public IMapper _mapper { get; }
+
+        public WorkoutsController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Workouts
@@ -30,7 +35,7 @@ namespace FitnessTech.Controllers
                 .OrderBy(w => w.WorkoutName)
                 .ToListAsync();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-     
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -77,8 +82,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
-            return View(workout);
+            var model = _mapper.Map<Workout, WorkoutViewModel>(workout);
+            return View(model);
         }
 
         // GET: Workouts/Create
@@ -96,16 +101,17 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WorkoutId,WorkoutName,WorkoutTypeId")] Workout workout,
+        public async Task<IActionResult> Create([Bind("WorkoutId,WorkoutName,WorkoutTypeId")] WorkoutViewModel model,
             string[] selectedExercises)
         {
+            var workout = _mapper.Map<WorkoutViewModel, Workout>(model);
             if (selectedExercises != null)
             {
                 workout.ExerciseAssigments = new List<ExerciseAssigment>();
                 foreach (var exercise in selectedExercises)
                 {
                     var exerciseToAdd =
-                        new ExerciseAssigment() {WorkoutId = workout.WorkoutId, ExerciseId = int.Parse(exercise)};
+                        new ExerciseAssigment() { WorkoutId = workout.WorkoutId, ExerciseId = int.Parse(exercise) };
                     workout.ExerciseAssigments.Add(exerciseToAdd);
                 }
             }
@@ -118,7 +124,9 @@ namespace FitnessTech.Controllers
             PopulateAssignedExerciseData(workout);
             ViewData["WorkoutTypeId"] =
                 new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName", workout.WorkoutTypeId);
-            return View(workout);
+            var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
+
+            return View(workoutVm);
         }
 
         // GET: Workouts/Edit/5
@@ -140,8 +148,9 @@ namespace FitnessTech.Controllers
             }
             PopulateAssignedExerciseData(workout);
             ViewData["WorkoutTypeId"] = new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName");
+            var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
 
-            return View(workout);
+            return View(workoutVm);
         }
 
         // POST: Workouts/Edit/5
@@ -183,8 +192,9 @@ namespace FitnessTech.Controllers
             }
             UpdateWorkoutExercises(selectedExercises, workout);
             PopulateAssignedExerciseData(workout);
-            
-            return View(workout);
+            var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
+
+            return View(workoutVm);
         }
 
         // GET: Workouts/Delete/5
@@ -201,7 +211,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-            return View(workout);
+            var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
+
+            return View(workoutVm);
         }
 
         // POST: Workouts/Delete/5

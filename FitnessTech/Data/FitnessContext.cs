@@ -1,5 +1,4 @@
 ﻿using FitnessTech.Data.Entities;
-using FitnessTech.Models;
 using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

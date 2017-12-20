@@ -1,51 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
+using FitnessTech.Data;
+using FitnessTech.Data.Entities;
+using FitnessTech.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FitnessTech.Data;
-using FitnessTech.Models;
 
 namespace FitnessTech.Controllers
 {
     public class ExercisesController : Controller
     {
         private readonly FitnessContext _context;
+        private readonly IMapper _mapper;
 
-        public ExercisesController(FitnessContext context)
+        public ExercisesController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Exercises
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-            var exercises = from e in _context.Exercises select e;
+            var viewModel = new ExerciseIndexViewModel();
+            viewModel.Exercises = await _context.Exercises.AsNoTracking().ToListAsync();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["MuscleSort"] = String.IsNullOrEmpty(sortOrder) ? "muscle_desc" : "muscle";
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    exercises = exercises.OrderByDescending(c => c.ExerciseName);
+                    viewModel.Exercises = viewModel.Exercises.OrderByDescending(c => c.ExerciseName);
                     break;
                 case "muscle_desc":
-                    exercises = exercises.OrderByDescending(c => c.MuscleGroup);
+                    viewModel.Exercises = viewModel.Exercises.OrderByDescending(c => c.MuscleGroup);
                     break;
                 case "muscle":
-                    exercises = exercises.OrderBy(c => c.MuscleGroup);
+                    viewModel.Exercises = viewModel.Exercises.OrderBy(c => c.MuscleGroup);
                     break;
                 default:
-                    exercises = exercises.OrderBy(c => c.ExerciseName);
+                    viewModel.Exercises = viewModel.Exercises.OrderBy(c => c.ExerciseName);
                     break;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                exercises = exercises.Where(c => c.ExerciseName.Contains(searchString));
+                viewModel.Exercises = viewModel.Exercises.Where(c => c.ExerciseName.Contains(searchString));
             }
-            return View(await exercises.ToListAsync());
+            return View(viewModel);
         }
 
         // GET: Exercises/Details/5
@@ -62,8 +65,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
-            return View(exercise);
+            var model = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
+            return View(model);
         }
 
         // GET: Exercises/Create
@@ -77,15 +80,18 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup")] Exercise exercise)
+        public async Task<IActionResult> Create([Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup")] ExerciseViewModel model)
         {
+            var exercise = _mapper.Map<ExerciseViewModel, Exercise>(model);
             if (ModelState.IsValid)
             {
                 _context.Add(exercise);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(exercise);
+            var exerciseVm = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
+
+            return View(exerciseVm);
         }
 
         // GET: Exercises/Edit/5
@@ -101,7 +107,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-            return View(exercise);
+            var exerciseVm = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
+
+            return View(exerciseVm);
         }
 
         // POST: Exercises/Edit/5
@@ -109,8 +117,11 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup")] Exercise exercise)
+        public async Task<IActionResult> Edit(int id, [Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup")] ExerciseViewModel model)
         {
+            var exercise = _mapper.Map<ExerciseViewModel, Exercise>(model);
+
+
             if (id != exercise.ExerciseId)
             {
                 return NotFound();
@@ -136,7 +147,9 @@ namespace FitnessTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(exercise);
+            var exerciseVm = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
+
+            return View(exerciseVm);
         }
 
         // GET: Exercises/Delete/5
@@ -153,8 +166,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var exerciseVm = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
 
-            return View(exercise);
+            return View(exerciseVm);
         }
 
         // POST: Exercises/Delete/5

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FitnessTech.Models
+namespace FitnessTech.Data.Entities
 {
     public class WorkoutProgram
     {

@@ -1,5 +1,4 @@
 ﻿using FitnessTech.Data.Entities;
-using FitnessTech.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 

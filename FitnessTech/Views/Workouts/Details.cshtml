@@ -1,4 +1,4 @@
-﻿@model FitnessTech.Models.Workout
+﻿@model FitnessTech.ViewModels.WorkoutViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -29,36 +29,37 @@
         <dd>
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr>
-                        <th>
-                            Exercise Name
-                        </th>
-                        <th>
-                            Exercise Description
-                        </th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    <th>
+                        Exercise Name
+                    </th>
+                    <th>
+                        Exercise Description
+                    </th>
+                    <th></th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ExerciseAssigments)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Exercise.ExerciseName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Exercise.ExerciseDescription)
-                            </td>
-                        </tr>
-                    }
+                @foreach (var item in Model.ExerciseAssigments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exercise.ExerciseName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exercise.ExerciseDescription)
+                        </td>
+                    </tr>
+                }
 
                 </tbody>
             </table>
 
         </dd>
     </dl>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.WorkoutId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.WorkoutId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FitnessTech.Models.WorkoutType>
+﻿@model FitnessTech.ViewModels.WorkoutTypeIndexData
 
 @{
     ViewData["Title"] = "Index";
@@ -24,16 +24,16 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model.WorkoutTypeName)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Type Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkoutTypeDescription)
+                Type Description
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.WorkoutTypes)
         {
             <tr>
                 <td>

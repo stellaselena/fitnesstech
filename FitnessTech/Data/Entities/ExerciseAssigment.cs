@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FitnessTech.Models
+﻿namespace FitnessTech.Data.Entities
 {
     public class ExerciseAssigment
     {

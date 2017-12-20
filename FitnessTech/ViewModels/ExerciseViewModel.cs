@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FitnessTech.Data.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FitnessTech.Models
+namespace FitnessTech.ViewModels
 {
-    public enum MuscleGroup
-    {
-       Legs,
-       Back,
-       Chest,
-       Shoulders,
-       Arms,
-       Abdominals
-    }
-    public class Exercise
+    public class ExerciseViewModel
     {
         [Key]
         public int ExerciseId { get; set; }
@@ -30,7 +18,5 @@ namespace FitnessTech.Models
         [Required(ErrorMessage = "Muscle Group is required")]
 
         public MuscleGroup MuscleGroup { get; set; }
-
-
     }
 }

@@ -1,44 +1,42 @@
-﻿@model FitnessTech.Models.Exercise
-
+﻿@using FitnessTech.Data.Entities
+@model FitnessTech.ViewModels.ExerciseViewModel
 @{
     ViewData["Title"] = "Create";
 }
 <div class="container">
-<h2>Create</h2>
-
-<hr />
-<div class="row ">
-    <div class="col-md-6 well">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ExerciseName" class="control-label"></label>
-                <input asp-for="ExerciseName" class="form-control" />
-                <span asp-validation-for="ExerciseName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExerciseDescription" class="control-label"></label>
-                <input asp-for="ExerciseDescription" class="form-control" />
-                <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MuscleGroup" class="control-label"></label>
-                <select asp-for="MuscleGroup" class="form-control"
-                        asp-items="Html.GetEnumSelectList<MuscleGroup>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="MuscleGroup" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h2>Create</h2>
+    <hr />
+    <div class="row ">
+        <div class="col-md-6 well">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ExerciseName" class="control-label"></label>
+                    <input asp-for="ExerciseName" class="form-control" />
+                    <span asp-validation-for="ExerciseName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExerciseDescription" class="control-label"></label>
+                    <input asp-for="ExerciseDescription" class="form-control" />
+                    <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MuscleGroup" class="control-label"></label>
+                    <select asp-for="MuscleGroup" class="form-control"
+                            asp-items="Html.GetEnumSelectList<MuscleGroup>()">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="MuscleGroup" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

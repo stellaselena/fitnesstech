@@ -1,5 +1,4 @@
 ﻿using FitnessTech.Data.Entities;
-using FitnessTech.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;

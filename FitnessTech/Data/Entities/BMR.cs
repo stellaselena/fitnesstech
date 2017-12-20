@@ -1,6 +1,4 @@
-﻿using FitnessTech.Models;
-
-namespace FitnessTech.Data.Entities
+﻿namespace FitnessTech.Data.Entities
 {
     public class BMR
     {
