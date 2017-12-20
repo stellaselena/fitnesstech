@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using FitnessTech.Data.Entities;
 using FitnessTech.Models;
+using System.Collections.Generic;
 
 namespace FitnessTech.Business_Logic
 {
     public static class Calculator
     {
 
-        public static double BmrCalculator(BMI bmi)
+        public static double BmrCalculator(BMR bmr)
         {
-            var bmrResult = bmi.Gender == Gender.Male
-                ? 66 + (13.7 * bmi.Weight) + (5 * bmi.Height) - (6.8 * bmi.Age)
-                : 655 + (9.6 * bmi.Weight) + (1.8 * bmi.Height) - (4.7 * bmi.Age);
+            var bmrResult = bmr.Gender == Gender.Male
+                ? 66 + (13.7 * bmr.Weight) + (5 * bmr.Height) - (6.8 * bmr.Age)
+                : 655 + (9.6 * bmr.Weight) + (1.8 * bmr.Height) - (4.7 * bmr.Age);
             return bmrResult;
         }
 
@@ -102,7 +103,7 @@ namespace FitnessTech.Business_Logic
             double macroResult;
 
             switch (goal)
-            {                  
+            {
                 case Goal.Musclegain:
                 case Goal.WeightGain:
                     goalCalories = CalculatePercentage(tdeeResult, percentageCalories);
@@ -131,7 +132,7 @@ namespace FitnessTech.Business_Logic
             var decimalValue = percent / 100;
             //Equation: Y = P % *X
             var result = decimalValue * value;
-           
+
             return result;
         }
 

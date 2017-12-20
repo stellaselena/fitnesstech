@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FitnessTech.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FitnessTech.Models
+namespace FitnessTech.Data.Entities
 {
     public class CustomerStatistic
     {

@@ -1,4 +1,4 @@
-﻿@model FitnessTech.Models.BMI
+﻿@model FitnessTech.ViewModels.BMRViewModel
 
 @{
     ViewData["Title"] = "BMRCalculator";
@@ -16,17 +16,17 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Age" class="control-label"></label>
-                        <input asp-for="Age" class="form-control"/>
+                        <input asp-for="Age" class="form-control" />
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Height" class="control-label"></label>
-                        <input asp-for="Height" class="form-control" placeholder="cm"/>
+                        <input asp-for="Height" class="form-control" placeholder="cm" />
                         <span asp-validation-for="Height" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Weight" class="control-label"></label>
-                        <input asp-for="Weight" class="form-control" placeholder="kg"/>
+                        <input asp-for="Weight" class="form-control" placeholder="kg" />
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -38,7 +38,7 @@
                         <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary"/>
+                        <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
@@ -47,12 +47,12 @@
     <div class="col-md-6">
         <p class="well">
             <b>What is BMR?</b>
-            <br/>
+            <br />
             This minimum number of calories to live is called the basal metabolic rate (BMR).
             Your BMR is the number of calories your organs need to function while you perform no activity whatsoever.
             You can think of it as the amount of energy you'd burn if you stayed in bed all day.
-            <br/>
-            <br/>
+            <br />
+            <br />
             BMR is based largely on involuntary functions like breathing and pumping blood,
             changes in your day-to-day activity don't do much to raise or lower this number. However, increasing muscle
             mass does increase BMR, because it takes more energy to maintain more muscle.
@@ -72,6 +72,3 @@
         }
     </div>
 </div>
-
-
-

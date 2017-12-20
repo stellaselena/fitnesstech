@@ -1,4 +1,4 @@
-﻿@model FitnessTech.Models.TDEE
+﻿@model FitnessTech.ViewModels.TDEEViewModel
 
 @{
     ViewData["Title"] = "TDEECalculator";
@@ -16,17 +16,17 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Age" class="control-label"></label>
-                        <input asp-for="Age" class="form-control"/>
+                        <input asp-for="Age" class="form-control" />
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Height" class="control-label"></label>
-                        <input asp-for="Height" class="form-control" placeholder="cm"/>
+                        <input asp-for="Height" class="form-control" placeholder="cm" />
                         <span asp-validation-for="Height" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Weight" class="control-label"></label>
-                        <input asp-for="Weight" class="form-control" placeholder="kg"/>
+                        <input asp-for="Weight" class="form-control" placeholder="kg" />
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -46,7 +46,7 @@
                         <span asp-validation-for="ActivityLevel" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary"/>
+                        <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
@@ -55,13 +55,13 @@
     <div class="col-md-6">
         <p class="well">
             <b>How TDEE Is Calculated </b>
-            <br/>
+            <br />
             Your Total Daily Energy Expenditure (TDEE) is an estimation
             of how many calories you burn per day when exercise is taken into account.
             It is calculated by first figuring out your Basal Metabolic Rate,
             then multiplying that value by an activity multiplier.
-            <br/>
-            <br/>
+            <br />
+            <br />
             Since your BMR represents how many calories your body burns when at rest,
             it is necessary to adjust the numbers upwards to account for the calories you
             burn during the day. This is true even for those with a sedentary lifestyle.
@@ -82,11 +82,3 @@
         }
     </div>
 </div>
-
-
-
-
-
-
-
-

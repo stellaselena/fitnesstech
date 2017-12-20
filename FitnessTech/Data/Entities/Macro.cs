@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FitnessTech.Models;
+﻿using FitnessTech.Models;
 
-namespace FitnessTech.Models
+namespace FitnessTech.Data.Entities
 {
-    public enum Percentage
-    {
-        Suggested,
-        Aggressive,
-        Reckless
-       
-    }
     public class Macro
     {
         public double Age { get; set; }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FitnessTech.Business_Logic;
-using FitnessTech.Models;
+﻿using FitnessTech.Business_Logic;
+using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Nutritionix;
+using System;
 
 namespace FitnessTech.Controllers
 {
@@ -18,8 +14,8 @@ namespace FitnessTech.Controllers
 
         public IActionResult SearchFood(string searchStringFood, string searchStringBrand, string sortOrder)
         {
-            
-           
+
+
             var viewModel = new NutritionixIndexData();
             if (!String.IsNullOrEmpty(searchStringBrand) || !String.IsNullOrEmpty(searchStringFood))
             {

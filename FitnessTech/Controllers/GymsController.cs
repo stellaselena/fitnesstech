@@ -1,60 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using FitnessTech.Core;
+using FitnessTech.Data;
+using FitnessTech.Data.Entities;
+using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FitnessTech.Data;
-using FitnessTech.Models;
-using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitnessTech.Controllers
 {
     public class GymsController : Controller
     {
         private readonly FitnessContext _context;
+        private readonly IMapper _mapper;
 
-        public GymsController(FitnessContext context)
+        public GymsController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Gyms
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-            var gyms = from g in _context.Gyms
-                select g;
+            var viewModel = new GymIndexViewModel();
+            viewModel.Gyms = await _context.Gyms.AsNoTracking().ToListAsync();
             ViewData["GymNameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CountrySort"] = String.IsNullOrEmpty(sortOrder) ? "country_desc" : "country";
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    gyms = gyms.OrderByDescending(c => c.GymName);
+                    viewModel.Gyms = viewModel.Gyms.OrderByDescending(c => c.GymName);
                     break;
                 case "country_desc":
-                    gyms = gyms.OrderByDescending(c => c.Country);
+                    viewModel.Gyms = viewModel.Gyms.OrderByDescending(c => c.Country);
                     break;
                 case "country":
-                    gyms = gyms.OrderBy(c => c.Country);
+                    viewModel.Gyms = viewModel.Gyms.OrderBy(c => c.Country);
                     break;
                 default:
-                    gyms = gyms.OrderBy(c => c.GymName);
+                    viewModel.Gyms = viewModel.Gyms.OrderBy(c => c.GymName);
                     break;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                gyms = gyms.Where(g => g.GymName.Contains(searchString));
+                viewModel.Gyms = viewModel.Gyms.Where(g => g.GymName.Contains(searchString));
 
             }
-            return View(await gyms.ToListAsync());
+
+            return View(viewModel);
 
         }
 
         // GET: Gyms/Details/5
-            public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -67,8 +70,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-
-            return View(gym);
+            var model = _mapper.Map<Gym, GymViewModel>(gym);
+            return View(model);
         }
 
         // GET: Gyms/Create
@@ -84,15 +87,18 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] Gym gym)
+        public async Task<IActionResult> Create([Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] GymViewModel model)
         {
+            var gym = _mapper.Map<GymViewModel, Gym>(model);
             if (ModelState.IsValid)
             {
                 _context.Add(gym);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(gym);
+            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+
+            return View(gymVm);
         }
 
         // GET: Gyms/Edit/5
@@ -109,7 +115,9 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            return View(gym);
+            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+
+            return View(gymVm);
         }
 
         // POST: Gyms/Edit/5
@@ -117,8 +125,10 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] Gym gym)
+        public async Task<IActionResult> Edit(int id, [Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] GymViewModel model)
         {
+            var gym = _mapper.Map<GymViewModel, Gym>(model);
+
             if (id != gym.GymId)
             {
                 return NotFound();
@@ -145,7 +155,9 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", gym.Country);
-            return View(gym);
+            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+
+            return View(gymVm);
         }
 
         // GET: Gyms/Delete/5
@@ -162,8 +174,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
 
-            return View(gym);
+            return View(gymVm);
         }
 
         // POST: Gyms/Delete/5
@@ -184,4 +197,3 @@ namespace FitnessTech.Controllers
 
     }
 }
-

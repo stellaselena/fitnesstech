@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FitnessTech.Models
+namespace FitnessTech.Data.Entities
 {
-    public enum Gender
-    {
-        Male,
-        Female
-    }
-
     public abstract class Person
     {
 
@@ -34,7 +25,7 @@ namespace FitnessTech.Models
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
 
-        public Gender Gender { get; set; }       
+        public Gender Gender { get; set; }
 
         [Display(Name = "Email address")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]

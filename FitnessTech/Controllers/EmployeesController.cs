@@ -1,54 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using FitnessTech.Core;
+using FitnessTech.Data;
+using FitnessTech.Data.Entities;
+using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FitnessTech.Data;
-using FitnessTech.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitnessTech.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly FitnessContext _context;
+        private readonly IMapper _mapper;
 
-        public EmployeesController(FitnessContext context)
+        public EmployeesController(FitnessContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Employees
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
-            var employees = from s in _context.Employees
-                select s;
+            var viewModel = new EmployeeIndexDataViewModel();
+            viewModel.Employees = await _context.Employees.AsNoTracking().ToListAsync();
             ViewData["FirstNameSort"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
             ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    employees = employees.OrderByDescending(c => c.FirstName);
+                    viewModel.Employees = viewModel.Employees.OrderByDescending(c => c.FirstName);
                     break;
                 case "lastname_desc":
-                    employees = employees.OrderByDescending(c => c.LastName);
+                    viewModel.Employees = viewModel.Employees.OrderByDescending(c => c.LastName);
                     break;
                 case "lastname":
-                    employees = employees.OrderBy(c => c.LastName);
+                    viewModel.Employees = viewModel.Employees.OrderBy(c => c.LastName);
                     break;
                 default:
-                    employees = employees.OrderBy(c => c.FirstName);
+                    viewModel.Employees = viewModel.Employees.OrderBy(c => c.FirstName);
                     break;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                employees = employees.Where(s => s.LastName.Contains(searchString)
+                viewModel.Employees = viewModel.Employees.Where(s => s.LastName.Contains(searchString)
                                                || s.FirstName.Contains(searchString));
             }
-            return View(await employees.ToListAsync());
+
+            return View(viewModel);
         }
 
         // GET: Employees/Details/5
@@ -65,8 +69,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var employeeViewModel = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
-            return View(employee);
+            return View(employeeViewModel);
         }
 
         // GET: Employees/Create
@@ -83,8 +88,9 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] EmployeeViewModel model)
         {
+            var employee = _mapper.Map<EmployeeViewModel, Employee>(model);
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
@@ -92,8 +98,9 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            
-            return View(employee);
+            var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
+
+            return View(employeeVm);
         }
 
         // GET: Employees/Edit/5
@@ -111,7 +118,9 @@ namespace FitnessTech.Controllers
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
             ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
-            return View(employee);
+            var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
+
+            return View(employeeVm);
         }
 
         // POST: Employees/Edit/5
@@ -119,8 +128,10 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Certification,Specialization,Id,FirstName,LastName,Birthday,Gender,Email,Country,City,GymId")] EmployeeViewModel model)
         {
+            var employee = _mapper.Map<EmployeeViewModel, Employee>(model);
+
             if (id != employee.Id)
             {
                 return NotFound();
@@ -149,8 +160,9 @@ namespace FitnessTech.Controllers
             ViewData["GymId"] =
                 new SelectList(_context.WorkoutTypes, "GymId", "GymName", employee.GymId);
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", employee.Country);
+            var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
-            return View(employee);
+            return View(employeeVm);
         }
 
         // GET: Employees/Delete/5
@@ -167,8 +179,9 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
+            var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
-            return View(employee);
+            return View(employeeVm);
         }
 
         // POST: Employees/Delete/5

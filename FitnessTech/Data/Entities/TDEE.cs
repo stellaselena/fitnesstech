@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FitnessTech.Models;
 
-namespace FitnessTech.Models
+namespace FitnessTech.Data.Entities
 {
     public class TDEE
     {
@@ -11,7 +8,6 @@ namespace FitnessTech.Models
         public double Height { get; set; }
         public double Weight { get; set; }
         public Gender Gender { get; set; }
-
         public ActivityLevel ActivityLevel { get; set; }
     }
 }

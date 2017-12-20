@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FitnessTech.Data.Entities;
+﻿using FitnessTech.Data.Entities;
 using FitnessTech.Models;
+using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +27,7 @@ namespace FitnessTech.Data
         public DbSet<WorkoutAssigment> WorkoutAssigments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<FitnessTech.Models.NutritionixItem> NutritionixItem { get; set; }
+        public DbSet<NutritionixItem> NutritionixItem { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,7 +48,7 @@ namespace FitnessTech.Data
                 .HasKey(e => new { e.ExerciseId, e.WorkoutId });
             //TODO: change to singular table name
             modelBuilder.Entity<WorkoutAssigment>()/*.ToTable("WorkoutAssigment")*/
-                .HasKey(w => new {w.WorkoutId, w.WorkoutProgramId});
+                .HasKey(w => new { w.WorkoutId, w.WorkoutProgramId });
         }
 
     }

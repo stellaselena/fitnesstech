@@ -1,6 +1,4 @@
-using System;
-
-namespace FitnessTech.Models
+﻿namespace FitnessTech.ViewModels
 {
     public class ErrorViewModel
     {

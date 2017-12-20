@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FitnessTech.Data.Entities;
 using FitnessTech.ViewModels;
 
@@ -18,6 +14,7 @@ namespace FitnessTech.Data
 
             CreateMap<OrderItem, OrderItemViewModel>()
                 .ReverseMap();
+
         }
 
     }

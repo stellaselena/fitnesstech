@@ -1,175 +1,175 @@
-﻿@model FitnessTech.Models.Gym
+﻿@model FitnessTech.ViewModels.GymViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 <div class="container">
-<h2>Details</h2>
+    <h2>Details</h2>
 
-<div class=" ">
-    <hr/>
+    <div class=" ">
+        <hr />
 
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.GymName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GymName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        <dl class="dl-horizontal well">
+            <dt>
+                @Html.DisplayNameFor(model => model.GymName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GymName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-    </dl>
-    <h4>Contact Information</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Website)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Website)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <h4>Location</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PostalCode)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-    </dl>
-    <h4>Instructors</h4>
-<dl class="dl-horizontal well">
-    <dt>
-        Instructors
-    </dt>
-    <dd>
-        @Html.DisplayFor(model => model.Employees.Count) instructors are working in @Model.GymName
-    </dd>
-    
-    <dt>
-        Instructor stats
-    </dt>
-        
-    <dd>
-        <table class="table table-striped table-hover">
-            <thead>
-            <tr>      
-                <th>
-                    Instructor name
-                </th>
-                <th>
-                    Certification
-                </th>
-                <th>
-                    Specialization
-                </th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Employees)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Certification)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization)
-                    </td>
-                </tr>
-            }
+        </dl>
+        <h4>Contact Information</h4>
+        <dl class="dl-horizontal well">
+            <dt>
+                @Html.DisplayNameFor(model => model.Website)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Website)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        </dl>
+        <h4>Location</h4>
+        <dl class="dl-horizontal well">
+            <dt>
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Street)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+        </dl>
+        <h4>Instructors</h4>
+        <dl class="dl-horizontal well">
+            <dt>
+                Instructors
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Employees.Count) instructors are working in @Model.GymName
+            </dd>
 
-            </tbody>
-        </table>
-           
-    </dd>
-</dl>
-    <h4>Members</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            Members
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Customers.Count) members in @Model.GymName
-        </dd>
-    
-        <dt>
-            Members stats
-        </dt>
-        
-        <dd>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>      
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Goal
-                    </th>                   
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.Customers)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Goal)
-                        </td>
-                    </tr>
-                }
+            <dt>
+                Instructor stats
+            </dt>
 
-                </tbody>
-            </table>
-           
-        </dd>
-    </dl>
+            <dd>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Instructor name
+                            </th>
+                            <th>
+                                Certification
+                            </th>
+                            <th>
+                                Specialization
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Employees)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Certification)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Specialization)
+                                </td>
+                            </tr>
+                        }
 
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.GymId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                    </tbody>
+                </table>
+
+            </dd>
+        </dl>
+        <h4>Members</h4>
+        <dl class="dl-horizontal well">
+            <dt>
+                Members
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Customers.Count) members in @Model.GymName
+            </dd>
+
+            <dt>
+                Members stats
+            </dt>
+
+            <dd>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Goal
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Customers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Goal)
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </dd>
+        </dl>
+
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.GymId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
