@@ -17,12 +17,14 @@ var Checkout = /** @class */ (function () {
         this.data = data;
         this.router = router;
         this.errorMessage = "";
+        this.successMessage = "";
     }
     Checkout.prototype.onCheckout = function () {
         var _this = this;
         this.data.checkout().subscribe(function (success) {
             if (success) {
-                _this.router.navigate(["/"]);
+                //this.router.navigate(["/"]);
+                _this.successMessage = "Order submitted successfully!";
             }
         }, function (err) { return _this.errorMessage = "Failed to save order"; });
     };

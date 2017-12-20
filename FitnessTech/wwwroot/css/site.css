@@ -3,6 +3,10 @@
     /*padding-bottom: 20px;*/
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 .navbar-brand {
     padding: 0px;
 }

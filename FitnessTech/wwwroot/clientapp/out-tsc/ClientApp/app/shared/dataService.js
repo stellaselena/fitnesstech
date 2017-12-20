@@ -69,7 +69,7 @@ var DataService = /** @class */ (function () {
         return this.http.post("/api/orders", this.order, {
             headers: new http_1.Headers({ "Authorization": "Bearer " + this.token })
         })
-            .map(function (response) {
+            .map(function (rwesponse) {
             _this.order = new order_1.Order();
             return true;
         });
