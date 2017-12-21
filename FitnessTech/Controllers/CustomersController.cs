@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FitnessTech.Core;
 using FitnessTech.Data;
 using FitnessTech.Data.Entities;
 using FitnessTech.ViewModels;
@@ -9,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FitnessTech.Data.Helpers;
 
 namespace FitnessTech.Controllers
 {

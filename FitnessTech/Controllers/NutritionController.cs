@@ -2,6 +2,7 @@
 using FitnessTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using FitnessTech.Services;
 
 namespace FitnessTech.Controllers
 {

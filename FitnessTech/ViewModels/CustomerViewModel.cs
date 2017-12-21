@@ -1,6 +1,7 @@
 ﻿using FitnessTech.Data.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
+using FitnessTech.Data.Helpers;
 
 namespace FitnessTech.ViewModels
 {

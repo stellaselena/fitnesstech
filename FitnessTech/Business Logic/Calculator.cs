@@ -1,5 +1,6 @@
 ﻿using FitnessTech.Data.Entities;
 using System.Collections.Generic;
+using FitnessTech.Data.Helpers;
 
 namespace FitnessTech.Business_Logic
 {

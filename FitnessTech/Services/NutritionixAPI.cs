@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Nutritionix;
 
-namespace FitnessTech.Business_Logic
+namespace FitnessTech.Services
 {
     public class NutritionixApi
     {

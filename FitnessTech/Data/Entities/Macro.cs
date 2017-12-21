@@ -1,4 +1,6 @@
-﻿namespace FitnessTech.Data.Entities
+﻿using FitnessTech.Data.Helpers;
+
+namespace FitnessTech.Data.Entities
 {
     public class Macro
     {

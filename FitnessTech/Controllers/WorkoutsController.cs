@@ -75,8 +75,8 @@ namespace FitnessTech.Controllers
             }
 
 
-            var workout = _context.Workouts.Include(w => w.WorkoutType)
-                .Include(w => w.ExerciseAssigments).ThenInclude(w => w.Exercise).Single(w => w.WorkoutId == id);
+            var workout = await _context.Workouts.Include(w => w.WorkoutType)
+                .Include(w => w.ExerciseAssigments).ThenInclude(w => w.Exercise).SingleAsync(w => w.WorkoutId == id);
 
             if (workout == null)
             {
