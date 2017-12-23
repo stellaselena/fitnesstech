@@ -7,17 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
     public class ExercisesController : Controller
     {
-        private readonly FitnessContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ExercisesController(FitnessContext context, IMapper mapper)
+        public ExercisesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -25,7 +26,7 @@ namespace FitnessTech.Controllers
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var viewModel = new ExerciseIndexViewModel();
-            viewModel.Exercises = await _context.Exercises.AsNoTracking().ToListAsync();
+            viewModel.Exercises = await _unitOfWork.ExerciseRepository.GetAllAsync();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["MuscleSort"] = String.IsNullOrEmpty(sortOrder) ? "muscle_desc" : "muscle";
 
@@ -59,8 +60,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var exercise = await _context.Exercises
-                .SingleOrDefaultAsync(m => m.ExerciseId == id);
+            var exercise = await _unitOfWork.ExerciseRepository.GetBy(e => e.ExerciseId == id);
             if (exercise == null)
             {
                 return NotFound();
@@ -85,8 +85,8 @@ namespace FitnessTech.Controllers
             var exercise = _mapper.Map<ExerciseViewModel, Exercise>(model);
             if (ModelState.IsValid)
             {
-                _context.Add(exercise);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.ExerciseRepository.AddAsync(exercise);
+                await _unitOfWork.ExerciseRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             var exerciseVm = _mapper.Map<Exercise, ExerciseViewModel>(exercise);
@@ -102,7 +102,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var exercise = await _context.Exercises.SingleOrDefaultAsync(m => m.ExerciseId == id);
+            var exercise = await _unitOfWork.ExerciseRepository.GetBy(m => m.ExerciseId == id);
             if (exercise == null)
             {
                 return NotFound();
@@ -131,12 +131,12 @@ namespace FitnessTech.Controllers
             {
                 try
                 {
-                    _context.Update(exercise);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.ExerciseRepository.Update(exercise);
+                    await _unitOfWork.ExerciseRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExerciseExists(exercise.ExerciseId))
+                    if (!_unitOfWork.ExerciseRepository.Exists(exercise.ExerciseId))
                     {
                         return NotFound();
                     }
@@ -160,8 +160,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var exercise = await _context.Exercises
-                .SingleOrDefaultAsync(m => m.ExerciseId == id);
+            var exercise = await _unitOfWork.ExerciseRepository.GetBy(m => m.ExerciseId == id);
             if (exercise == null)
             {
                 return NotFound();
@@ -176,15 +175,12 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var exercise = await _context.Exercises.SingleOrDefaultAsync(m => m.ExerciseId == id);
-            _context.Exercises.Remove(exercise);
-            await _context.SaveChangesAsync();
+            var exercise = await _unitOfWork.ExerciseRepository.GetBy(m => m.ExerciseId == id);
+            await _unitOfWork.ExerciseRepository.DeleteAsync(exercise);
+            await _unitOfWork.ExerciseRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ExerciseExists(int id)
-        {
-            return _context.Exercises.Any(e => e.ExerciseId == id);
-        }
+       
     }
 }

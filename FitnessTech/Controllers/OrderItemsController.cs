@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
@@ -15,13 +16,13 @@ namespace FitnessTech.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrderItemsController : Controller
     {
-        private readonly IFitnessRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<OrderItemsController> _logger;
         private readonly IMapper _mapper;
 
-        public OrderItemsController(IFitnessRepository repository, ILogger<OrderItemsController> logger, IMapper mapper)
+        public OrderItemsController(IUnitOfWork unitOfWork, ILogger<OrderItemsController> logger, IMapper mapper)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
         }
@@ -29,7 +30,7 @@ namespace FitnessTech.Controllers
         [HttpGet]
         public IActionResult Get(int orderId)
         {
-            var order = _repository.GetOrderById(User.Identity.Name, orderId);
+            var order = _unitOfWork.OrderRepository.GetOrderById(User.Identity.Name, orderId);
             if (order != null)
             {
                 return Ok(_mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemViewModel>>(order.Items));
@@ -40,7 +41,7 @@ namespace FitnessTech.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int orderId, int id)
         {
-            var order = _repository.GetOrderById(User.Identity.Name, orderId);
+            var order = _unitOfWork.OrderRepository.GetOrderById(User.Identity.Name, orderId);
             if (order != null)
             {
                 var item = order.Items.Where(i => i.Id == id).FirstOrDefault();

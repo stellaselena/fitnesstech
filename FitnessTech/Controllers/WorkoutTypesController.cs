@@ -6,19 +6,20 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FitnessTech.Repositories.Interfaces;
 using FitnessTech.ViewModels;
 
 namespace FitnessTech.Controllers
 {
     public class WorkoutTypesController : Controller
     {
-        private readonly FitnessContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public IMapper _mapper { get; }
 
-        public WorkoutTypesController(FitnessContext context, IMapper mapper)
+        public WorkoutTypesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace FitnessTech.Controllers
         {
             var viewModel = new WorkoutTypeIndexData();
 
-            viewModel.WorkoutTypes = await _context.WorkoutTypes.AsNoTracking().ToListAsync();
+            viewModel.WorkoutTypes = await _unitOfWork.WorkoutTypeRepository.GetAllAsync();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
             switch (sortOrder)
@@ -56,8 +57,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workoutType = await _context.WorkoutTypes
-                .SingleOrDefaultAsync(m => m.WorkoutTypeId == id);
+            var workoutType = await _unitOfWork.WorkoutTypeRepository.GetBy(m => m.WorkoutTypeId == id);
             if (workoutType == null)
             {
                 return NotFound();
@@ -83,8 +83,8 @@ namespace FitnessTech.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(workoutType);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.WorkoutTypeRepository.AddAsync(workoutType);
+                await _unitOfWork.WorkoutTypeRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             var workoutTypeVm = _mapper.Map<WorkoutType, WorkoutTypeViewModel>(workoutType);
@@ -100,7 +100,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workoutType = await _context.WorkoutTypes.SingleOrDefaultAsync(m => m.WorkoutTypeId == id);
+            var workoutType = await _unitOfWork.WorkoutTypeRepository.GetBy(m => m.WorkoutTypeId == id);
             if (workoutType == null)
             {
                 return NotFound();
@@ -129,12 +129,12 @@ namespace FitnessTech.Controllers
             {
                 try
                 {
-                    _context.Update(workoutType);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.WorkoutTypeRepository.Update(workoutType);
+                    await _unitOfWork.WorkoutTypeRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!WorkoutTypeExists(workoutType.WorkoutTypeId))
+                    if (!_unitOfWork.WorkoutTypeRepository.Exists(workoutType.WorkoutTypeId))
                     {
                         return NotFound();
                     }
@@ -158,8 +158,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workoutType = await _context.WorkoutTypes
-                .SingleOrDefaultAsync(m => m.WorkoutTypeId == id);
+            var workoutType = await _unitOfWork.WorkoutTypeRepository.GetBy(m => m.WorkoutTypeId == id);
             if (workoutType == null)
             {
                 return NotFound();
@@ -174,15 +173,11 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var workoutType = await _context.WorkoutTypes.SingleOrDefaultAsync(m => m.WorkoutTypeId == id);
-            _context.WorkoutTypes.Remove(workoutType);
-            await _context.SaveChangesAsync();
+            var workoutType = await _unitOfWork.WorkoutTypeRepository.GetBy(m => m.WorkoutTypeId == id);
+            await _unitOfWork.WorkoutTypeRepository.DeleteAsync(workoutType);
+            await _unitOfWork.WorkoutTypeRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool WorkoutTypeExists(int id)
-        {
-            return _context.WorkoutTypes.Any(e => e.WorkoutTypeId == id);
-        }
     }
 }

@@ -9,17 +9,18 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data.Helpers;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
     public class GymsController : Controller
     {
-        private readonly FitnessContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GymsController(FitnessContext context, IMapper mapper)
+        public GymsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace FitnessTech.Controllers
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var viewModel = new GymIndexViewModel();
-            viewModel.Gyms = await _context.Gyms.AsNoTracking().ToListAsync();
+            viewModel.Gyms = await _unitOfWork.GymRepository.GetAllAsync();
             ViewData["GymNameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CountrySort"] = String.IsNullOrEmpty(sortOrder) ? "country_desc" : "country";
 
@@ -64,8 +65,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _context.Gyms.Include(g => g.Employees).Include(g => g.Customers)
-                .SingleOrDefaultAsync(m => m.GymId == id);
+            var gym = await _unitOfWork.GymRepository.GetBy(g => g.GymId == id, g => g.Employees, g=> g.Customers);
             if (gym == null)
             {
                 return NotFound();
@@ -92,8 +92,8 @@ namespace FitnessTech.Controllers
             var gym = _mapper.Map<GymViewModel, Gym>(model);
             if (ModelState.IsValid)
             {
-                _context.Add(gym);
-                await _context.SaveChangesAsync();
+                _unitOfWork.GymRepository.Add(gym);
+                await _unitOfWork.GymRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
@@ -109,7 +109,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _context.Gyms.SingleOrDefaultAsync(m => m.GymId == id);
+            var gym = await _unitOfWork.GymRepository.GetAsync(id);
             if (gym == null)
             {
                 return NotFound();
@@ -138,12 +138,12 @@ namespace FitnessTech.Controllers
             {
                 try
                 {
-                    _context.Update(gym);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.GymRepository.Update(gym);
+                    await _unitOfWork.GymRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GymExists(gym.GymId))
+                    if (!_unitOfWork.GymRepository.Exists(gym.GymId))
                     {
                         return NotFound();
                     }
@@ -168,8 +168,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _context.Gyms
-                .SingleOrDefaultAsync(m => m.GymId == id);
+            var gym = await _unitOfWork.GymRepository.GetAsync(id);
             if (gym == null)
             {
                 return NotFound();
@@ -184,15 +183,10 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gym = await _context.Gyms.SingleOrDefaultAsync(m => m.GymId == id);
-            _context.Gyms.Remove(gym);
-            await _context.SaveChangesAsync();
+            var gym = await _unitOfWork.GymRepository.GetAsync(id);
+            _unitOfWork.GymRepository.Delete(gym);
+            await _unitOfWork.GymRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool GymExists(int id)
-        {
-            return _context.Gyms.Any(e => e.GymId == id);
         }
 
     }

@@ -1,25 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FitnessTech.Data.Helpers;
 
 namespace FitnessTech.Data.Entities
 {
-    public enum Goal
-    {
-        Weightloss,
-        Maintenance,
-        [Display(Name = "Weight gain")]
-        WeightGain,
-        [Display(Name = "Muscle gain")]
-        Musclegain
-    }
-
-    public enum ActivityLevel
-    {
-        Sedentary,
-        Light,
-        Moderate,
-        Heavy,
-        Athlete
-    }
+  
     public class Customer : Person
     {
         public Goal Goal { get; set; }

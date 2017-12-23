@@ -9,18 +9,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
     public class WorkoutsController : Controller
     {
-        private readonly FitnessContext _context;
-
+        private readonly IUnitOfWork _unitOfWork;
         public IMapper _mapper { get; }
 
-        public WorkoutsController(FitnessContext context, IMapper mapper)
+        public WorkoutsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -28,12 +28,7 @@ namespace FitnessTech.Controllers
         public async Task<IActionResult> Index(int? id, int? exerciseId, string searchString, string sortOrder)
         {
             var viewModel = new WorkoutIndexData();
-            viewModel.Workouts = await _context.Workouts
-                .Include(w => w.WorkoutType)
-                .Include(w => w.ExerciseAssigments)
-                    .ThenInclude(w => w.Exercise)
-                .OrderBy(w => w.WorkoutName)
-                .ToListAsync();
+            viewModel.Workouts = await _unitOfWork.WorkoutRepository.GetAllThenInclude();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
             switch (sortOrder)
@@ -45,18 +40,10 @@ namespace FitnessTech.Controllers
                     viewModel.Workouts = viewModel.Workouts.OrderBy(c => c.WorkoutName);
                     break;
             }
-
-            //if (id != null)
-            //{
-            //    ViewData["WorkoutId"] = id.Value;
-            //    Workout workout = viewModel.Workouts.Where(
-            //        i => i.WorkoutId == id.Value).Single();
-            //    viewModel.Exercises = workout.ExerciseAssigments.Select(s => s.Exercise);
-            //}
-
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.Workouts = await _context.Workouts.Where(w => w.WorkoutName.Contains(searchString)).ToListAsync();
+                viewModel.Workouts =
+                    await _unitOfWork.WorkoutRepository.FindAllAsync(w => w.WorkoutName.Contains(searchString));
             }
             if (exerciseId != null)
             {
@@ -75,8 +62,7 @@ namespace FitnessTech.Controllers
             }
 
 
-            var workout = await _context.Workouts.Include(w => w.WorkoutType)
-                .Include(w => w.ExerciseAssigments).ThenInclude(w => w.Exercise).SingleAsync(w => w.WorkoutId == id);
+            var workout = await _unitOfWork.WorkoutRepository.GetThenInclude(id);
 
             if (workout == null)
             {
@@ -92,7 +78,7 @@ namespace FitnessTech.Controllers
             var workout = new Workout();
             workout.ExerciseAssigments = new List<ExerciseAssigment>();
             PopulateAssignedExerciseData(workout);
-            ViewData["WorkoutTypeId"] = new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName");
+            ViewData["WorkoutTypeId"] = new SelectList(_unitOfWork.WorkoutTypeRepository.GetAll(), "WorkoutTypeId", "WorkoutTypeName");
             return View();
         }
 
@@ -117,13 +103,13 @@ namespace FitnessTech.Controllers
             }
             if (ModelState.IsValid)
             {
-                _context.Add(workout);
-                await _context.SaveChangesAsync();
+                _unitOfWork.WorkoutRepository.Add(workout);
+                await _unitOfWork.WorkoutRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             PopulateAssignedExerciseData(workout);
             ViewData["WorkoutTypeId"] =
-                new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName", workout.WorkoutTypeId);
+                new SelectList(_unitOfWork.WorkoutTypeRepository.GetAll(), "WorkoutTypeId", "WorkoutTypeName", workout.WorkoutTypeId);
             var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
 
             return View(workoutVm);
@@ -137,17 +123,14 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workout = await _context.Workouts
-                .Include(i => i.WorkoutType)
-                .Include(i => i.ExerciseAssigments).ThenInclude(i => i.Exercise)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.WorkoutId == id);
+            var workout = await _unitOfWork.WorkoutRepository.GetThenInclude(id);
+               
             if (workout == null)
             {
                 return NotFound();
             }
             PopulateAssignedExerciseData(workout);
-            ViewData["WorkoutTypeId"] = new SelectList(_context.WorkoutTypes, "WorkoutTypeId", "WorkoutTypeName");
+            ViewData["WorkoutTypeId"] = new SelectList(_unitOfWork.WorkoutTypeRepository.GetAll(), "WorkoutTypeId", "WorkoutTypeName");
             var workoutVm = _mapper.Map<Workout, WorkoutViewModel>(workout);
 
             return View(workoutVm);
@@ -165,12 +148,8 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workout = await _context.Workouts
-                .Include(i => i.WorkoutType)
-                .Include(i => i.ExerciseAssigments)
-                .ThenInclude(i => i.Exercise)
-                .SingleOrDefaultAsync(m => m.WorkoutId == id);
-
+            var workout = await _unitOfWork.WorkoutRepository.GetThenInclude(id);
+               
             if (await TryUpdateModelAsync<Workout>(
                 workout,
                 "",
@@ -179,7 +158,7 @@ namespace FitnessTech.Controllers
                 UpdateWorkoutExercises(selectedExercises, workout);
                 try
                 {
-                    await _context.SaveChangesAsync();
+                    await _unitOfWork.WorkoutRepository.SaveAsync();
                 }
                 catch (DbUpdateException /* ex */)
                 {
@@ -205,8 +184,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var workout = await _context.Workouts.Include(w => w.WorkoutType)
-                .SingleOrDefaultAsync(m => m.WorkoutId == id);
+            var workout = await _unitOfWork.WorkoutRepository.GetBy(e => e.WorkoutId == id);
             if (workout == null)
             {
                 return NotFound();
@@ -221,21 +199,16 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var workout = await _context.Workouts.SingleOrDefaultAsync(m => m.WorkoutId == id);
-            _context.Workouts.Remove(workout);
+            var workout = await _unitOfWork.WorkoutRepository.GetBy(w => w.WorkoutId == id);
+            await _unitOfWork.WorkoutRepository.DeleteAsync(workout);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.WorkoutRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool WorkoutExists(int id)
-        {
-            return _context.Workouts.Any(e => e.WorkoutId == id);
         }
 
         private void PopulateAssignedExerciseData(Workout workout)
         {
-            var allExercises = _context.Exercises;
+            var allExercises = _unitOfWork.ExerciseRepository.GetAll();
             var workoutExercises = new HashSet<int>(workout.ExerciseAssigments.Select(e => e.ExerciseId));
             var viewModel = new List<AssignedExerciseData>();
             foreach (var exercise in allExercises)
@@ -261,7 +234,8 @@ namespace FitnessTech.Controllers
             var selectedExercisesHS = new HashSet<string>(selectedExercises);
             var workoutExercises = new HashSet<int>
                 (workout.ExerciseAssigments.Select(c => c.Exercise.ExerciseId));
-            foreach (var exercise in _context.Exercises)
+            var exercises = _unitOfWork.ExerciseRepository.GetAll();
+            foreach (var exercise in exercises)
             {
                 if (selectedExercisesHS.Contains(exercise.ExerciseId.ToString()))
                 {
@@ -280,7 +254,11 @@ namespace FitnessTech.Controllers
                     {
                         ExerciseAssigment exerciseToRemove =
                             workout.ExerciseAssigments.SingleOrDefault(i => i.ExerciseId == exercise.ExerciseId);
-                        _context.Remove(exerciseToRemove);
+
+                         workout.ExerciseAssigments.Remove(exerciseToRemove);
+                         _unitOfWork.WorkoutRepository.SaveAsync();
+
+                       
                     }
                 }
             }

@@ -9,17 +9,19 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data.Helpers;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly FitnessContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        
         private readonly IMapper _mapper;
 
-        public CustomersController(FitnessContext context, IMapper mapper)
+        public CustomersController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -27,7 +29,8 @@ namespace FitnessTech.Controllers
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var viewModel = new CustomerIndexDataViewModel();
-            viewModel.Customers = await _context.Customers.ToListAsync();
+            viewModel.Customers = await _unitOfWork.CustomerRepository.GetAllAsync();
+
             ViewData["FirstNameSort"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
             ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
 
@@ -51,6 +54,7 @@ namespace FitnessTech.Controllers
             {
                 viewModel.Customers = viewModel.Customers.Where(c => c.FirstName.Contains(searchString)
                             || c.LastName.Contains(searchString));
+                
             }
 
 
@@ -65,8 +69,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.Include(c => c.Gym).Include(c => c.Employee)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var customer = await _unitOfWork.CustomerRepository.GetBy(c => c.Id == id, c => c.Employee, c => c.Gym);
             if (customer == null)
             {
                 return NotFound();
@@ -81,8 +84,8 @@ namespace FitnessTech.Controllers
         public IActionResult Create()
         {
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName");
+            ViewData["EmployeeId"] = new SelectList(_unitOfWork.EmployeeRepository.GetAll(), "Id", "FirstName");
 
             return View();
         }
@@ -97,13 +100,13 @@ namespace FitnessTech.Controllers
             var customer = _mapper.Map<CustomerViewModel, Customer>(model);
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                _unitOfWork.CustomerRepository.Add(customer);
+                await _unitOfWork.CustomerRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName");
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
+            ViewData["EmployeeId"] = new SelectList(_unitOfWork.EmployeeRepository.GetAll(), "Id", "FirstName");
             var customerVm = _mapper.Map<Customer, CustomerViewModel>(customer);
 
             return View(customerVm);
@@ -117,14 +120,14 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.SingleOrDefaultAsync(m => m.Id == id);
+            var customer = await _unitOfWork.CustomerRepository.GetAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName");
+            ViewData["EmployeeId"] = new SelectList(_unitOfWork.EmployeeRepository.GetAll(), "Id", "FirstName");
             var customerVm = _mapper.Map<Customer, CustomerViewModel>(customer);
             return View(customerVm);
         }
@@ -146,8 +149,8 @@ namespace FitnessTech.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.CustomerRepository.Update(customer);
+                    await _unitOfWork.CustomerRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -163,8 +166,8 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", customer.Country);
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName", customer.Gym);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName", customer.Employee);
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName", customer.Gym);
+            ViewData["EmployeeId"] = new SelectList(_unitOfWork.EmployeeRepository.GetAll(), "Id", "FirstName", customer.Employee);
             var customerVM = _mapper.Map<Customer, CustomerViewModel>(customer);
             return View(customerVM);
         }
@@ -177,8 +180,7 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var customer = await _unitOfWork.CustomerRepository.GetAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -192,15 +194,14 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = await _unitOfWork.CustomerRepository.GetAll().SingleOrDefaultAsync(m => m.Id == id);
+            _unitOfWork.CustomerRepository.Delete(customer);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return _unitOfWork.CustomerRepository.GetAll().Any(e => e.Id == id);
         }
     }
 }

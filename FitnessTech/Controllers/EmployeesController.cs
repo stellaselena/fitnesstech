@@ -9,17 +9,18 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data.Helpers;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly FitnessContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmployeesController(FitnessContext context, IMapper mapper)
+        public EmployeesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace FitnessTech.Controllers
         public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var viewModel = new EmployeeIndexDataViewModel();
-            viewModel.Employees = await _context.Employees.AsNoTracking().ToListAsync();
+            viewModel.Employees = await _unitOfWork.EmployeeRepository.GetAllAsync();
             ViewData["FirstNameSort"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
             ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
 
@@ -63,13 +64,12 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.Include(e => e.Gym)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var employee = await _unitOfWork.EmployeeRepository.GetBy(e => e.Id == id, e => e.Gym);
             if (employee == null)
             {
                 return NotFound();
             }
-            var employeeViewModel = _mapper.Map<Employee, EmployeeViewModel>(employee);
+            var employeeViewModel =  _mapper.Map<Employee, EmployeeViewModel>(employee);
 
             return View(employeeViewModel);
         }
@@ -78,7 +78,7 @@ namespace FitnessTech.Controllers
         public IActionResult Create()
         {
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName");
 
             return View();
         }
@@ -93,8 +93,8 @@ namespace FitnessTech.Controllers
             var employee = _mapper.Map<EmployeeViewModel, Employee>(model);
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                _unitOfWork.EmployeeRepository.Add(employee);
+                await _unitOfWork.EmployeeRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
@@ -111,13 +111,14 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.Id == id);
+            var employeeTask = _unitOfWork.EmployeeRepository.GetBy(e => e.Id == id, e => e.Gym);
+            var employee = await employeeTask;
             if (employee == null)
             {
                 return NotFound();
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "GymName");
+            ViewData["GymId"] = new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName");
             var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
             return View(employeeVm);
@@ -141,12 +142,13 @@ namespace FitnessTech.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.EmployeeRepository.Update(employee);
+                    await _unitOfWork.EmployeeRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if(!_unitOfWork.EmployeeRepository.Exists(employee))
+                    if (!_unitOfWork.EmployeeRepository.Exists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -158,7 +160,7 @@ namespace FitnessTech.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GymId"] =
-                new SelectList(_context.WorkoutTypes, "GymId", "GymName", employee.GymId);
+                new SelectList(_unitOfWork.GymRepository.GetAll(), "GymId", "GymName", employee.GymId);
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name", employee.Country);
             var employeeVm = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
@@ -173,8 +175,8 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var employeeTask = _unitOfWork.EmployeeRepository.GetBy(e => e.Id == id, e=> e .Gym);
+            var employee = await employeeTask;
             if (employee == null)
             {
                 return NotFound();
@@ -189,15 +191,12 @@ namespace FitnessTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            var employee = await _unitOfWork.EmployeeRepository.GetBy(e => e.Id == id, e => e.Gym);
+             await _unitOfWork.EmployeeRepository.DeleteAsync(employee);
+            await _unitOfWork.EmployeeRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Id == id);
-        }
+       
     }
 }

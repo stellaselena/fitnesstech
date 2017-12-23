@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Text;
+using FitnessTech.Repositories;
+using FitnessTech.Repositories.Interfaces;
 
 namespace FitnessTech
 {
@@ -53,7 +55,7 @@ namespace FitnessTech
             services.AddAutoMapper();
             services.AddTransient<IMailService, NullMailService>();
             services.AddTransient<FitnessSeeder>();
-            services.AddScoped<IFitnessRepository, FitnessRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc(opt =>
                 {
                     if (_env.IsProduction() && _config["DisableSSL"] != "true")
