@@ -15,6 +15,7 @@ namespace FitnessTech.ViewModels
         [Required(ErrorMessage = "Gender is required.")]
         public Gender? Gender { get; set; }
         [Required(ErrorMessage = "Activity Level is required.")]
+        [Display(Name = "Activity Level")]
         public ActivityLevel? ActivityLevel { get; set; }
     }
 }

@@ -31,114 +31,56 @@ namespace FitnessTech.Services
             return searchResults;
         }
 
-        public static ICollection<Item> PowerSearchItems(string foodName, string brandName)
-        {
-            
-            //ItemType type = ItemType.Packaged;
-            //switch (itemType)
-            //{
-            //    case "packaged":
-            //        type = ItemType.Packaged;
-            //        break;
-            //    case "restaurant":
-            //        type = ItemType.Restaurant;
-            //        break;
-            //    case "USDA":
-            //        type = ItemType.USDA;
-            //        break;
-
-            //}
+        public static ICollection<Item> PowerSearchItems(string foodName, string brandName, bool isRestaurant, bool isPackaged, bool isUsda)
+        {    
             var nutritionix = new NutritionixClient();
             nutritionix.Initialize(AppId, AppKey);
-
-            PowerSearchRequest request;
-            if (!String.IsNullOrEmpty(brandName) && !String.IsNullOrEmpty(foodName))
+            var request = new PowerSearchRequest();
+            request.Queries = new QueryFilterCollection();
+            if (!String.IsNullOrEmpty(foodName))
             {
-                request = new PowerSearchRequest
-                {
-
-                    Queries = new QueryFilterCollection
-                    {
-                        new QueryFilter(x => x.Name, foodName),
-                        new QueryFilter(x => x.BrandName, brandName)
-                    },
-                    Fields = new SearchResultFieldCollection
-                    {
-                        x => x.Name,
-                        x => x.BrandName,
-                        x => x.NutritionFact_Calories,
-                        x => x.NutritionFact_TotalCarbohydrate,
-                        x => x.NutritionFact_Protein,
-                        x => x.NutritionFact_TotalFat,
-                        x => x.NutritionFact_Sugar,
-                        x => x.NutritionFact_DietaryFiber,
-                        x => x.ItemType
-                    },
-                    SortBy = new SearchResultSort(x => x.NutritionFact_Calories, SortOrder.Descending),
-                    //Filters = new SearchFilterCollection
-                    //{
-                    //    new ItemTypeFilter {Negated = negated, ItemType = type}
-                    //}
-                };
-            }
-            else if (!String.IsNullOrEmpty(brandName) && String.IsNullOrEmpty(foodName))
+                request.Queries.Add(new QueryFilter(x => x.Name, foodName));
+                          
+            }           
+            if (!String.IsNullOrEmpty(brandName))
             {
-                request = new PowerSearchRequest
-                {
-
-                    Queries = new QueryFilterCollection
-                    {
-                        new QueryFilter(x => x.BrandName, brandName)
-                    },
-                    Fields = new SearchResultFieldCollection
-                    {
-                        x => x.Name,
-                        x => x.BrandName,
-                        x => x.NutritionFact_Calories,
-                        x => x.NutritionFact_TotalCarbohydrate,
-                        x => x.NutritionFact_Protein,
-                        x => x.NutritionFact_TotalFat,
-                        x => x.NutritionFact_Sugar,
-                        x => x.NutritionFact_DietaryFiber,
-                        x => x.ItemType
-                    },
-                    SortBy = new SearchResultSort(x => x.NutritionFact_Calories, SortOrder.Descending),
-                    //Filters = new SearchFilterCollection
-                    //{
-                    //    new ItemTypeFilter {Negated = negated, ItemType = type}
-                    //}
-                };
-            }
-            else
-            {
-                request = new PowerSearchRequest
-                {
-
-                    Queries = new QueryFilterCollection
-                    {
-                        new QueryFilter(x => x.Name, foodName)
-                    },
-                    Fields = new SearchResultFieldCollection
-                    {
-                        x => x.Name,
-                        x => x.BrandName,
-                        x => x.NutritionFact_Calories,
-                        x => x.NutritionFact_TotalCarbohydrate,
-                        x => x.NutritionFact_Protein,
-                        x => x.NutritionFact_TotalFat,
-                        x => x.NutritionFact_Sugar,
-                        x => x.NutritionFact_DietaryFiber,
-                        x => x.ItemType
-                    },
-                    SortBy = new SearchResultSort(x => x.NutritionFact_Calories, SortOrder.Descending),
-                    //Filters = new SearchFilterCollection
-                    //{
-                    //    new ItemTypeFilter {Negated = negated, ItemType = type}
-                    //}
-                };
+                request.Queries.Add(new QueryFilter(x => x.BrandName, brandName));
+              
             }
 
+            request.Fields = new SearchResultFieldCollection
+            {
+                x => x.Name,
+                x => x.BrandName,
+                x => x.NutritionFact_Calories,
+                x => x.NutritionFact_TotalCarbohydrate,
+                x => x.NutritionFact_Protein,
+                x => x.NutritionFact_TotalFat,
+                x => x.NutritionFact_Sugar,
+                x => x.NutritionFact_DietaryFiber,
+                x => x.ItemType
+            };
 
+
+            request.SortBy = new SearchResultSort(x => x.NutritionFact_Calories, SortOrder.Descending);
+
+
+            request.Filters = new SearchFilterCollection();
+            if (isRestaurant)
+            {
+                request.Filters.Add(new ItemTypeFilter {Negated = false, ItemType = ItemType.Restaurant});
+
+            }
+            if (isPackaged)
+            {
+                request.Filters.Add(new ItemTypeFilter { Negated = false, ItemType = ItemType.Packaged });
+
+            }
+            if (isUsda)
+            {
+                request.Filters.Add(new ItemTypeFilter { Negated = false, ItemType = ItemType.USDA });
+
+            }
             SearchResponse response = nutritionix.SearchItems(request);
             List<Item> searchResults = new List<Item>();
            

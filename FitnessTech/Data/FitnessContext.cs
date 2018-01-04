@@ -29,6 +29,7 @@ namespace FitnessTech.Data
         public DbSet<NutritionixItem> NutritionixItem { get; set; }
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,6 +49,7 @@ namespace FitnessTech.Data
             //TODO: change to singular table name
             modelBuilder.Entity<WorkoutAssigment>()/*.ToTable("WorkoutAssigment")*/
                 .HasKey(w => new { w.WorkoutId, w.WorkoutProgramId });
+
         }
 
     }

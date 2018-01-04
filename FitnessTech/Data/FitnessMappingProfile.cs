@@ -15,7 +15,13 @@ namespace FitnessTech.Data
             CreateMap<OrderItem, OrderItemViewModel>()
                 .ReverseMap();
 
-        }
+            CreateMap<Exercise, ExerciseViewModel>()
+                .ForMember(dest => dest.AvatarImage, opt => opt.MapFrom(src => src.AvatarImage));
 
+            CreateMap<ExerciseViewModel, Exercise>()
+                .ForMember(dest => dest.AvatarImage, opt => opt.MapFrom(src => src.AvatarImage));
+
+        }
+        
     }
 }

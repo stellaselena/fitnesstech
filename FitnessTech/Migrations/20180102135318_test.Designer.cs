@@ -14,9 +14,10 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20180102135318_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,8 +132,6 @@ namespace FitnessTech.Migrations
                 {
                     b.Property<int>("ExerciseId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<byte[]>("AvatarImage");
 
                     b.Property<string>("ExerciseDescription");
 
@@ -398,6 +397,32 @@ namespace FitnessTech.Migrations
                     b.ToTable("WorkoutType");
                 });
 
+            modelBuilder.Entity("FitnessTech.ViewModels.File", b =>
+                {
+                    b.Property<int>("FileId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Content");
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(100);
+
+                    b.Property<int?>("ExerciseId");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("FileType");
+
+                    b.Property<int>("PersonId");
+
+                    b.HasKey("FileId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("File");
+                });
+
             modelBuilder.Entity("FitnessTech.ViewModels.NutritionixItem", b =>
                 {
                     b.Property<string>("Id")
@@ -625,6 +650,13 @@ namespace FitnessTech.Migrations
                         .WithMany("WorkoutAssigments")
                         .HasForeignKey("WorkoutProgramId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FitnessTech.ViewModels.File", b =>
+                {
+                    b.HasOne("FitnessTech.Data.Entities.Exercise", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

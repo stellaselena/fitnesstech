@@ -13,14 +13,14 @@ namespace FitnessTech.Controllers
             return View("NutritionIndex");
         }
 
-        public IActionResult SearchFood(string searchStringFood, string searchStringBrand, string sortOrder)
+        public IActionResult SearchFood(string searchStringFood, string searchStringBrand, bool isPackaged, bool isRestaurant, bool isUsda)
         {
 
-
+          
             var viewModel = new NutritionixIndexData();
             if (!String.IsNullOrEmpty(searchStringBrand) || !String.IsNullOrEmpty(searchStringFood))
             {
-                var result = NutritionixApi.PowerSearchItems(searchStringFood, searchStringBrand);
+                var result = NutritionixApi.PowerSearchItems(searchStringFood, searchStringBrand, isRestaurant, isPackaged, isUsda);
                 foreach (var item in result)
                 {
                     viewModel.NutritionixItems.Add(new NutritionixItem()

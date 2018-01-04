@@ -1,4 +1,5 @@
-﻿@model FitnessTech.ViewModels.ExerciseViewModel
+﻿@using FitnessTech.Controllers
+@model FitnessTech.Data.Entities.Exercise
 
 @{
     ViewData["Title"] = "Details";
@@ -6,31 +7,53 @@
 
 
 <div class="container">
-    <h2>Details</h2>
+    <h2> @Html.DisplayFor(model => model.ExerciseName)</h2>
 
-    <hr />
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.ExerciseName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ExerciseName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ExerciseDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ExerciseDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MuscleGroup)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MuscleGroup)
-        </dd>
-    </dl>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.ExerciseId">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+    <hr/>
+    <div class="well">
+
+        <div class="row">
+            <div class="col-md-5">
+                
+                @if (Model.AvatarImage != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.AvatarImage);
+                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                    <img src='@imgsrc' style="max-width: 400px; max-height: 400px" alt="image"/>
+
+                }
+
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4>Muscle Group:</h4>
+                    </div>
+                    <div class="col-md-9">
+                        <h4> @Html.DisplayFor(model => model.MuscleGroup)</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4>Steps:</h4>
+                    </div>
+                    <div class="col-md-9">
+                        <br/>
+                        @Html.DisplayFor(model => model.ExerciseDescription)
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <br/>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ExerciseId">Edit</a> |
+            <a asp-action="Delete" asp-route-id="@Model.ExerciseId">Delete</a> 
+        </div>
+       
     </div>
+    
+
+
+    
 </div>

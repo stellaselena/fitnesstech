@@ -1,5 +1,8 @@
-﻿using FitnessTech.Data.Entities;
+﻿using System.Collections.Generic;
+using FitnessTech.Data.Entities;
 using System.ComponentModel.DataAnnotations;
+using FitnessTech.Data.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessTech.ViewModels
 {
@@ -18,5 +21,7 @@ namespace FitnessTech.ViewModels
         [Required(ErrorMessage = "Muscle Group is required")]
 
         public MuscleGroup MuscleGroup { get; set; }
+        [Display(Name = "Choose an image")]
+        public IFormFile AvatarImage { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@model FitnessTech.ViewModels.ExerciseIndexViewModel
+@using FitnessTech.Data.Helpers
 
 @{
     ViewData["Title"] = "Index";
@@ -11,50 +12,133 @@
     </p>
     @using (Html.BeginForm())
     {
-
         <div class="input-group">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Search</button>
+                <button class="btn btn-primary" type="submit">Search</button>
             </span>
-            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+            @Html.TextBox("SearchString", null, new {@class = "form-control"})
         </div>
     }
-    <hr />
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Name</a>
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
+    <hr/>
+
+    <div class=" row">
+        <div class="col-md-2 ">
+
+            <div class="list-group">
+                <h4>Sort By</h4>
+                <div class="list-group-item">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Exercise</a>
+
+                </div>
+                <div class="list-group-item">
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["MuscleSort"]">Muscle Group</a>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Exercises)
+
+                </div>
+
+            </div>
+            @using (Html.BeginForm())
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ExerciseName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ExerciseDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MuscleGroup)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ExerciseId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ExerciseId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ExerciseId">Delete</a>
-                    </td>
-                </tr>
+                <div class="list-group">
+                    <h4>Muscle Group</h4>
+                    <div class="list-group-item">
+
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Legs)
+                            <label>Legs</label>
+                        </div>
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Back)
+                            <label> Back </label>
+                        </div>
+
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Chest)
+                            <label> Chest </label>
+                        </div>
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Arms)
+                            <label> Arms</label>
+                        </div>
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Shoulders)
+                            <label>Shoulders</label>
+                        </div>
+                        <div class="checkbox checkbox-info">
+                            @Html.EditorFor(x => x.Abdominals)
+                            <label>Abdominals</label>
+                        </div>
+                        <input class="btn btn-primary btn-sm" type="submit" value="SUBMIT"/>
+                        <input class="btn btn-primary btn-sm" type="button" value="RESET" onclick="location.href = '@Url.Action("Index", "Exercises")'"/>
+                    </div>
+
+                </div>
+
+               
             }
-        </tbody>
-    </table>
+
+
+        </div>
+
+        <div class="col-md-10">
+            <table class="table table-striped table-hover">
+                <tbody>
+                @foreach (var item in Model.Exercises)
+                {
+                    <tr>
+                        <td>
+                            @if (item.AvatarImage != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.AvatarImage);
+                                var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                <a asp-action="Details" asp-route-id="@item.ExerciseId">
+                                    <img src='@imgsrc' style="max-width: 250px; max-height: 250px" alt="image"/>
+                                </a>
+                            }
+                        </td>
+
+                        <td>
+                          
+                            <div class="row">
+                                <div class="col-md-12">
+                                
+                                    <a asp-action="Details" asp-route-id="@item.ExerciseId"><h3>@Html.DisplayFor(modelItem => item.ExerciseName)</h3></a>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h6>Muscle Group:</h6>
+                                </div>
+                                <div class="col-md-10">
+                                    <h6> @Html.DisplayFor(modelItem => item.MuscleGroup)</h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h6>Steps:</h6>                              
+                                </div>
+                                <div class="col-md-10">
+                                    @{
+                                        string Desc = @item.ExerciseDescription;
+                                    }
+                                    @if (Desc.Length > 250)
+                                    {
+                                        Desc = Desc.Substring(0, 250) + "...";
+                                    }
+
+                                    @Desc<br />
+                                    <a asp-action="Details" asp-route-id="@item.ExerciseId">Read more</a>
+                                </div>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>

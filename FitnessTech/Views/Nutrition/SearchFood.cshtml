@@ -7,111 +7,151 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-                <img class="img-responsive img-rounded" src="~/images/foodDbBanner.png" alt="nutrition banner" />
+                <img class="img-responsive img-rounded" src="~/images/foodDbBanner.png" alt="nutrition banner"/>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="row">
-                <p class="lead">Search world's largest nutrition database </p>
-                <div class="list-group">
-                    @using (Html.BeginForm())
-                    {
-                        <div class="input-group col-md-12">
-                            @Html.TextBox("SearchStringFood", null, new { @class = "form-control", @placeholder = "Food" })
-                        </div>
-                        <div class="input-group col-md-12">
-                            @Html.TextBox("SearchStringBrand", null, new { @class = "form-control", @placeholder = "Brand" })
-                        </div>
-                        <div class="input-group col-md-12">
-                            <p class="input-group-btn">
-                                <button class="btn btn-secondary" type="submit">Search</button>
-                            </p>
-                        </div>
-                    }
-                </div>
+            <div class="well">
+                <h4>Nutritionix Database</h4>
+                <p>
+                    Find out how many grams of protein, carbs and fat are in the foods you eat, along with the full vitamin and mineral profile.
+                    <br/>
+                    Our database contains over 500 000 foods, with new foods being added every day.
+                    We monitor over 600 restaurants to detect new menu items.
+                </p>
             </div>
+
         </div>
+
     </div>
+   
     <div class="row">
         <div class="col-lg-12">
-            <div class="well text-center">
-                621,299  Grocery Items	136,474  Restaurant Items	25,857  Common Foods
-            </div>
+            <p class="lead">Search the world's largest nutrition database </p>
+                @using (Html.BeginForm())
+                {
+                    <div class=" row">
+
+                        <div class="col-md-9">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5>Food</h5>
+                                    @Html.TextBox("SearchStringFood", null, new { @class = "form-control", @placeholder = "Search for food" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5>Manufacturer</h5>
+                                    @Html.TextBox("SearchStringBrand", null, new { @class = "form-control", @placeholder = "Search for manufactorer" })
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 ">
+                            <h5>Search filter</h5>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <input asp-for="@Model.IsRestaurant" />From Restaurant
+
+                                </div>
+                                <div class="list-group-item">
+                                    <input asp-for="@Model.IsPackaged" /> Packaged Food
+
+                                </div>
+                                <div class="list-group-item">
+                                    <input asp-for="@Model.IsUsda" />USDA
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                
+                    </div>
+                    <div class="input-group col-md-offset-4">
+                        <p class="input-group-btn">
+                            <button class="btn btn-info" type="submit">Search</button>
+                        </p>
+                    </div>
+                                       
+
+                        
+                }
         </div>
-        <!-- /.col-lg-12 -->
     </div>
 
-    <hr />
+
+    <hr/>
 
     @if (Model.NutritionixItems.Count >= 1)
     {
         <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        Food
-                    </th>
-                    <th>
-                        Brand
-                    </th>
-                    <th>
-                        Item Type
-                    </th>
-                    <th>
-                        Calories
-                    </th>
-                    <th>
-                        Protein
-                    </th>
-                    <th>
-                        Fats
-                    </th>
-                    <th>
-                        Carbs
-                    </th>
-                    <th>
-                        Sugar
-                    </th>
-                    <th>
-                        Fibre
-                    </th>
-                    <th></th>
-                </tr>
+            <thead class="thead-dark">
+            <tr>
+                <th>
+                    Food
+                </th>
+                <th>
+                    Brand
+                </th>
+                <th>
+                    Item Type
+                </th>
+                <th>
+                    Calories
+                </th>
+                <th>
+                    Protein
+                </th>
+                <th>
+                    Fats
+                </th>
+                <th>
+                    Carbs
+                </th>
+                <th>
+                    Sugar
+                </th>
+                <th>
+                    Fibre
+                </th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.NutritionixItems)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BrandName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ItemType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_Calories)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_Protein)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_TotalFat)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_TotalCarbohydrate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_Sugar)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NutritionFact_DietaryFiber)
-                        </td>
+            @foreach (var item in Model.NutritionixItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BrandName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_Calories)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_Protein)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_TotalFat)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_TotalCarbohydrate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_Sugar)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NutritionFact_DietaryFiber)
+                    </td>
 
-                    </tr>
-                }
+                </tr>
+            }
             </tbody>
         </table>
     }

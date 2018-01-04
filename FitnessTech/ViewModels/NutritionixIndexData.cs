@@ -10,5 +10,8 @@ namespace FitnessTech.ViewModels
         }
 
         public ICollection<NutritionixItem> NutritionixItems { get; set; }
+        public bool IsRestaurant { get; set; }
+        public bool IsUsda { get; set; }
+        public bool IsPackaged { get; set; }
     }
 }

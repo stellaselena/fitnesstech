@@ -1,16 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using FitnessTech.Data.Helpers;
+using FitnessTech.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessTech.Data.Entities
 {
-    public enum MuscleGroup
-    {
-        Legs,
-        Back,
-        Chest,
-        Shoulders,
-        Arms,
-        Abdominals
-    }
+   
     public class Exercise
     {
         [Key]
@@ -26,6 +22,7 @@ namespace FitnessTech.Data.Entities
         [Required(ErrorMessage = "Muscle Group is required")]
 
         public MuscleGroup MuscleGroup { get; set; }
+        public byte[] AvatarImage { get; set; }
 
 
     }
