@@ -51,7 +51,10 @@ namespace FitnessTech.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.Exercises = viewModel.Exercises.Where(c => c.ExerciseName.Contains(searchString));
+                viewModel.Exercises =
+                    await _unitOfWork.ExerciseRepository.FindAllAsync(w =>
+                        w.ExerciseName.Contains(searchString));
+
             }
 
             return View(viewModel);
@@ -117,6 +120,8 @@ namespace FitnessTech.Controllers
             }
 
             viewModel.Exercises = selectedMuscleGroups;
+
+
             return View(viewModel);
         }
 

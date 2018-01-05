@@ -4,80 +4,63 @@
 }
 
 <div class="container">
-    <h2>Details</h2>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Workout Program
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.WorkoutProgramName)
-        </dd>
-        <dt>
-            Description
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.WorkoutProgramDescription)
-        </dd>
-        <dt>
-            Workouts
-        </dt>
-        <dd>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>
-                            Workout Name
-                        </th>
-                        <th>
-                            Workout Type
-                        </th>
-                        <th>
-                            Exercises
-                        </th>
-                        <th>
-                            Exercise Description
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.WorkoutAssigments)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Workout.WorkoutName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Workout.WorkoutType.WorkoutTypeName)
-                            </td>
-                            <td>
-                                @{
-                                    foreach (var exercise in item.Workout.ExerciseAssigments)
-                                    {
-                                        @Html.DisplayFor(modelItem => exercise.Exercise.ExerciseName)
-                                        <br />
-                                    }
-                                }
-                            </td>
-                            <td>
-                                @{
-                                    foreach (var exercise in item.Workout.ExerciseAssigments)
-                                    {
-                                        @Html.DisplayFor(modelItem => exercise.Exercise.ExerciseDescription)
-                                        <br />
-                                    }
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </dd>
-    </dl>
+    <h1>@Html.DisplayFor(model => model.WorkoutProgramName)</h1>
+    <h4>@Html.DisplayFor(model => model.WorkoutProgramDescription)</h4>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.WorkoutProgramId">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Delete" asp-route-id="@Model.WorkoutProgramId">Delete</a>
     </div>
+    <hr />
+   
+    <h3 style="text-align: center">Training split</h3>
+@foreach (var item in Model.WorkoutAssigments)
+{
+    <h4><a asp-action="Details" asp-controller="Workouts" asp-route-id="@item.Workout.WorkoutId">@Html.DisplayFor(modelItem => item.Workout.WorkoutName)</a>
+        | @Html.DisplayFor(modelItem => item.Workout.WorkoutType.WorkoutTypeName)   </h4>
+    <table class="table table-striped table-hover">
+                
+        <tbody>
+        @{
+        }
+        @foreach (var exercise in item.Workout.ExerciseAssigments)
+        {
+            <tr>
+                <td>
+                    @if (exercise.Exercise.AvatarImage != null)
+                    {
+                        var base64 = Convert.ToBase64String(exercise.Exercise.AvatarImage);
+                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        <img src='@imgsrc' style="max-width: 300px; max-height: 300px" alt="image"/>
 
+                    }
+                </td>
+
+                <td>
+                    <h4><a asp-action="Details" asp-controller="Exercises" asp-route-id="@exercise.Exercise.ExerciseId">@Html.DisplayFor(modelItem => exercise.Exercise.ExerciseName)</a> </h4>
+                    <h6>@Html.DisplayFor(modelItem => exercise.Exercise.MuscleGroup)</h6>
+                    @{
+                        string Desc = @exercise.Exercise.ExerciseDescription;
+                    }
+                    @if (Desc.Length > 250)
+                    {
+                        Desc = Desc.Substring(0, 250) + "...";
+                    }
+
+                    @Desc<br/>
+                    <a asp-action="Details" asp-controller="Exercises" asp-route-id="@exercise.Exercise.ExerciseId">Read more</a>
+
+                </td>
+            </tr>
+        }
+
+
+
+        </tbody>
+    </table>
+
+}
+    <br/>
+
+          
+ 
 </div>

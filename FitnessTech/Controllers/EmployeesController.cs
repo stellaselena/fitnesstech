@@ -49,8 +49,7 @@ namespace FitnessTech.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.Employees = viewModel.Employees.Where(s => s.LastName.Contains(searchString)
-                                               || s.FirstName.Contains(searchString));
+                viewModel.Employees = await _unitOfWork.EmployeeRepository.FindAllAsync(w => w.FullName.Contains(searchString));
             }
 
             return View(viewModel);

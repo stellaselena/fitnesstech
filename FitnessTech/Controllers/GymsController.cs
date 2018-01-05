@@ -49,7 +49,7 @@ namespace FitnessTech.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.Gyms = viewModel.Gyms.Where(g => g.GymName.Contains(searchString));
+                viewModel.Gyms = await _unitOfWork.GymRepository.FindAllAsync(w => w.GymName.Contains(searchString));
 
             }
 

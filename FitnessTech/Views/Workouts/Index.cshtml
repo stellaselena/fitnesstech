@@ -5,72 +5,100 @@
 }
 <div class="container">
 
-    <h2>Index</h2>
+    <h2>Workouts</h2>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+
     @using (Html.BeginForm())
     {
 
         <div class="input-group">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Search</button>
+                <button class="btn btn-primary" type="submit">Search</button>
             </span>
             @Html.TextBox("SearchString", null, new { @class = "form-control" })
         </div>
     }
     <hr />
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">@Html.DisplayNameFor(model => model.Workouts)</a>
-                </th>
-                <th>
-                    Workout Type
-                </th>
-                <th>
-                    Exercises
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Workouts)
-            {
-                //string selectedRow = "";
-                //if (item.WorkoutId == (int?)ViewData["WorkoutId"])
-                //{
-                //    selectedRow = "success";
-                //}
-                <tr @*class="@selectedRow" *@>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkoutName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkoutType.WorkoutTypeName)
-                    </td>
+    <div class="row">
+        <div class="col-md-2 ">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <a asp-action="Create">Create New</a>
 
-                    <td>
-                        @{
-                            foreach (var exercise in item.ExerciseAssigments)
-                            {
-                                @exercise.Exercise.ExerciseName
-                                <br />
-                            }
-                        }
-                    </td>
-                    <td>
-                        @*<a asp-action="Index" asp-route-id="@item.WorkoutId">Select</a> |*@
-                        <a asp-action="Edit" asp-route-id="@item.WorkoutId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.WorkoutId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.WorkoutId">Delete</a>
-                    </td>
 
-                </tr>
-            }
+                </div>
 
-        </tbody>
-    </table>
+            </div>
+            <div class="list-group">
+                <h4>Sort By</h4>
+
+                <div class="list-group-item">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Sort by workouts</a>
+
+                </div>
+                <div class="list-group-item">
+                   <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSort"]">Sort by type</a>
+
+
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table class="table table-striped table-hover">
+       
+                <tbody>
+                @foreach (var item in Model.Workouts)
+                {
+                
+                    <tr>
+                       
+                        <td>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a asp-action="Details" asp-route-id="@item.WorkoutId">
+                                        <h3>@Html.DisplayFor(modelItem => item.WorkoutName)</h3>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Type: @Html.DisplayFor(modelItem => item.WorkoutType.WorkoutTypeName)</h6>
+                                </div>
+                               
+                            </div>
+                       
+                        </td>
+
+                        
+
+                        <td>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6>Exercises:</h6>
+                                </div>
+                                <div class="col-md-8">
+                                    @{
+                                        foreach (var exercise in item.ExerciseAssigments)
+                                        {
+                                            <a asp-action="Details" asp-controller="Exercises"  asp-route-id="@exercise.Exercise.ExerciseId">
+                                                @exercise.Exercise.ExerciseName
+                                            </a>
+                                            <br/>
+                                        }
+                                    }
+                                </div>
+                               
+                            </div>
+                           
+                        </td>
+                       
+
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </div>

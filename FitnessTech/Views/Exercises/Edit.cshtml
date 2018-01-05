@@ -4,47 +4,46 @@
     ViewData["Title"] = "Edit";
 }
 <div class="container">
-    <h2>Edit</h2>
     <hr />
     <div class="row ">
-        <div class="col-md-6 well">
-            <form asp-action="Edit" enctype="multipart/form-data" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="ExerciseId" />
-                <div class="form-group">
-                    <label asp-for="ExerciseName" class="control-label"></label>
-                    <input asp-for="ExerciseName" class="form-control" />
-                    <span asp-validation-for="ExerciseName" class="text-danger"></span>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well">
+                <h2 style="text-align: center">Edit</h2>
+
+                <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ExerciseId"/>
+                    <div class="form-group">
+                        <label asp-for="ExerciseName" class="control-label"></label>
+                        <input asp-for="ExerciseName" class="form-control"/>
+                        <span asp-validation-for="ExerciseName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseDescription" class="control-label"></label>
+                        <input asp-for="ExerciseDescription" class="form-control"/>
+                        <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MuscleGroup" class="control-label"></label>
+                        <select asp-for="MuscleGroup" class="form-control"
+                                asp-items="Html.GetEnumSelectList<MuscleGroup>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="MuscleGroup" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AvatarImage" class="control-label"></label>
+                        <input asp-for="AvatarImage" type="file" multiple class="form-control"/>
+                        <span asp-validation-for="AvatarImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Save" class="btn btn-primary"/>
+                    </div>
+                </form>
                 </div>
-                <div class="form-group">
-                    <label asp-for="ExerciseDescription" class="control-label"></label>
-                    <input asp-for="ExerciseDescription" class="form-control" />
-                    <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MuscleGroup" class="control-label"></label>
-                    <select asp-for="MuscleGroup" class="form-control"
-                            asp-items="Html.GetEnumSelectList<MuscleGroup>()">
-                        <option selected="selected" value="">Please select</option>
-                    </select>
-                    <span asp-validation-for="MuscleGroup" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AvatarImage" class="control-label"></label>
-                    <input asp-for="AvatarImage" type="file" multiple class="form-control" />
-                    <span asp-validation-for="AvatarImage" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
         </div>
     </div>
-    <div>
-        <a asp-action="Index">Back to List</a>
-        <a asp-action="Details" asp-route-id="@Model.ExerciseId">Details</a> |
-
-    </div>
+    
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -4,31 +4,32 @@
     ViewData["Title"] = "Edit";
 }
 <div class="container">
-    <h2>Edit</h2>
 
-    <hr />
+    <hr/>
     <div class="row ">
-        <div class="col-md-6 well">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="WorkoutId" />
-                <div class="form-group">
-                    <label asp-for="WorkoutName" class="control-label"></label>
-                    <input asp-for="WorkoutName" class="form-control" />
-                    <span asp-validation-for="WorkoutName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="WorkoutType.WorkoutTypeName" class="control-label"></label>
-                    <select asp-for="WorkoutTypeId" class="form-control" asp-items="ViewBag.WorkoutTypeId">
-                        <option value="">-- Please Select --</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <table>
-                        <tr>
-                            <th>Exercises</th>
-                        </tr>
-                        <tr>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well">
+                <h2 style="text-align: center">Edit</h2>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="WorkoutId"/>
+                    <div class="form-group">
+                        <label asp-for="WorkoutName" class="control-label"></label>
+                        <input asp-for="WorkoutName" class="form-control"/>
+                        <span asp-validation-for="WorkoutName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WorkoutType.WorkoutTypeName" class="control-label"></label>
+                        <select asp-for="WorkoutTypeId" class="form-control" asp-items="ViewBag.WorkoutTypeId">
+                            <option value="">-- Please Select --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <table>
+                            <tr>
+                                <th>Exercises</th>
+                            </tr>
+                            <tr>
                             @{
                                 int cnt = 0;
                                 List<AssignedExerciseData> exercises = ViewBag.Exercises;
@@ -38,30 +39,32 @@
                                     if (cnt++ % 3 == 0)
                                     {
                                         @:</tr><tr>
-                                        }
-                                        @:<td>
-                                            <input type="checkbox"
-                                                   name="selectedExercises"
-                                                   value="@exercise.ExerciseId"
-                                                   @(Html.Raw(exercise.Assigned ? "checked=\"checked\"" : "")) />
-                                            @exercise.ExerciseName
-                                            @: </td>
-                                        }
-                                        @:</tr>
-                                }
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
-                        </div>
-                        </form>
-                    </div>
-                </div>
+                                    }
+                                    @:<td>
+                                    <div class="checkbox checkbox-info" style="margin: 5px">
+                                        <input type="checkbox"
+                                               name="selectedExercises"
+                                               value="@exercise.ExerciseId"
+                                               @(Html.Raw(exercise.Assigned ? "checked=\"checked\"" : ""))>
+                                        <label>@exercise.ExerciseName</label>
+                                    </div>
 
-                <div>
-                    <a asp-action="Index">Back to List</a>
-                </div>
+
+                                    @: 
+                                    @:</td>
+                                }
+                                @:</tr>
+                            }
+                        </table>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Save" class="btn btn-primary"/>
+                    </div>
+                </form>
             </div>
-            @section Scripts {
-                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -52,9 +52,8 @@ namespace FitnessTech.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.Customers = viewModel.Customers.Where(c => c.FirstName.Contains(searchString)
-                            || c.LastName.Contains(searchString));
-                
+                viewModel.Customers = await _unitOfWork.CustomerRepository.FindAllAsync(w => w.FullName.Contains(searchString));
+
             }
 
 

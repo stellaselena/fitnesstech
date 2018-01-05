@@ -5,12 +5,8 @@
     ViewData["Title"] = "Index";
 }
 <div class="container">
-    <h2>Index</h2>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    @using (Html.BeginForm())
+    <h2>Exercises</h2>
+    @using (Html.BeginForm("Index", "Exercises", FormMethod.Get))
     {
         <div class="input-group">
             <span class="input-group-btn">
@@ -18,14 +14,22 @@
             </span>
             @Html.TextBox("SearchString", null, new {@class = "form-control"})
         </div>
-    }
+}
     <hr/>
 
     <div class=" row">
         <div class="col-md-2 ">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <a asp-action="Create">Create New</a>
 
+
+                </div>
+
+            </div>
             <div class="list-group">
                 <h4>Sort By</h4>
+
                 <div class="list-group-item">
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Exercise</a>
 
@@ -72,8 +76,6 @@
                     </div>
 
                 </div>
-
-               
             }
 
 
@@ -97,11 +99,13 @@
                         </td>
 
                         <td>
-                          
+
                             <div class="row">
                                 <div class="col-md-12">
-                                
-                                    <a asp-action="Details" asp-route-id="@item.ExerciseId"><h3>@Html.DisplayFor(modelItem => item.ExerciseName)</h3></a>
+
+                                    <a asp-action="Details" asp-route-id="@item.ExerciseId">
+                                        <h3>@Html.DisplayFor(modelItem => item.ExerciseName)</h3>
+                                    </a>
                                 </div>
 
                             </div>
@@ -115,7 +119,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <h6>Steps:</h6>                              
+                                    <h6>Steps:</h6>
                                 </div>
                                 <div class="col-md-10">
                                     @{
@@ -126,7 +130,7 @@
                                         Desc = Desc.Substring(0, 250) + "...";
                                     }
 
-                                    @Desc<br />
+                                    @Desc<br/>
                                     <a asp-action="Details" asp-route-id="@item.ExerciseId">Read more</a>
                                 </div>
                             </div>

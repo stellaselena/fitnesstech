@@ -42,7 +42,8 @@ namespace FitnessTech.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModel.WorkoutTypes = viewModel.WorkoutTypes.Where(s => s.WorkoutTypeName.Contains(searchString));
+                viewModel.WorkoutTypes = await _unitOfWork.WorkoutTypeRepository.FindAllAsync(w => w.WorkoutTypeName.Contains(searchString));
+
 
             }
             return View(viewModel);

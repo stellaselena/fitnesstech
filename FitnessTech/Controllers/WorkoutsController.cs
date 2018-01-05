@@ -30,11 +30,15 @@ namespace FitnessTech.Controllers
             var viewModel = new WorkoutIndexData();
             viewModel.Workouts = await _unitOfWork.WorkoutRepository.GetAllThenInclude();
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["TypeSort"] = String.IsNullOrEmpty(sortOrder) ? "type_desc" : "";
 
             switch (sortOrder)
             {
                 case "name_desc":
                     viewModel.Workouts = viewModel.Workouts.OrderByDescending(c => c.WorkoutName);
+                    break;
+                case "type_desc":
+                    viewModel.Workouts = viewModel.Workouts.OrderByDescending(c => c.WorkoutType.WorkoutTypeName);
                     break;
                 default:
                     viewModel.Workouts = viewModel.Workouts.OrderBy(c => c.WorkoutName);

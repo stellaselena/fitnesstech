@@ -6,25 +6,22 @@
 
 
 <div class="container">
-    <h2>Details</h2>
+    <hr/>
 
-    <hr />
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.WorkoutTypeName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.WorkoutTypeName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.WorkoutTypeDescription)
-        </dt>
-        <dd>
+    <div class="col-md-6 col-md-offset-3">
+        <div class="well">
+            <h2 style="text-align: center">@Html.DisplayFor(model => model.WorkoutTypeName)</h2>
+            <br/>
             @Html.DisplayFor(model => model.WorkoutTypeDescription)
-        </dd>
-    </dl>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.WorkoutTypeId">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+
+            <div>
+                <br/>
+
+                <a asp-action="Edit" asp-route-id="@Model.WorkoutTypeId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@Model.WorkoutTypeId">Delete</a>
+            </div>
+        </div>
     </div>
+
+
 </div>

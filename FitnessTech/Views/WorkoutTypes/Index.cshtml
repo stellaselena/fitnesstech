@@ -4,51 +4,63 @@
     ViewData["Title"] = "Index";
 }
 <div class="container">
-<h2>Index</h2>
+<h2>Workout Types</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 @using (Html.BeginForm())
 {
 
     <div class="input-group">
         <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Search</button>
         </span>
         @Html.TextBox("SearchString", null, new { @class = "form-control" })
     </div>
 }
-<hr />
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Type Name</a>
-            </th>
-            <th>
-                Type Description
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.WorkoutTypes)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkoutTypeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkoutTypeDescription)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.WorkoutTypeId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.WorkoutTypeId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.WorkoutTypeId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+
+                <div class="list-group-item">
+                    <a asp-action="Create">Create New</a>
+
+                </div>
+               
+            </div>
+            <div class="list-group">
+
+                <div class="list-group-item">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Sort By Workout Type</a>
+
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-10">
+
+            <table class="table table-striped table-hover">
+
+                <tbody>
+                @foreach (var item in Model.WorkoutTypes)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.WorkoutTypeId">    
+                                <h4>@Html.DisplayFor(modelItem => item.WorkoutTypeName)</h4>
+                            </a>
+
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.WorkoutTypeId">    
+                                @Html.DisplayFor(modelItem => item.WorkoutTypeDescription)
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
