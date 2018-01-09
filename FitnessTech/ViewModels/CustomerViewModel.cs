@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using FitnessTech.Data.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessTech.ViewModels
 {
@@ -53,5 +54,9 @@ namespace FitnessTech.ViewModels
         public int? GymId { get; set; }
         public virtual Employee Employee { get; set; }
         public int? EmployeeId { get; set; }
+        [Display(Name = "Choose an image")]
+        [Required(ErrorMessage = "Image is required")]
+
+        public IFormFile AvatarImage { get; set; }
     }
 }

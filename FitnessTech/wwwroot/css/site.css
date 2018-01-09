@@ -348,3 +348,9 @@ dt {
 .radio-success input[type="radio"]:checked + label::after {
   background-color: #5cb85c;
 }
+
+.headline h1, .headline p {
+    display: inline;
+    vertical-align: top;
+    line-height: 28px;
+}

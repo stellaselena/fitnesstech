@@ -1,4 +1,5 @@
-﻿using FitnessTech.Data.Entities;
+﻿using System;
+using FitnessTech.Data.Entities;
 using System.Collections.Generic;
 using FitnessTech.Data.Helpers;
 
@@ -161,6 +162,26 @@ namespace FitnessTech.Business_Logic
 
             return macronutrients;
 
+        }
+
+        public static double CalculateLeanBodyMass(Gender gender, int weight, int height)
+        {
+            double result = 0.0;
+            switch (gender)
+            {
+                case Gender.Male:
+                    result = 0.407 * weight + 0.267 * height - 19.2;
+                    break;
+                case Gender.Female:
+                    result = 0.252 * weight + +0.473 * height - 48.3;
+                    break;
+                    default:
+                    result = 0.407 * weight + 0.267 * height - 19.2;
+                    break;;
+
+            }
+
+            return Math.Round(result, 2);
         }
     }
 }

@@ -37,5 +37,6 @@ namespace FitnessTech.Data.Entities
         public string City { get; set; }
 
 
+
     }
 }

@@ -22,6 +22,8 @@ namespace FitnessTech.ViewModels
 
         public MuscleGroup MuscleGroup { get; set; }
         [Display(Name = "Choose an image")]
+        [Required(ErrorMessage = "Image is required")]
+
         public IFormFile AvatarImage { get; set; }
     }
 }

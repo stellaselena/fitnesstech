@@ -14,9 +14,10 @@ using System;
 namespace FitnessTech.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20180105151255_useravatar")]
+    partial class useravatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,8 +30,6 @@ namespace FitnessTech.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ActivityLevel");
-
-                    b.Property<byte[]>("AvatarImage");
 
                     b.Property<DateTime>("Birthday");
 

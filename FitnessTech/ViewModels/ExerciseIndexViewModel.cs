@@ -13,7 +13,6 @@ namespace FitnessTech.ViewModels
         }
 
         public IEnumerable<Exercise> Exercises { get; set; }
-        public MuscleGroup MuscleGroup { get; set; }
         [Display(Name = "Legs")]
         public bool Legs { get; set; }
         [Display(Name = "Back")]

@@ -10,38 +10,43 @@
     <h2> @Html.DisplayFor(model => model.ExerciseName)</h2>
     <h4> Muscle Group: @Html.DisplayFor(model => model.MuscleGroup)</h4>
     <div>
-            
+
         <a asp-action="Edit" asp-route-id="@Model.ExerciseId">Edit</a> |
         <a asp-action="Delete" asp-route-id="@Model.ExerciseId">Delete</a>
     </div>
 
-    <hr/>
+    <hr />
     <div class="col-md-12">
-        <div class="well">
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 ">
+                    <div class="well">
+                        @if (Model.AvatarImage != null)
+    {
+        var base64 = Convert.ToBase64String(Model.AvatarImage);
+        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                    <img src='@imgsrc' style="max-width: 475px; max-height: 450px" alt="image" />
 
-                    @if (Model.AvatarImage != null)
-                    {
-                        var base64 = Convert.ToBase64String(Model.AvatarImage);
-                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
-                        <img src='@imgsrc' style="max-width: 500px; max-height: 500px" alt="image" />
+}
+                    </div>
 
-                    }
+                   
 
                 </div>
-                
+
                 <div class="col-md-6">
-                    <h4>Steps:</h4>
-                    @Html.DisplayFor(model => model.ExerciseDescription)
+                    <div class="well">
+                        <h4>Steps:</h4>
+                        @Html.DisplayFor(model => model.ExerciseDescription)
+                    </div>
+                   
                 </div>
             </div>
-           
-                
-            </div>
+
 
         </div>
-        </div>
+
+    </div>
+
  
 

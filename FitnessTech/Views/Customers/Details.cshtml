@@ -1,4 +1,4 @@
-﻿@model FitnessTech.ViewModels.CustomerViewModel
+﻿@model FitnessTech.Data.Entities.Customer
 
 @{
     ViewData["Title"] = "Details";
@@ -6,107 +6,180 @@
 
 
 <div class="container">
-    <h2>Details</h2>
-
-    <hr />
-    <h4>Basic Information</h4>
-
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-    </dl>
-    <h4>Contact Information</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-    </dl>
-    <h4>Stats</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Goal)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Goal)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Weight)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Weight)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ActivityLevel)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ActivityLevel)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BodyFat)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BodyFat)
-        </dd>
-    </dl>
-
-    <h4>Gym</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Gym.GymName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gym.GymName)
-        </dd>
-    </dl>
-
-    <h4>Instructor</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            Instructor
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Employee.FullName)
-        </dd>
-    </dl>
+    <h2> @Html.DisplayFor(model => model.FullName)</h2>
     <div>
+
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
     </div>
+
+    <hr/>
+    <div class="row">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="well">
+                        <h4 style="display: inline-block">Basic Information</h4>
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    @if (Model.AvatarImage != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(Model.AvatarImage);
+                                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                        <img src='@imgsrc' style="max-width: 195px; max-height: 195px" alt="image"/>
+                                    }
+                                </div>
+                                <div class="col-md-9">
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            Name
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.FullName)
+                                        </dd>
+                                        <dt>
+                                            Age
+                                        </dt>
+                                        <dd>
+                                            @{
+
+                                                var today = DateTime.Today;
+                                                var age = today.Year - @Model.Birthday.Year;
+                                            }
+
+                                            @age
+
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Gender)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Gender)
+                                        </dd>
+                                        <dt>
+                                            Location
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.City),@Html.DisplayFor(model => model.Country)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Email)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Email)
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    
+
+                    <div class="row well">
+
+                        <h4>Trains at</h4>
+                        <div class="well">
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    Gym
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Gym.GymName) (@Html.DisplayFor(model => model.Gym.Website))
+
+                                </dd>
+                                
+                            </dl>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row well">
+                        <h4 style="display: inline-block">Body Composition</h4>
+                        <div class="well">
+                            <dl class="dl-horizontal">
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Weight)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Weight) kgs
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Height)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Height) cm
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.BodyFat)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.BodyFat) %
+                                </dd>
+                                <dt>
+                                    Lean Mass
+                                </dt>
+                                <dd>
+                                    @ViewBag.leanMass kgs
+
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Goal)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Goal)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.ActivityLevel)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.ActivityLevel)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+
+                    <div class="row well">
+                        <h4 style="display: inline-block">Instructor</h4>
+                        <div class="well">
+
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    Instructor
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Employee.FullName)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Employee.Certification)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Employee.Certification)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Employee.Specialization)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Employee.Specialization)
+                                </dd>
+                            </dl>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+    </div>
+
+
 </div>
