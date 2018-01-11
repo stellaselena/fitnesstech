@@ -135,10 +135,13 @@ namespace FitnessTech.Controllers
             var customer = _mapper.Map<CustomerViewModel, Customer>(model);
             if (ModelState.IsValid)
             {
-                using (var memoryStream = new MemoryStream())
+                if (model.AvatarImage != null)
                 {
-                    await model.AvatarImage.CopyToAsync(memoryStream);
-                    customer.AvatarImage = memoryStream.ToArray();
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await model.AvatarImage.CopyToAsync(memoryStream);
+                        customer.AvatarImage = memoryStream.ToArray();
+                    }
                 }
                 await _unitOfWork.CustomerRepository.AddAsync(customer);
                 await _unitOfWork.CustomerRepository.SaveAsync();

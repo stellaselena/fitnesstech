@@ -94,7 +94,20 @@
                                     <a asp-action="Details" asp-route-id="@item.Id">
                                         <img src='@imgsrc' style="max-width: 80px; max-height: 120px; min-width: 80px; min-height: 120px" alt="image" />
                                     </a>
-}
+}  else
+                                        {
+                                        if (item.Gender == Gender.Female)
+                                        {
+                                        <img src="~/images/avatar_female.png" style="max-width: 80px; max-height: 120px" alt="image" class="center-block" />
+
+                                        }
+                                        else
+                                        {
+                                        <img src="~/images/avatar_male.png" style="max-width: 80px; max-height: 120px" alt="image" class="center-block" />
+
+                                        }
+
+                                        }
                                     </div>
                                     <div class="col-md-10">
 

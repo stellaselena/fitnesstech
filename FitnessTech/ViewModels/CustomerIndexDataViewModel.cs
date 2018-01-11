@@ -13,10 +13,7 @@ namespace FitnessTech.ViewModels
         }
 
         public IEnumerable<Customer> Customers { get; set; }
-
-        public Gender Gender;
-        public Goal Goal;
-        public ActivityLevel ActivityLevel;
+        
 
     }
 

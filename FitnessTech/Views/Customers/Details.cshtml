@@ -1,4 +1,5 @@
-﻿@model FitnessTech.Data.Entities.Customer
+﻿@using FitnessTech.Data.Helpers
+@model FitnessTech.Data.Entities.Customer
 
 @{
     ViewData["Title"] = "Details";
@@ -28,7 +29,21 @@
                                         var base64 = Convert.ToBase64String(Model.AvatarImage);
                                         var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
                                         <img src='@imgsrc' style="max-width: 195px; max-height: 195px" alt="image"/>
+                                    } else
+                                    {
+                                        if (Model.Gender == Gender.Female)
+                                        {
+                                            <img src="~/images/avatar_female.png" style="max-width: 195px; max-height: 195px" alt="image" class="center-block" />
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/avatar_male.png" style="max-width: 195px; max-height: 195px" alt="image" class="center-block" />
+
+                                        }
+
                                     }
+
                                 </div>
                                 <div class="col-md-9">
                                     <dl class="dl-horizontal">
@@ -64,7 +79,7 @@
                                             @Html.DisplayFor(model => model.City),@Html.DisplayFor(model => model.Country)
                                         </dd>
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Email)
+                                            Email
                                         </dt>
                                         <dd>
                                             @Html.DisplayFor(model => model.Email)
@@ -87,7 +102,7 @@
                                     Gym
                                 </dt>
                                 <dd>
-                                    @Html.DisplayFor(model => model.Gym.GymName) (@Html.DisplayFor(model => model.Gym.Website))
+                                    @Html.DisplayFor(model => model.Gym.GymName)
 
                                 </dd>
                                 

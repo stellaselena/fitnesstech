@@ -35,6 +35,8 @@ namespace FitnessTech.Data.Entities
         public virtual ICollection<Employee> Employees { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
+        public byte[] AvatarImage { get; set; }
+
 
     }
 }

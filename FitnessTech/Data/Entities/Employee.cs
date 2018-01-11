@@ -15,6 +15,8 @@ namespace FitnessTech.Data.Entities
         public virtual Gym Gym { get; set; }
         public int? GymId { get; set; }
         public virtual ICollection<Employee> Customers { get; set; }
+        public byte[] AvatarImage { get; set; }
+
 
 
 

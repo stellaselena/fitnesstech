@@ -24,6 +24,10 @@ namespace FitnessTech.Data.Entities
         public MuscleGroup MuscleGroup { get; set; }
         public byte[] AvatarImage { get; set; }
 
+        public string Equipment { get; set; }
+        public Level Level { get; set; }
+        public Mechanics Mechanics { get; set; }
+
 
     }
 }

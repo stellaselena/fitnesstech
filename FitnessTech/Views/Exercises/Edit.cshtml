@@ -20,8 +20,13 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ExerciseDescription" class="control-label"></label>
-                        <input asp-for="ExerciseDescription" class="form-control"/>
+                        <textarea asp-for="ExerciseDescription" class="form-control"  style="overflow:auto;resize:none" rows="5"></textarea>
                         <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Equipment" class="control-label"></label>
+                        <input asp-for="Equipment" class="form-control"/>
+                        <span asp-validation-for="Equipment" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="MuscleGroup" class="control-label"></label>
@@ -30,6 +35,22 @@
                             <option selected="selected" value="">Please select</option>
                         </select>
                         <span asp-validation-for="MuscleGroup" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Level" class="control-label"></label>
+                        <select asp-for="Level" class="form-control"
+                                asp-items="Html.GetEnumSelectList<Level>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="Level" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Mechanics" class="control-label"></label>
+                        <select asp-for="Mechanics" class="form-control"
+                                asp-items="Html.GetEnumSelectList<Mechanics>()">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="Mechanics" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="AvatarImage" class="control-label"></label>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessTech.Data.Helpers;
@@ -70,8 +71,8 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-            var model = _mapper.Map<Gym, GymViewModel>(gym);
-            return View(model);
+            //var model = _mapper.Map<Gym, GymViewModel>(gym);
+            return View(gym);
         }
 
         // GET: Gyms/Create
@@ -87,11 +88,19 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] GymViewModel model)
+        public async Task<IActionResult> Create([Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber,AvatarImage")] GymViewModel model)
         {
             var gym = _mapper.Map<GymViewModel, Gym>(model);
             if (ModelState.IsValid)
             {
+                if (model.AvatarImage != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await model.AvatarImage.CopyToAsync(memoryStream);
+                        gym.AvatarImage = memoryStream.ToArray();
+                    }
+                }
                 _unitOfWork.GymRepository.Add(gym);
                 await _unitOfWork.GymRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
@@ -109,13 +118,29 @@ namespace FitnessTech.Controllers
                 return NotFound();
             }
 
-            var gym = await _unitOfWork.GymRepository.GetAsync(id);
+            var gym = await _unitOfWork.GymRepository.GetBy(g => g.GymId == id, g => g.Employees, g => g.Customers);
             if (gym == null)
             {
                 return NotFound();
             }
             ViewBag.Countries = new SelectList(Country.GetCountries(), "ID", "Name");
-            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+            //var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+            var gymVm = new GymViewModel();
+            gymVm.City = gym.City;
+            gymVm.Country = gym.Country;
+            gymVm.Customers = gym.Customers;
+            gymVm.Description = gym.Description;
+            gymVm.Email = gym.Email;
+            gymVm.Employees = gym.Employees;
+            gymVm.GymName = gym.GymName;
+            gymVm.Email = gym.Email;
+            gymVm.Employees = gym.Employees;
+            gymVm.GymName= gym.GymName;
+            gymVm.PhoneNumber = gym.PhoneNumber;
+            gymVm.PostalCode = gym.PostalCode;
+            gymVm.Street = gym.Street;
+            gymVm.Website = gym.Website;
+            gymVm.GymId = gym.GymId;
 
             return View(gymVm);
         }
@@ -125,9 +150,11 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber")] GymViewModel model)
+        public async Task<IActionResult> Edit(int id, [Bind("GymId,GymName,Description,Website,Email,Country,City,PostalCode,Street,PhoneNumber,AvatarImage")] GymViewModel model)
         {
-            var gym = _mapper.Map<GymViewModel, Gym>(model);
+            //var gym = _mapper.Map<GymViewModel, Gym>(model);
+            var gym = _unitOfWork.GymRepository.Get(model.GymId);
+
 
             if (id != gym.GymId)
             {
@@ -136,8 +163,30 @@ namespace FitnessTech.Controllers
 
             if (ModelState.IsValid)
             {
+                gym.City = model.City;
+                gym.Country = model.Country;
+                gym.Customers = model.Customers;
+                gym.Description = model.Description;
+                gym.Email = model.Email;
+                gym.Employees = model.Employees;
+                gym.GymName = model.GymName;
+                gym.Email = model.Email;
+                gym.Employees = model.Employees;
+                gym.GymName = model.GymName;
+                gym.PhoneNumber = model.PhoneNumber;
+                gym.PostalCode = model.PostalCode;
+                gym.Street = model.Street;
+                gym.Website = model.Website;
                 try
                 {
+                    if (model.AvatarImage != null)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await model.AvatarImage.CopyToAsync(memoryStream);
+                            gym.AvatarImage = memoryStream.ToArray();
+                        }
+                    }
                     _unitOfWork.GymRepository.Update(gym);
                     await _unitOfWork.GymRepository.SaveAsync();
                 }
@@ -173,7 +222,22 @@ namespace FitnessTech.Controllers
             {
                 return NotFound();
             }
-            var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+            //var gymVm = _mapper.Map<Gym, GymViewModel>(gym);
+            var gymVm = new GymViewModel();
+            gymVm.City = gym.City;
+            gymVm.Country = gym.Country;
+            gymVm.Customers = gym.Customers;
+            gymVm.Description = gym.Description;
+            gymVm.Email = gym.Email;
+            gymVm.Employees = gym.Employees;
+            gymVm.GymName = gym.GymName;
+            gymVm.Email = gym.Email;
+            gymVm.Employees = gym.Employees;
+            gymVm.GymName = gym.GymName;
+            gymVm.PhoneNumber = gym.PhoneNumber;
+            gymVm.PostalCode = gym.PostalCode;
+            gymVm.Street = gym.Street;
+            gymVm.Website = gym.Website;
 
             return View(gymVm);
         }

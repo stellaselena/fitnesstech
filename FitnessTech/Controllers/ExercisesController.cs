@@ -64,6 +64,7 @@ namespace FitnessTech.Controllers
         public ActionResult Index(ExerciseIndexViewModel viewModel)
         {
             List<Exercise> selectedMuscleGroups = new List<Exercise>();
+            
             if (viewModel.Legs)
             {
                 var result = _unitOfWork.ExerciseRepository.GetByMuscleGroup(MuscleGroup.Legs);
@@ -119,7 +120,7 @@ namespace FitnessTech.Controllers
                 }
             }
 
-            viewModel.Exercises = selectedMuscleGroups;
+            viewModel.Exercises = selectedMuscleGroups.Distinct(); 
 
 
             return View(viewModel);
@@ -158,19 +159,22 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup,AvatarImage")] ExerciseViewModel model)
+        public async Task<IActionResult> Create([Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup,AvatarImage,Equipment,Level,Mechanics")] ExerciseViewModel model)
         {
             var exercise = _mapper.Map<ExerciseViewModel, Exercise>(model);
 
             if (ModelState.IsValid)
             {
-                
-                using (var memoryStream = new MemoryStream())
+                if (model.AvatarImage != null)
                 {
-                    await model.AvatarImage.CopyToAsync(memoryStream);
-                    exercise.AvatarImage = memoryStream.ToArray();
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await model.AvatarImage.CopyToAsync(memoryStream);
+                        exercise.AvatarImage = memoryStream.ToArray();
 
+                    }
                 }
+               
                 await _unitOfWork.ExerciseRepository.AddAsync(exercise);
                 await _unitOfWork.ExerciseRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
@@ -201,6 +205,9 @@ namespace FitnessTech.Controllers
             exerciseVm.ExerciseId = exercise.ExerciseId;
             exerciseVm.ExerciseName = exercise.ExerciseName;
             exerciseVm.ExerciseDescription = exercise.ExerciseDescription;
+            exerciseVm.Equipment = exercise.Equipment;
+            exerciseVm.Level = exercise.Level;
+            exerciseVm.Mechanics = exercise.Mechanics;
             exerciseVm.MuscleGroup = exercise.MuscleGroup;
 
             return View(exerciseVm);
@@ -211,7 +218,7 @@ namespace FitnessTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup,AvatarImage")] ExerciseViewModel model)
+        public async Task<IActionResult> Edit(int id, [Bind("ExerciseId,ExerciseName,ExerciseDescription,MuscleGroup,AvatarImage,Equipment,Level,Mechanics")] ExerciseViewModel model)
         {
             //var exercise = _mapper.Map<ExerciseViewModel, Exercise>(model);
             var exercise = _unitOfWork.ExerciseRepository.Get(model.ExerciseId);
@@ -227,6 +234,9 @@ namespace FitnessTech.Controllers
                 exercise.ExerciseName = model.ExerciseName;
                 exercise.ExerciseDescription = model.ExerciseDescription;
                 exercise.MuscleGroup = model.MuscleGroup;
+                exercise.Equipment = model.Equipment;
+                exercise.Level = model.Level;
+                exercise.Mechanics = model.Mechanics;
                 if (model.AvatarImage != null)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -278,6 +288,9 @@ namespace FitnessTech.Controllers
             exerciseVm.ExerciseName = exercise.ExerciseName;
             exerciseVm.ExerciseDescription = exercise.ExerciseDescription;
             exerciseVm.MuscleGroup = exercise.MuscleGroup;
+            exerciseVm.Equipment = exercise.Equipment;
+            exerciseVm.Level = exercise.Level;
+            exerciseVm.Mechanics = exercise.Mechanics;
 
             return View(exerciseVm);
         }

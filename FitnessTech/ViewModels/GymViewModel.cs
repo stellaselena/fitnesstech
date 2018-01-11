@@ -1,6 +1,7 @@
 ﻿using FitnessTech.Data.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessTech.ViewModels
 {
@@ -36,5 +37,9 @@ namespace FitnessTech.ViewModels
         public virtual ICollection<Employee> Employees { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
+        [Display(Name = "Choose an image")]
+        //[Required(ErrorMessage = "Image is required")]
+
+        public IFormFile AvatarImage { get; set; }
     }
 }

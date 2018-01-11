@@ -55,7 +55,6 @@ namespace FitnessTech.ViewModels
         public virtual Employee Employee { get; set; }
         public int? EmployeeId { get; set; }
         [Display(Name = "Choose an image")]
-        [Required(ErrorMessage = "Image is required")]
 
         public IFormFile AvatarImage { get; set; }
     }

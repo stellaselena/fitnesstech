@@ -1,83 +1,193 @@
-﻿@model FitnessTech.ViewModels.EmployeeIndexDataViewModel
+﻿@using FitnessTech.Data.Helpers
+@model FitnessTech.ViewModels.EmployeeIndexDataViewModel
 @{
     ViewData["Title"] = "Index";
 }
 <div class="container">
-    <h2>Index</h2>
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+    <h2>Instructors</h2>
+
     @using (Html.BeginForm())
     {
 
         <div class="input-group">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Search</button>
+                <button class="btn btn-primary" type="submit">Search</button>
             </span>
             @Html.TextBox("SearchString", null, new { @class = "form-control" })
         </div>
     }
     <hr />
+<div class="row">
+    <div class="col-md-2">
+        <div class="list-group">
+            <div class="list-group-item">
+                <a asp-action="Create">Create New</a>
+
+
+            </div>
+
+        </div>
+        @using (Html.BeginForm("Index", "Employees", FormMethod.Get))
+        {
+            <div class="list-group">
+                <h4>Sort By</h4>
+
+                <div class="list-group-item">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData[" FirstNameSort"]">First Name</a>
+
+                </div>
+                <div class="list-group-item">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData[" LastNameSort"]">Last Name</a>
+
+                </div>
+
+            </div>
+        }
+        @using (Html.BeginForm())
+        {
+            <div class="list-group">
+                <h4>Certification</h4>
+                <div class="list-group-item">
+
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.PersonalTrainer)
+                        <label>Personal Trainer</label>
+                    </div>
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.Nutritionist)
+                        <label> Nutritionist </label>
+                    </div>
+
+                </div>
+
+            </div>
+             
+            <div class="list-group">
+                <h4>Specialization</h4>
+                <div class="list-group-item">
+
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.SportsConditioning)
+                        <label>Sports Conditioning</label>
+                    </div>
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.YouthFitness)
+                        <label> Youth Fitness </label>
+                    </div>
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.SeniorFitness)
+                        <label> Senior Fitness </label>
+                    </div>
+                    <div class="checkbox checkbox-info">
+                        @Html.EditorFor(x => x.WeightManagement)
+                        <label> Weight Management </label>
+                    </div>
+
+
+                    <input class="btn btn-primary btn-sm" type="submit" value="SUBMIT" />
+                    <input class="btn btn-primary btn-sm" type="button" value="RESET" onclick="location.href = '@Url.Action("Index", "Employees")'" />
+                </div>
+        
+             
+
+
+            </div>
+        }
+
+    </div>
+<div class="col-md-10">
+
     <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["FirstNameSort"]">First Name</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["LastNameSort"]">Last Name</a>
-                </th>
-                <th>
-                    Certification
-                </th>
-                <th>
-                    Specialization
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Country
-                </th>
-                <th>
-                    City
-                </th>
-                <th></th>
-            </tr>
-        </thead>
+        
         <tbody>
             @foreach (var item in Model.Employees)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Certification)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Country)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            @if (item.AvatarImage != null)
+                            {
+
+                                var base64 = Convert.ToBase64String(item.AvatarImage);
+                                var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    <img src='@imgsrc' style="max-width: 80px; max-height: 120px; min-width: 80px; min-height: 120px" alt="image" />
+                                </a>
+                            }
+                            else
+                            {
+                                if (item.Gender == Gender.Female)
+                                {
+                                    <img src="~/images/avatar_female.png" style="max-width: 80px; max-height: 120px" alt="image" class="center-block" />
+
+                                }
+                                else
+                                {
+                                    <img src="~/images/avatar_male.png" style="max-width: 80px; max-height: 120px" alt="image" class="center-block" />
+
+                                }
+
+                            }
+                        </div>
+                        <div class="col-md-10">
+
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <h3>@Html.DisplayFor(modelItem => item.FullName)</h3>
+                            </a>
+                            @{
+
+                                var today = DateTime.Today;
+                                var age = today.Year - @item.Birthday.Year;
+
+                            }
+
+                            @Html.DisplayFor(modelItem => item.Certification) | @Html.DisplayFor(modelItem => item.Specialization)
+                            <h6> Gender: @Html.DisplayFor(modelItem => item.Gender)</h6>
+                            <h6> Location: @Html.DisplayFor(modelItem => item.City), @Html.DisplayFor(modelItem => item.Country) </h6>
+
+
+                        </div>
+
+                    </div>
+
+
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Certification:</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <h6> @Html.DisplayFor(modelItem => item.Certification)</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Specialization:</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <h6> @Html.DisplayFor(modelItem => item.Specialization)</h6>
+                        </div>
+                    </div>
+                             
+                </td>
+               
+
+            </tr>
             }
         </tbody>
     </table>
 
+</div>
+</div>
 </div>

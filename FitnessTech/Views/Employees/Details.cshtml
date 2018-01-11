@@ -1,85 +1,166 @@
 ﻿@using FitnessTech.Data.Entities
-@model FitnessTech.ViewModels.EmployeeViewModel
+@using FitnessTech.Data.Helpers
+@model FitnessTech.Data.Entities.Employee
 @{
     ViewData["Title"] = "Details";
 }
 <div class="container">
-    <h2>Details</h2>
-    <hr />
-    <h4>Basic Information</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-    </dl>
-    <h4>Contact Information</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-    </dl>
-    <h4>Education</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Certification)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Certification)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Specialization)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Specialization)
-        </dd>
-    </dl>
-    <h4>Work Location</h4>
-    <dl class="dl-horizontal well">
-        <dt>
-            @Html.DisplayNameFor(model => model.Gym.GymName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gym.GymName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gym.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gym.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gym.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gym.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gym.Street)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gym.Street)
-        </dd>
-    </dl>
+    <h2> @Html.DisplayFor(model => model.FullName)</h2>
     <div>
+
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
     </div>
-</div>
+
+    <hr />
+    <div class="row">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="well">
+                    <h4 style="display: inline-block">Basic Information</h4>
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @if (Model.AvatarImage != null)
+                                {
+                                    var base64 = Convert.ToBase64String(Model.AvatarImage);
+                                    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                    <img src='@imgsrc' style="max-width: 200px; max-height: 200px" alt="image" />
+                                }
+                                else
+                                {
+                                    if (Model.Gender == Gender.Female)
+                                    {
+                                        <img src="~/images/avatar_female.png" style="max-width: 200px; max-height: 200px" alt="image" class="center-block" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/avatar_male.png" style="max-width: 200px; max-height: 200px" alt="image" class="center-block" />
+
+                                    }
+
+                                }
+
+                            </div>
+                            <div class="col-md-9">
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        Name
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.FullName)
+                                    </dd>
+                                    <dt>
+                                        Age
+                                    </dt>
+                                    <dd>
+                                        @{
+
+                                            var today = DateTime.Today;
+                                            var age = today.Year - @Model.Birthday.Year;
+                                        }
+
+                                        @age
+
+                                    </dd>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Gender)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Gender)
+                                    </dd>
+                                    <dt>
+                                        Location
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.City),@Html.DisplayFor(model => model.Country)
+                                    </dd>
+                                    <dt>
+                                        Email
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Email)
+                                    </dd>
+
+
+
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+               
+            </div>
+
+            <div class="col-md-6">
+              
+                <div class="row well">
+                    <h4>Education And Work</h4>
+                    <div class="well">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Certification
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Certification)
+
+                            </dd>
+                            <dt>
+                                Specialization
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Specialization)
+
+                            </dd>
+                         
+                            
+                           
+
+                        </dl>
+                     
+                    </div>
+                    <br/>
+                    <div class="well">
+                        <dl class="dl-horizontal">
+
+                            <dt>
+                                Works at
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Gym.GymName)
+
+                            </dd>
+                            <dt>
+                                Website
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Gym.Website)
+
+                            </dd>
+                          
+
+
+
+                        </dl>
+                        
+                    </div>
+                </div>
+                </div>
+
+
+               
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+

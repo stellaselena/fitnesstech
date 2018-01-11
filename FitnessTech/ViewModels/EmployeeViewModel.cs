@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using FitnessTech.Data.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessTech.ViewModels
 {
@@ -46,5 +47,8 @@ namespace FitnessTech.ViewModels
         public virtual Gym Gym { get; set; }
         public int? GymId { get; set; }
         public virtual ICollection<Employee> Customers { get; set; }
+        [Display(Name = "Choose an image")]
+        public IFormFile AvatarImage { get; set; }
+
     }
 }
