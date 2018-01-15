@@ -40,12 +40,9 @@ namespace FitnessTech.Controllers
             ViewData["LastNameSort"] = String.IsNullOrEmpty(sortOrder) ? "lastname_desc" : "lastname";
 
 
-            var genders = from Gender g in Enum.GetValues(typeof(Gender))
-                select g;
-            var goals = from Goal g in Enum.GetValues(typeof(Goal))
-                select g;
-            var activityLevels = from ActivityLevel g in Enum.GetValues(typeof(ActivityLevel))
-                select g;
+            var genders = from Gender g in Enum.GetValues(typeof(Gender)) select g;
+            var goals = from Goal g in Enum.GetValues(typeof(Goal)) select g;
+            var activityLevels = from ActivityLevel g in Enum.GetValues(typeof(ActivityLevel)) select g;
 
             ViewBag.gender = new SelectList(genders);
             ViewBag.goal = new SelectList(goals);
@@ -63,7 +60,6 @@ namespace FitnessTech.Controllers
             {
                 viewModel.Customers = viewModel.Customers.Where(c => c.ActivityLevel.ToString() == activityLevel);
             }
-
 
             switch (sortOrder)
             {
@@ -92,7 +88,6 @@ namespace FitnessTech.Controllers
         }
 
        
-
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {

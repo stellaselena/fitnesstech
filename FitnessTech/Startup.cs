@@ -68,6 +68,7 @@ namespace FitnessTech
 
                 .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddJsonOptions(opt => opt.SerializerSettings.Culture = CultureInfo.InvariantCulture);
+
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
